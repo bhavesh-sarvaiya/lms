@@ -1,0 +1,144 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()"
+	#editForm="ngForm">
+
+	<div class="modal-header">
+		<h4 class="modal-title" id="myLeaveAllocationLabel"
+			jhiTranslate="lmsApp.leaveAllocation.home.createOrEditLabel">Create
+			or edit a Leave Allocation</h4>
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true" (click)="clear()">&times;</button>
+	</div>
+	<div class="modal-body">
+		<jhi-alert-error></jhi-alert-error>
+		<div class="form-group" [hidden]="!leaveAllocation.id">
+			<label for="id" jhiTranslate="global.field.id">ID</label> <input
+				type="text" class="form-control" id="id" name="id"
+				[(ngModel)]="leaveAllocation.id" readonly />
+		</div>
+		<div class="form-group" [hidden]="leaveAllocation.id">
+			<div class="row">
+				<div class="col-md-1" >
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.leaveAllocation.all" for="field_all">All</label>
+				</div>
+				<div class="col-md-1">
+					<input type="checkbox" ng-model="checked"
+						(click)="initLoadAllEmp($event)" class="form-control" name="all"
+						id="field_all" [(ngModel)]="leaveAllocation.all" />
+				</div>
+
+				<div class="col-md-2">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.leaveAllocation.teachingstaff"
+						for="field_teachingstaff">Teachingstaff</label>
+				</div>
+				<div class="col-md-1">
+					<input type="checkbox" (click)="loadEmployee($event)"
+						class="form-control" name="teachingstaff" id="field_teachingstaff"
+						[(ngModel)]="leaveAllocation.teachingstaff" />
+				</div>
+
+				<div class="col-md-2">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.leaveAllocation.canHaveVacation"
+						for="field_canHaveVacation">Can Have Vacation</label>
+				</div>
+				<div class="col-md-1">
+					<input type="checkbox" (click)="loadEmployee($event)"
+						class="form-control" name="canHaveVacation"
+						id="field_canHaveVacation"
+						[(ngModel)]="leaveAllocation.canHaveVacation" />
+				</div>
+
+				<div class="col-md-2">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.leaveAllocation.granted" for="field_granted">Granted</label>
+				</div>
+				<div class="col-md-1">
+					<input type="checkbox" (click)="loadEmployee($event)"
+						class="form-control" name="granted" id="field_granted"
+						[(ngModel)]="leaveAllocation.granted" />
+				</div>
+			</div>
+
+
+		</div>
+		<div class="form-group">
+			<label class="form-control-label"
+				jhiTranslate="lmsApp.leaveAllocation.noOfLeave"
+				for="field_noOfLeave">No Of Leave</label> <input type="number"
+				class="form-control" name="noOfLeave" id="field_noOfLeave"
+				[(ngModel)]="leaveAllocation.noOfLeave" required />
+			<div
+				[hidden]="!(editForm.controls.noOfLeave?.dirty && editForm.controls.noOfLeave?.invalid)">
+				<small class="form-text text-danger"
+					[hidden]="!editForm.controls.noOfLeave?.errors?.required"
+					jhiTranslate="entity.validation.required"> This field is
+					required. </small> <small class="form-text text-danger"
+					[hidden]="!editForm.controls.noOfLeave?.errors?.number"
+					jhiTranslate="entity.validation.number"> This field should
+					be a number. </small>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="form-control-label"
+				jhiTranslate="lmsApp.leaveAllocation.allocationDate"
+				for="field_allocationDate">Allocation Date</label>
+			<div class="input-group">
+				<input id="field_allocationDate" type="text" class="form-control"
+					name="allocationDate"
+					ngbDatepicker  #allocationDateDp="ngbDatepicker"
+					[(ngModel)]="leaveAllocation.allocationDate" required /> <span
+					class="input-group-append">
+					<button type="button" class="btn btn-secondary"
+						(click)="allocationDateDp.toggle()">
+						<i class="fa fa-calendar"></i>
+					</button>
+				</span>
+			</div>
+			<div
+				[hidden]="!(editForm.controls.allocationDate?.dirty && editForm.controls.allocationDate?.invalid)">
+				<small class="form-text text-danger"
+					[hidden]="!editForm.controls.allocationDate?.errors?.required"
+					jhiTranslate="entity.validation.required"> This field is
+					required. </small>
+			</div>
+		</div>
+
+		<div class="form-group" [hidden]="leaveAllocation.id">
+			<label class="form-control-label"
+				jhiTranslate="lmsApp.leaveAllocation.leaveType"
+				for="field_leaveType">Leave Type</label> <select
+				class="form-control" id="field_leaveType" name="leaveType"
+				[(ngModel)]="leaveAllocation.leaveType">
+				<option [ngValue]="null"></option>
+				<option
+					[ngValue]="leaveTypeOption.id === leaveAllocation.leaveType?.id ? leaveAllocation.leaveType : leaveTypeOption"
+					*ngFor="let leaveTypeOption of leavetypes; trackBy: trackLeaveTypeById">{{leaveTypeOption.code}}</option>
+			</select>
+		</div>
+		<div class="form-group" [hidden]="leaveAllocation.id">
+			<label class="form-control-label"
+				jhiTranslate="lmsApp.employee.empEnrollmentNo" for="field_leaveType">Emp
+				Enrollment No</label> <select multiple class="form-control"
+				id="field_leaveType" name="leaveType"
+				[(ngModel)]="leaveAllocation.leaveType">
+				<option [ngValue]="null"></option>
+				<option
+					*ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.empEnrollmentNo}}</option>
+			</select>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal"
+			(click)="clear()">
+			<span class="fa fa-ban"></span>&nbsp;<span
+				jhiTranslate="entity.action.cancel">Cancel</span>
+		</button>
+		<button type="submit" [disabled]="editForm.form.invalid || isSaving"
+			class="btn btn-primary">
+			<span class="fa fa-save"></span>&nbsp;<span
+				jhiTranslate="entity.action.save">Save</span>
+		</button>
+	</div>
+</form>

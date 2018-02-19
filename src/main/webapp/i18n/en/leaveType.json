@@ -1,0 +1,24 @@
+
+{
+    "lmsApp": {
+        "leaveType" : {
+            "home": {
+                "title": "Leave Types",
+                "createLabel": "Create a new Leave Type",
+                "createOrEditLabel": "Create or edit a Leave Type"
+            },
+            "created": "A new Leave Type is created with identifier {{ param }}",
+            "updated": "A Leave Type is updated with identifier {{ param }}",
+            "deleted": "A Leave Type is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Leave Type {{ id }}?"
+            },
+            "detail": {
+                "title": "Leave Type"
+            },
+            "name": "Name",
+            "code": "Code",
+            "description": "Description"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "lmsApp": {
+        "BloodGroup" : {
+            "null": "",
+            "APOSITIVE": "APOSITIVE",
+            "OPOSITIVE": "OPOSITIVE",
+            "BPOSITIVE": "BPOSITIVE",
+            "ABPOSITIVE": "ABPOSITIVE",
+            "ANEGATIVE": "ANEGATIVE",
+            "ONEGATIVE": "ONEGATIVE",
+            "BNEGATIVE": "BNEGATIVE",
+            "ABNEGATIVE": "ABNEGATIVE"
+        }
+    }
+}

@@ -1,0 +1,56 @@
+
+entity Department{
+	name String required
+    description String
+}
+
+entity Employee {
+	empEnrollmentNo Integer required
+    teachingstaff Boolean
+    canHaveVacation Boolean 
+    post Post required
+    middleName String required
+    father\HusbandName String required
+    gender GenderEnum required
+  	dob LocalDate required
+    address String required
+    state String required
+    city String required
+    pincode String required
+    maritalStatus MaritalStatus required
+	phoneNumber String required
+    mobileNumber String required
+	bloodGroup BloodGroup required
+    physicalFit Boolean required
+    joinDate LocalDate required
+    retiredDate LocalDate required
+    qualification String required
+    payband Double required
+    granted Boolean
+    otheNote String 
+}
+
+relationship ManyToOne{
+    Employee{department(name)} to Department
+}
+
+enum GenderEnum{
+	MALE, FEMALE
+}
+enum MaritalStatus{
+	MARRIED, UNMMARIED,
+	DIVORCED
+}
+enum BloodGroup{
+	APOSITIVE, OPOSITIVE, BPOSITIVE, ABPOSITIVE,
+    ANEGATIVE, ONEGATIVE, BNEGATIVE, ABNEGATIVE
+}
+enum Post
+{
+	LDC, UDP, SECTIONOFFICER, ASSISTANTREGISTER, DEPUTYREGISTER,
+    FACULTY, HOD, REGISTRAR, VICECHANCELLOR, CHANCELLOR 
+}
+paginate Employee with pagination
+
+
+

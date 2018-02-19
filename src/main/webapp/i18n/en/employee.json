@@ -1,0 +1,48 @@
+
+{
+    "lmsApp": {
+        "employee" : {
+            "home": {
+                "title": "Employees",
+                "createLabel": "Create a new Employee",
+                "createOrEditLabel": "Create or edit a Employee"
+            },
+            "created": "A new Employee is created with identifier {{ param }}",
+            "updated": "A Employee is updated with identifier {{ param }}",
+            "deleted": "A Employee is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Employee {{ id }}?"
+            },
+            "detail": {
+                "title": "Employee"
+            },
+            "teachingstaff": "Teachingstaff",
+            "canHaveVacation": "Can Have Vacation",
+            "post": "Post",
+            "middleName": "Middle Name",
+            "fatherHusbandName": "Father Husband Name",
+            "gender": "Gender",
+            "dob": "Dob",
+            "address": "Address",
+            "state": "State",
+            "city": "City",
+            "pincode": "Pincode",
+            "maritalStatus": "Marital Status",
+            "phoneNumber": "Phone Number",
+            "mobileNumber": "Mobile Number",
+            "bloodGroup": "Blood Group",
+            "physicalFit": "Physical Fit",
+            "joinDate": "Join Date",
+            "retiredDate": "Retired Date",
+            "qualification": "Qualification",
+            "payband": "Payband",
+            "granted": "Granted",
+            "otheNote": "Othe Note",
+            "email": "Email",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "empEnrollmentNo": "Emp Enrollment No",
+            "department": "Department"
+        }
+    }
+}

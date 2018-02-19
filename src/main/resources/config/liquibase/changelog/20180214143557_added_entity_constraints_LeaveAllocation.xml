@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity LeaveAllocation.
+    -->
+    <changeSet id="20180214143557-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="leave_type_id"
+                                 baseTableName="leave_allocation"
+                                 constraintName="fk_leave_allocation_leave_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="leave_type"/>
+
+    </changeSet>
+</databaseChangeLog>

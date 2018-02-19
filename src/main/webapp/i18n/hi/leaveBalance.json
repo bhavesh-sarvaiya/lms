@@ -1,0 +1,24 @@
+
+{
+    "lmsApp": {
+        "leaveBalance" : {
+            "home": {
+                "title": "LeaveBalances",
+                "createLabel": "नया Leave Balance बनाएँ",
+                "createOrEditLabel": "Leave Balance बनाएँ या संपादित करें"
+            },
+            "created": "एक नया Leave Balance [identifier: {{ param }}] तैयार है",
+            "updated": "एक Leave Balance [identifier: {{ param }}] का अद्यतन हुआ है",
+            "deleted": "Leave Balance [identifier: {{ param }}] हटा दिया है",
+            "delete": {
+                "question": "Leave Balance [id: {{ id }}] हटाने की पुष्टि करें"
+            },
+            "detail": {
+                "title": "Leave Balance"
+            },
+            "noOfLeave": "No Of Leave",
+            "leaveType": "Leave Type",
+            "employee": "Employee"
+        }
+    }
+}

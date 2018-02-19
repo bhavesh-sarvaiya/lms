@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "leaveType",
+            "otherEntityName": "leaveType",
+            "otherEntityField": "code"
+        },
+        {
+            "relationshipName": "employee",
+            "otherEntityName": "employee",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "empEnrollmentNo"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "noOfLeave",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180214143555",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "leave_balance",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

@@ -1,0 +1,28 @@
+
+{
+    "lmsApp": {
+        "leaveAllocation" : {
+            "home": {
+                "title": "LeaveAllocations",
+                "createLabel": "à¤¨à¤¯à¤¾ Leave Allocation à¤¬à¤¨à¤¾à¤�à¤�",
+                "createOrEditLabel": "Leave Allocation à¤¬à¤¨à¤¾à¤�à¤� à¤¯à¤¾ à¤¸à¤‚à¤ªà¤¾à¤¦à¤¿à¤¤ à¤•à¤°à¥‡à¤‚"
+            },
+            "created": "à¤�à¤• à¤¨à¤¯à¤¾ Leave Allocation [identifier: {{ param }}] à¤¤à¥ˆà¤¯à¤¾à¤° à¤¹à¥ˆ",
+            "updated": "à¤�à¤• Leave Allocation [identifier: {{ param }}] à¤•à¤¾ à¤…à¤¦à¥�à¤¯à¤¤à¤¨ à¤¹à¥�à¤† à¤¹à¥ˆ",
+            "deleted": "Leave Allocation [identifier: {{ param }}] à¤¹à¤Ÿà¤¾ à¤¦à¤¿à¤¯à¤¾ à¤¹à¥ˆ",
+            "delete": {
+                "question": "Leave Allocation [id: {{ id }}] à¤¹à¤Ÿà¤¾à¤¨à¥‡ à¤•à¥€ à¤ªà¥�à¤·à¥�à¤Ÿà¤¿ à¤•à¤°à¥‡à¤‚"
+            },
+            "detail": {
+                "title": "Leave Allocation"
+            },
+            "teachingstaff": "Teachingstaff",
+            "canHaveVacation": "Can Have Vacation",
+            "granted": "Granted",
+            "noOfLeave": "No Of Leave",
+            "allocationDate": "Allocation Date",
+            "leaveType": "Leave Type",
+            "all": "All"
+        }
+    }
+}

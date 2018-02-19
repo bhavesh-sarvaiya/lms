@@ -1,0 +1,28 @@
+
+{
+    "lmsApp": {
+        "leaveAllocation" : {
+            "home": {
+                "title": "Leave Allocations",
+                "createLabel": "Create a new Leave Allocation",
+                "createOrEditLabel": "Create or edit a Leave Allocation"
+            },
+            "created": "A new Leave Allocation is created with identifier {{ param }}",
+            "updated": "A Leave Allocation is updated with identifier {{ param }}",
+            "deleted": "A Leave Allocation is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Leave Allocation {{ id }}?"
+            },
+            "detail": {
+                "title": "Leave Allocation"
+            },
+            "teachingstaff": "Teachingstaff",
+            "canHaveVacation": "Can Have Vacation",
+            "granted": "Granted",
+            "noOfLeave": "No Of Leave",
+            "allocationDate": "Allocation Date",
+            "leaveType": "Leave Type",
+            "all": "All"
+        }
+    }
+}

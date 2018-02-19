@@ -1,0 +1,24 @@
+
+{
+    "lmsApp": {
+        "leaveBalance" : {
+            "home": {
+                "title": "Leave Balances",
+                "createLabel": "Create a new Leave Balance",
+                "createOrEditLabel": "Create or edit a Leave Balance"
+            },
+            "created": "A new Leave Balance is created with identifier {{ param }}",
+            "updated": "A Leave Balance is updated with identifier {{ param }}",
+            "deleted": "A Leave Balance is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Leave Balance {{ id }}?"
+            },
+            "detail": {
+                "title": "Leave Balance"
+            },
+            "noOfLeave": "No Of Leave",
+            "leaveType": "Leave Type",
+            "employee": "Employee"
+        }
+    }
+}

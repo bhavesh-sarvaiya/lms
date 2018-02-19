@@ -1,0 +1,48 @@
+
+<div *ngIf="leaveAllocation">
+    <h2><span jhiTranslate="lmsApp.leaveAllocation.detail.title">Leave Allocation</span> {{leaveAllocation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="lmsApp.leaveAllocation.teachingstaff">Teachingstaff</span></dt>
+        <dd>
+            <span>{{leaveAllocation.teachingstaff}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveAllocation.canHaveVacation">Can Have Vacation</span></dt>
+        <dd>
+            <span>{{leaveAllocation.canHaveVacation}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveAllocation.granted">Granted</span></dt>
+        <dd>
+            <span>{{leaveAllocation.granted}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveAllocation.noOfLeave">No Of Leave</span></dt>
+        <dd>
+            <span>{{leaveAllocation.noOfLeave}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveAllocation.allocationDate">Allocation Date</span></dt>
+        <dd>
+            <span>{{leaveAllocation.allocationDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveAllocation.leaveType">Leave Type</span></dt>
+        <dd>
+            <div *ngIf="leaveAllocation.leaveType">
+                <a [routerLink]="['/leave-type', leaveAllocation.leaveType?.id]">{{leaveAllocation.leaveType?.code}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'leave-allocation/'+ leaveAllocation.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

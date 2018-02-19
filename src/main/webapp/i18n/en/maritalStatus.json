@@ -1,0 +1,10 @@
+{
+    "lmsApp": {
+        "MaritalStatus" : {
+            "null": "",
+            "MARRIED": "MARRIED",
+            "UNMMARIED": "UNMMARIED",
+            "DIVORCED": "DIVORCED"
+        }
+    }
+}

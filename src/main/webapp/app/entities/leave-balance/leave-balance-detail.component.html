@@ -1,0 +1,38 @@
+
+<div *ngIf="leaveBalance">
+    <h2><span jhiTranslate="lmsApp.leaveBalance.detail.title">Leave Balance</span> {{leaveBalance.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="lmsApp.leaveBalance.noOfLeave">No Of Leave</span></dt>
+        <dd>
+            <span>{{leaveBalance.noOfLeave}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveBalance.leaveType">Leave Type</span></dt>
+        <dd>
+            <div *ngIf="leaveBalance.leaveType">
+                <a [routerLink]="['/leave-type', leaveBalance.leaveType?.id]">{{leaveBalance.leaveType?.code}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveBalance.employee">Employee</span></dt>
+        <dd>
+            <div *ngIf="leaveBalance.employee">
+                <a [routerLink]="['/employee', leaveBalance.employee?.id]">{{leaveBalance.employee?.empEnrollmentNo}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'leave-balance/'+ leaveBalance.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

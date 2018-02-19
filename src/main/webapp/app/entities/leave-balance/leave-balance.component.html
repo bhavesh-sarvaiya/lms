@@ -1,0 +1,79 @@
+<div>
+    <h2>
+        <span jhiTranslate="lmsApp.leaveBalance.home.title">Leave Balances</span>
+        <button style="display: none;" class="btn btn-primary float-right jh-create-entity create-leave-balance" [routerLink]="['/', { outlets: { popup: ['leave-balance-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="lmsApp.leaveBalance.home.createLabel">
+            Create new Leave Balance
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="leaveBalances">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="noOfLeave"><span jhiTranslate="lmsApp.leaveBalance.noOfLeave">No Of Leave</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="leaveType.code"><span jhiTranslate="lmsApp.leaveBalance.leaveType">Leave Type</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="employee.empEnrollmentNo"><span jhiTranslate="lmsApp.leaveBalance.employee">Employee</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let leaveBalance of leaveBalances ;trackBy: trackId">
+                <td><a [routerLink]="['../leave-balance', leaveBalance.id ]">{{leaveBalance.id}}</a></td>
+                <td>{{leaveBalance.noOfLeave}}</td>
+                <td>
+                    <div *ngIf="leaveBalance.leaveType">
+                        <a [routerLink]="['../leave-type', leaveBalance.leaveType?.id ]" >{{leaveBalance.leaveType?.code}}</a>
+                        
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="leaveBalance.employee">
+                        <a [routerLink]="['../employee', leaveBalance.employee?.id ]" >{{leaveBalance.employee?.empEnrollmentNo}}</a>
+                    </div>
+                </td>
+                <td class="text-right" style="display: none;">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../leave-balance', leaveBalance.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'leave-balance/'+ leaveBalance.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'leave-balance/'+ leaveBalance.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="leaveBalances && leaveBalances.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

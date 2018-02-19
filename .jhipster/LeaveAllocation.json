@@ -1,0 +1,45 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "leaveType",
+            "otherEntityName": "leaveType",
+            "otherEntityField": "code"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "teachingstaff",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "canHaveVacation",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "granted",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "noOfLeave",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "allocationDate",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180214143557",
+    "entityTableName": "leave_allocation",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

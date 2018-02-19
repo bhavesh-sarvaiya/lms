@@ -1,0 +1,48 @@
+
+{
+    "lmsApp": {
+        "employee" : {
+            "home": {
+                "title": "Employees",
+                "createLabel": "नया Employee बनाएँ",
+                "createOrEditLabel": "Employee बनाएँ या संपादित करें"
+            },
+            "created": "एक नया Employee [identifier: {{ param }}] तैयार है",
+            "updated": "एक Employee [identifier: {{ param }}] का अद्यतन हुआ है",
+            "deleted": "Employee [identifier: {{ param }}] हटा दिया है",
+            "delete": {
+                "question": "Employee [id: {{ id }}] हटाने की पुष्टि करें"
+            },
+            "detail": {
+                "title": "Employee"
+            },
+            "teachingstaff": "Teachingstaff",
+            "canHaveVacation": "Can Have Vacation",
+            "post": "Post",
+            "middleName": "Middle Name",
+            "fatherHusbandName": "Father Husband Name",
+            "gender": "Gender",
+            "dob": "Dob",
+            "address": "Address",
+            "state": "State",
+            "city": "City",
+            "pincode": "Pincode",
+            "maritalStatus": "Marital Status",
+            "phoneNumber": "Phone Number",
+            "mobileNumber": "Mobile Number",
+            "bloodGroup": "Blood Group",
+            "physicalFit": "Physical Fit",
+            "joinDate": "Join Date",
+            "retiredDate": "Retired Date",
+            "qualification": "Qualification",
+            "payband": "Payband",
+            "granted": "Granted",
+            "otheNote": "Othe Note",
+            "email": "Email",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "empEnrollmentNo": "Emp Enrollment No",
+            "department": "Department"
+        }
+    }
+}

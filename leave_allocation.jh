@@ -1,0 +1,31 @@
+  
+entity LeaveBalance{
+    noOfLeave Integer required
+}
+
+paginate LeaveBalance with pagination
+
+
+
+entity LeaveType{
+  	name String required
+    code String required
+    description String
+    }
+entity LeaveAllocation
+{
+  teachingstaff Boolean
+    canHaveVacation Boolean 
+     granted Boolean
+     noOfLeave Double required
+     allocationDate  LocalDate required
+}
+
+relationship ManyToOne{
+    LeaveAllocation{leaveType(code)} to LeaveType
+    LeaveBalance{leaveType(code)} to LeaveType
+}
+
+paginate LeaveAllocation with pagination
+
+

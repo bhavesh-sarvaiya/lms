@@ -1,0 +1,17 @@
+{
+    "lmsApp": {
+        "Post" : {
+            "null": "",
+            "LDC": "LDC",
+            "UDP": "UDP",
+            "SECTIONOFFICER": "SECTIONOFFICER",
+            "ASSISTANTREGISTER": "ASSISTANTREGISTER",
+            "DEPUTYREGISTER": "DEPUTYREGISTER",
+            "FACULTY": "FACULTY",
+            "HOD": "HOD",
+            "REGISTRAR": "REGISTRAR",
+            "VICECHANCELLOR": "VICECHANCELLOR",
+            "CHANCELLOR": "CHANCELLOR"
+        }
+    }
+}

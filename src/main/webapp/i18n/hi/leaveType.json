@@ -1,0 +1,24 @@
+
+{
+    "lmsApp": {
+        "leaveType" : {
+            "home": {
+                "title": "LeaveTypes",
+                "createLabel": "नया Leave Type बनाएँ",
+                "createOrEditLabel": "Leave Type बनाएँ या संपादित करें"
+            },
+            "created": "एक नया Leave Type [identifier: {{ param }}] तैयार है",
+            "updated": "एक Leave Type [identifier: {{ param }}] का अद्यतन हुआ है",
+            "deleted": "Leave Type [identifier: {{ param }}] हटा दिया है",
+            "delete": {
+                "question": "Leave Type [id: {{ id }}] हटाने की पुष्टि करें"
+            },
+            "detail": {
+                "title": "Leave Type"
+            },
+            "name": "Name",
+            "code": "Code",
+            "description": "Description"
+        }
+    }
+}

@@ -1,0 +1,132 @@
+
+<div *ngIf="employee">
+    <h2><span jhiTranslate="lmsApp.employee.detail.title">Employee</span> {{employee.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="lmsApp.employee.teachingstaff">Teachingstaff</span></dt>
+        <dd>
+            <span>{{employee.teachingstaff}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.canHaveVacation">Can Have Vacation</span></dt>
+        <dd>
+            <span>{{employee.canHaveVacation}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.post">Post</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.Post.' + employee.post}}">{{employee.post}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.middleName">Middle Name</span></dt>
+        <dd>
+            <span>{{employee.middleName}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.fatherHusbandName">Father Husband Name</span></dt>
+        <dd>
+            <span>{{employee.fatherHusbandName}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.gender">Gender</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.GenderEnum.' + employee.gender}}">{{employee.gender}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.dob">Dob</span></dt>
+        <dd>
+            <span>{{employee.dob | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.address">Address</span></dt>
+        <dd>
+            <span>{{employee.address}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.state">State</span></dt>
+        <dd>
+            <span>{{employee.state}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.city">City</span></dt>
+        <dd>
+            <span>{{employee.city}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.pincode">Pincode</span></dt>
+        <dd>
+            <span>{{employee.pincode}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.maritalStatus">Marital Status</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.MaritalStatus.' + employee.maritalStatus}}">{{employee.maritalStatus}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.phoneNumber">Phone Number</span></dt>
+        <dd>
+            <span>{{employee.phoneNumber}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.mobileNumber">Mobile Number</span></dt>
+        <dd>
+            <span>{{employee.mobileNumber}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.bloodGroup">Blood Group</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.BloodGroup.' + employee.bloodGroup}}">{{employee.bloodGroup}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.physicalFit">Physical Fit</span></dt>
+        <dd>
+            <span>{{employee.physicalFit}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.joinDate">Join Date</span></dt>
+        <dd>
+            <span>{{employee.joinDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.retiredDate">Retired Date</span></dt>
+        <dd>
+            <span>{{employee.retiredDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.qualification">Qualification</span></dt>
+        <dd>
+            <span>{{employee.qualification}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.payband">Payband</span></dt>
+        <dd>
+            <span>{{employee.payband}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.granted">Granted</span></dt>
+        <dd>
+            <span>{{employee.granted}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.otheNote">Othe Note</span></dt>
+        <dd>
+            <span>{{employee.otheNote}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.email">Email</span></dt>
+        <dd>
+            <span>{{employee.email}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.firstName">First Name</span></dt>
+        <dd>
+            <span>{{employee.firstName}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.lastName">Last Name</span></dt>
+        <dd>
+            <span>{{employee.lastName}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.empEnrollmentNo">Emp Enrollment No</span></dt>
+        <dd>
+            <span>{{employee.empEnrollmentNo}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.employee.department">Department</span></dt>
+        <dd>
+            <div *ngIf="employee.department">
+                <a [routerLink]="['/department', employee.department?.id]">{{employee.department?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'employee/'+ employee.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
