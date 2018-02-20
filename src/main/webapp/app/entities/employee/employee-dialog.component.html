@@ -1,344 +1,492 @@
-<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+<form name="editForm" role="form" novalidate (ngSubmit)="save()"
+	#editForm="ngForm">	
+	<div class="modal-header">
+		<h4 class="modal-title" id="myEmployeeLabel"
+			jhiTranslate="lmsApp.employee.home.createOrEditLabel">Create or
+			edit a Employee</h4>
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true" (click)="clear()">&times;</button>
+	</div>
+	<jhi-alert-error></jhi-alert-error>
+	<div class="container">
+		<div class="modal-body">
+			<div class="form-group" [hidden]="!employee.id">
+				<label for="id" jhiTranslate="global.field.id">ID</label> <input
+					type="text" class="form-control" id="id" name="id"
+					[(ngModel)]="employee.id" readonly />
+			</div>
+		</div>
+		<h3>General Information</h3>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.empEnrollmentNo"
+						for="field_empEnrollmentNo">Emp Enrollment No</label> <input
+						type="text" class="form-control" name="empEnrollmentNo"
+						id="field_empEnrollmentNo" [(ngModel)]="employee.empEnrollmentNo"
+						required />
+					<div
+						[hidden]="!(editForm.controls.empEnrollmentNo?.dirty && editForm.controls.empEnrollmentNo?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.empEnrollmentNo?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
 
-    <div class="modal-header">
-        <h4 class="modal-title" id="myEmployeeLabel" jhiTranslate="lmsApp.employee.home.createOrEditLabel">Create or edit a Employee</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="clear()">&times;</button>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!employee.id">
-            <label for="id" jhiTranslate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                   [(ngModel)]="employee.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.empEnrollmentNo" for="field_empEnrollmentNo">Emp Enrollment No</label>
-            <input type="text" class="form-control" name="empEnrollmentNo" id="field_empEnrollmentNo"
-                [(ngModel)]="employee.empEnrollmentNo" required/>
-            <div [hidden]="!(editForm.controls.empEnrollmentNo?.dirty && editForm.controls.empEnrollmentNo?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.empEnrollmentNo?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.department" for="field_department">Department</label>
-            <select class="form-control" id="field_department" name="department" [(ngModel)]="employee.department" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="departmentOption.id === employee.department?.id ? employee.department : departmentOption" *ngFor="let departmentOption of departments; trackBy: trackDepartmentById">{{departmentOption.name}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.email" for="field_email">Email</label>
-            <input type="text" class="form-control" name="email" id="field_email"
-                [(ngModel)]="employee.email" required maxlength="255"/>
-            <div [hidden]="!(editForm.controls.email?.dirty && editForm.controls.email?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.email?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.email?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 255 }">
-                   This field cannot be longer than 255 characters.
-                </small>
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.firstName" for="field_firstName">First Name</label>
-            <input type="text" class="form-control" name="firstName" id="field_firstName"
-                [(ngModel)]="employee.firstName" required/>
-            <div [hidden]="!(editForm.controls.firstName?.dirty && editForm.controls.firstName?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.firstName?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.lastName" for="field_lastName">Last Name</label>
-            <input type="text" class="form-control" name="lastName" id="field_lastName"
-                [(ngModel)]="employee.lastName" required/>
-            <div [hidden]="!(editForm.controls.lastName?.dirty && editForm.controls.lastName?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.lastName?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.firstName" for="field_firstName">First
+						Name</label> <input type="text" class="form-control" name="firstName"
+						id="field_firstName" [(ngModel)]="employee.firstName" required />
+					<div
+						[hidden]="!(editForm.controls.firstName?.dirty && editForm.controls.firstName?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.firstName?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.middleName" for="field_middleName">Middle
+						Name</label> <input type="text" class="form-control" name="middleName"
+						id="field_middleName" [(ngModel)]="employee.middleName" required />
+					<div
+						[hidden]="!(editForm.controls.middleName?.dirty && editForm.controls.middleName?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.middleName?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.lastName" for="field_lastName">Last
+						Name</label> <input type="text" class="form-control" name="lastName"
+						id="field_lastName" [(ngModel)]="employee.lastName" required />
+					<div
+						[hidden]="!(editForm.controls.lastName?.dirty && editForm.controls.lastName?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.lastName?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.gender" for="field_gender">Gender</label>
+					<select class="form-control" name="gender"
+						[(ngModel)]="employee.gender" id="field_gender" required>
+						<option value="MALE">{{'lmsApp.GenderEnum.MALE' |
+							translate}}</option>
+						<option value="FEMALE">{{'lmsApp.GenderEnum.FEMALE' |
+							translate}}</option>
+					</select>
+					<div
+						[hidden]="!(editForm.controls.gender?.dirty && editForm.controls.gender?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.gender?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.department" for="field_department">Department</label>
+					<select class="form-control" id="field_department"
+						name="department" [(ngModel)]="employee.department">
+						<option [ngValue]="null"></option>
+						<option
+							[ngValue]="departmentOption.id === employee.department?.id ? employee.department : departmentOption"
+							*ngFor="let departmentOption of departments; trackBy: trackDepartmentById">{{departmentOption.name}}</option>
+					</select>
 
-        
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.teachingstaff" for="field_teachingstaff">Teachingstaff</label>
-            <input type="checkbox" class="form-control" name="teachingstaff" id="field_teachingstaff"
-                [(ngModel)]="employee.teachingstaff" />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.canHaveVacation" for="field_canHaveVacation">Can Have Vacation</label>
-            <input type="checkbox" class="form-control" name="canHaveVacation" id="field_canHaveVacation"
-                [(ngModel)]="employee.canHaveVacation" />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.post" for="field_post">Post</label>
-            <select class="form-control" name="post" [(ngModel)]="employee.post" id="field_post"  required>
-                <option value="LDC">{{'lmsApp.Post.LDC' | translate}}</option>
-                <option value="UDP">{{'lmsApp.Post.UDP' | translate}}</option>
-                <option value="SECTIONOFFICER">{{'lmsApp.Post.SECTIONOFFICER' | translate}}</option>
-                <option value="ASSISTANTREGISTER">{{'lmsApp.Post.ASSISTANTREGISTER' | translate}}</option>
-                <option value="DEPUTYREGISTER">{{'lmsApp.Post.DEPUTYREGISTER' | translate}}</option>
-                <option value="FACULTY">{{'lmsApp.Post.FACULTY' | translate}}</option>
-                <option value="HOD">{{'lmsApp.Post.HOD' | translate}}</option>
-                <option value="REGISTRAR">{{'lmsApp.Post.REGISTRAR' | translate}}</option>
-                <option value="VICECHANCELLOR">{{'lmsApp.Post.VICECHANCELLOR' | translate}}</option>
-                <option value="CHANCELLOR">{{'lmsApp.Post.CHANCELLOR' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.post?.dirty && editForm.controls.post?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.post?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.middleName" for="field_middleName">Middle Name</label>
-            <input type="text" class="form-control" name="middleName" id="field_middleName"
-                [(ngModel)]="employee.middleName" required/>
-            <div [hidden]="!(editForm.controls.middleName?.dirty && editForm.controls.middleName?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.middleName?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.fatherHusbandName" for="field_fatherHusbandName">Father Husband Name</label>
-            <input type="text" class="form-control" name="fatherHusbandName" id="field_fatherHusbandName"
-                [(ngModel)]="employee.fatherHusbandName" required/>
-            <div [hidden]="!(editForm.controls.fatherHusbandName?.dirty && editForm.controls.fatherHusbandName?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.fatherHusbandName?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.gender" for="field_gender">Gender</label>
-            <select class="form-control" name="gender" [(ngModel)]="employee.gender" id="field_gender"  required>
-                <option value="MALE">{{'lmsApp.GenderEnum.MALE' | translate}}</option>
-                <option value="FEMALE">{{'lmsApp.GenderEnum.FEMALE' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.gender?.dirty && editForm.controls.gender?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.gender?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.dob" for="field_dob">Dob</label>
-            <div class="input-group">
-                <input id="field_dob" type="text" class="form-control" name="dob" ngbDatepicker  #dobDp="ngbDatepicker" [(ngModel)]="employee.dob"
-                required/>
-                <span class="input-group-append">
-                    <button type="button" class="btn btn-secondary" (click)="dobDp.toggle()"><i class="fa fa-calendar"></i></button>
-                </span>
-            </div>
-            <div [hidden]="!(editForm.controls.dob?.dirty && editForm.controls.dob?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.dob?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.address" for="field_address">Address</label>
-            <input type="text" class="form-control" name="address" id="field_address"
-                [(ngModel)]="employee.address" required/>
-            <div [hidden]="!(editForm.controls.address?.dirty && editForm.controls.address?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.address?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.state" for="field_state">State</label>
-            <input type="text" class="form-control" name="state" id="field_state"
-                [(ngModel)]="employee.state" required/>
-            <div [hidden]="!(editForm.controls.state?.dirty && editForm.controls.state?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.state?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.city" for="field_city">City</label>
-            <input type="text" class="form-control" name="city" id="field_city"
-                [(ngModel)]="employee.city" required/>
-            <div [hidden]="!(editForm.controls.city?.dirty && editForm.controls.city?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.city?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.pincode" for="field_pincode">Pincode</label>
-            <input type="text" class="form-control" name="pincode" id="field_pincode"
-                [(ngModel)]="employee.pincode" required/>
-            <div [hidden]="!(editForm.controls.pincode?.dirty && editForm.controls.pincode?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.pincode?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.maritalStatus" for="field_maritalStatus">Marital Status</label>
-            <select class="form-control" name="maritalStatus" [(ngModel)]="employee.maritalStatus" id="field_maritalStatus"  required>
-                <option value="MARRIED">{{'lmsApp.MaritalStatus.MARRIED' | translate}}</option>
-                <option value="UNMMARIED">{{'lmsApp.MaritalStatus.UNMMARIED' | translate}}</option>
-                <option value="DIVORCED">{{'lmsApp.MaritalStatus.DIVORCED' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.maritalStatus?.dirty && editForm.controls.maritalStatus?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.maritalStatus?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.phoneNumber" for="field_phoneNumber">Phone Number</label>
-            <input type="text" class="form-control" name="phoneNumber" id="field_phoneNumber"
-                [(ngModel)]="employee.phoneNumber" required/>
-            <div [hidden]="!(editForm.controls.phoneNumber?.dirty && editForm.controls.phoneNumber?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.phoneNumber?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.mobileNumber" for="field_mobileNumber">Mobile Number</label>
-            <input type="text" class="form-control" name="mobileNumber" id="field_mobileNumber"
-                [(ngModel)]="employee.mobileNumber" required/>
-            <div [hidden]="!(editForm.controls.mobileNumber?.dirty && editForm.controls.mobileNumber?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.mobileNumber?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.bloodGroup" for="field_bloodGroup">Blood Group</label>
-            <select class="form-control" name="bloodGroup" [(ngModel)]="employee.bloodGroup" id="field_bloodGroup"  required>
-                <option value="APOSITIVE">{{'lmsApp.BloodGroup.APOSITIVE' | translate}}</option>
-                <option value="OPOSITIVE">{{'lmsApp.BloodGroup.OPOSITIVE' | translate}}</option>
-                <option value="BPOSITIVE">{{'lmsApp.BloodGroup.BPOSITIVE' | translate}}</option>
-                <option value="ABPOSITIVE">{{'lmsApp.BloodGroup.ABPOSITIVE' | translate}}</option>
-                <option value="ANEGATIVE">{{'lmsApp.BloodGroup.ANEGATIVE' | translate}}</option>
-                <option value="ONEGATIVE">{{'lmsApp.BloodGroup.ONEGATIVE' | translate}}</option>
-                <option value="BNEGATIVE">{{'lmsApp.BloodGroup.BNEGATIVE' | translate}}</option>
-                <option value="ABNEGATIVE">{{'lmsApp.BloodGroup.ABNEGATIVE' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.bloodGroup?.dirty && editForm.controls.bloodGroup?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.bloodGroup?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.physicalFit" for="field_physicalFit">Physical Fit</label>
-            <input type="checkbox" class="form-control" name="physicalFit" id="field_physicalFit"
-                [(ngModel)]="employee.physicalFit" />
-            <div [hidden]="!(editForm.controls.physicalFit?.dirty && editForm.controls.physicalFit?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.physicalFit?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.joinDate" for="field_joinDate">Join Date</label>
-            <div class="input-group">
-                <input id="field_joinDate" type="text" class="form-control" name="joinDate" ngbDatepicker  #joinDateDp="ngbDatepicker" [(ngModel)]="employee.joinDate"
-                required/>
-                <span class="input-group-append">
-                    <button type="button" class="btn btn-secondary" (click)="joinDateDp.toggle()"><i class="fa fa-calendar"></i></button>
-                </span>
-            </div>
-            <div [hidden]="!(editForm.controls.joinDate?.dirty && editForm.controls.joinDate?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.joinDate?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.retiredDate" for="field_retiredDate">Retired Date</label>
-            <div class="input-group">
-                <input id="field_retiredDate" type="text" class="form-control" name="retiredDate" ngbDatepicker  #retiredDateDp="ngbDatepicker" [(ngModel)]="employee.retiredDate"
-                required/>
-                <span class="input-group-append">
-                    <button type="button" class="btn btn-secondary" (click)="retiredDateDp.toggle()"><i class="fa fa-calendar"></i></button>
-                </span>
-            </div>
-            <div [hidden]="!(editForm.controls.retiredDate?.dirty && editForm.controls.retiredDate?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.retiredDate?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.qualification" for="field_qualification">Qualification</label>
-            <input type="text" class="form-control" name="qualification" id="field_qualification"
-                [(ngModel)]="employee.qualification" required/>
-            <div [hidden]="!(editForm.controls.qualification?.dirty && editForm.controls.qualification?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.qualification?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.payband" for="field_payband">Payband</label>
-            <input type="number" class="form-control" name="payband" id="field_payband"
-                [(ngModel)]="employee.payband" required/>
-            <div [hidden]="!(editForm.controls.payband?.dirty && editForm.controls.payband?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.payband?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.payband?.errors?.number" jhiTranslate="entity.validation.number">
-                    This field should be a number.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.granted" for="field_granted">Granted</label>
-            <input type="checkbox" class="form-control" name="granted" id="field_granted"
-                [(ngModel)]="employee.granted" />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.employee.otheNote" for="field_otheNote">Othe Note</label>
-            <input type="text" class="form-control" name="otheNote" id="field_otheNote"
-                [(ngModel)]="employee.otheNote" />
-        </div>
-        
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
-            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
-    </div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.post" for="field_post">Post</label>
+					<select class="form-control" name="post"
+						[(ngModel)]="employee.post" id="field_post" required>
+						<option value="LDC">{{'lmsApp.Post.LDC' | translate}}</option>
+						<option value="UDP">{{'lmsApp.Post.UDP' | translate}}</option>
+						<option value="SECTIONOFFICER">{{'lmsApp.Post.SECTIONOFFICER'
+							| translate}}</option>
+						<option value="ASSISTANTREGISTER">{{'lmsApp.Post.ASSISTANTREGISTER'
+							| translate}}</option>
+						<option value="DEPUTYREGISTER">{{'lmsApp.Post.DEPUTYREGISTER'
+							| translate}}</option>
+						<option value="FACULTY">{{'lmsApp.Post.FACULTY' |
+							translate}}</option>
+						<option value="HOD">{{'lmsApp.Post.HOD' | translate}}</option>
+						<option value="REGISTRAR">{{'lmsApp.Post.REGISTRAR' |
+							translate}}</option>
+						<option value="VICECHANCELLOR">{{'lmsApp.Post.VICECHANCELLOR'
+							| translate}}</option>
+						<option value="CHANCELLOR">{{'lmsApp.Post.CHANCELLOR' |
+							translate}}</option>
+					</select>
+					<div
+						[hidden]="!(editForm.controls.post?.dirty && editForm.controls.post?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.post?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<div>
+					<br> <label><h5>Employee Type:</h5></label><br>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.teachingstaff"
+						for="field_teachingstaff">Teachingstaff</label> <input
+						type="checkbox" class="form-control" name="teachingstaff"
+						id="field_teachingstaff" [(ngModel)]="employee.teachingstaff" />
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.canHaveVacation"
+						for="field_canHaveVacation">Can Have Vacation</label> <input
+						type="checkbox" class="form-control" name="canHaveVacation"
+						id="field_canHaveVacation" [(ngModel)]="employee.canHaveVacation" />
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.granted" for="field_granted">Granted</label>
+					<input type="checkbox" class="form-control" name="granted"
+						id="field_granted" [(ngModel)]="employee.granted" />
+				</div>
+			</div>
+		</div>
+		<h3>Address Information</h3>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.address" for="field_address">Address</label>
+					<input type="text" class="form-control" name="address"
+						id="field_address" [(ngModel)]="employee.address" required />
+					<div
+						[hidden]="!(editForm.controls.address?.dirty && editForm.controls.address?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.address?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.city" for="field_city">City</label>
+					<input type="text" class="form-control" name="city" id="field_city"
+						[(ngModel)]="employee.city" required />
+					<div
+						[hidden]="!(editForm.controls.city?.dirty && editForm.controls.city?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.city?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.state" for="field_state">State</label>
+					<input type="text" class="form-control" name="state"
+						id="field_state" [(ngModel)]="employee.state" required />
+					<div
+						[hidden]="!(editForm.controls.state?.dirty && editForm.controls.state?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.state?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.pincode" for="field_pincode">Pincode</label>
+					<input type="text" class="form-control" name="pincode"
+						id="field_pincode" [(ngModel)]="employee.pincode" required />
+					<div
+						[hidden]="!(editForm.controls.pincode?.dirty && editForm.controls.pincode?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.pincode?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<h3>Personal Information</h3>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.email" for="field_email">Email</label>
+					<input type="text" class="form-control" name="email"
+						id="field_email" [(ngModel)]="employee.email" required
+						maxlength="255" />
+					<div
+						[hidden]="!(editForm.controls.email?.dirty && editForm.controls.email?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.email?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small> <small class="form-text text-danger"
+							[hidden]="!editForm.controls.email?.errors?.maxlength"
+							jhiTranslate="entity.validation.maxlength"
+							translateValues="{ max: 255 }"> This field cannot be
+							longer than 255 characters. </small>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.mobileNumber"
+						for="field_mobileNumber">Mobile Number</label> <input type="text"
+						class="form-control" name="mobileNumber" id="field_mobileNumber"
+						[(ngModel)]="employee.mobileNumber" required />
+					<div
+						[hidden]="!(editForm.controls.mobileNumber?.dirty && editForm.controls.mobileNumber?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.mobileNumber?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.phoneNumber" for="field_phoneNumber">Phone
+						Number</label> <input type="text" class="form-control" name="phoneNumber"
+						id="field_phoneNumber" [(ngModel)]="employee.phoneNumber" required />
+					<div
+						[hidden]="!(editForm.controls.phoneNumber?.dirty && editForm.controls.phoneNumber?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.phoneNumber?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.dob" for="field_dob">Dob</label>
+					<div class="input-group">
+						<input id="field_dob" type="text" class="form-control" name="dob"
+							ngbDatepicker  #dobDp="ngbDatepicker" [(ngModel)]="employee.dob"
+							required /> <span class="input-group-append">
+							<button type="button" class="btn btn-secondary"
+								(click)="dobDp.toggle()">
+								<i class="fa fa-calendar"></i>
+							</button>
+						</span>
+					</div>
+					<div
+						[hidden]="!(editForm.controls.dob?.dirty && editForm.controls.dob?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.dob?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.joinDate" for="field_joinDate">Join
+						Date</label>
+					<div class="input-group">
+						<input id="field_joinDate" type="text" class="form-control"
+							name="joinDate" ngbDatepicker  #joinDateDp="ngbDatepicker"
+							[(ngModel)]="employee.joinDate" required /> <span
+							class="input-group-append">
+							<button type="button" class="btn btn-secondary"
+								(click)="joinDateDp.toggle()">
+								<i class="fa fa-calendar"></i>
+							</button>
+						</span>
+					</div>
+					<div
+						[hidden]="!(editForm.controls.joinDate?.dirty && editForm.controls.joinDate?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.joinDate?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.retiredDate" for="field_retiredDate">Retired
+						Date</label>
+					<div class="input-group">
+						<input id="field_retiredDate" type="text" class="form-control"
+							name="retiredDate" ngbDatepicker  #retiredDateDp="ngbDatepicker"
+							[(ngModel)]="employee.retiredDate" required /> <span
+							class="input-group-append">
+							<button type="button" class="btn btn-secondary"
+								(click)="retiredDateDp.toggle()">
+								<i class="fa fa-calendar"></i>
+							</button>
+						</span>
+					</div>
+					<div
+						[hidden]="!(editForm.controls.retiredDate?.dirty && editForm.controls.retiredDate?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.retiredDate?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.fatherHusbandName"
+						for="field_fatherHusbandName">Father Husband Name</label> <input
+						type="text" class="form-control" name="fatherHusbandName"
+						id="field_fatherHusbandName"
+						[(ngModel)]="employee.fatherHusbandName" required />
+					<div
+						[hidden]="!(editForm.controls.fatherHusbandName?.dirty && editForm.controls.fatherHusbandName?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.fatherHusbandName?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.qualification"
+						for="field_qualification">Qualification</label> <input type="text"
+						class="form-control" name="qualification" id="field_qualification"
+						[(ngModel)]="employee.qualification" required />
+					<div
+						[hidden]="!(editForm.controls.qualification?.dirty && editForm.controls.qualification?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.qualification?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.bloodGroup" for="field_bloodGroup">Blood
+						Group</label> <select class="form-control" name="bloodGroup"
+						[(ngModel)]="employee.bloodGroup" id="field_bloodGroup" required>
+						<option value="APOSITIVE">{{'lmsApp.BloodGroup.APOSITIVE'
+							| translate}}</option>
+						<option value="OPOSITIVE">{{'lmsApp.BloodGroup.OPOSITIVE'
+							| translate}}</option>
+						<option value="BPOSITIVE">{{'lmsApp.BloodGroup.BPOSITIVE'
+							| translate}}</option>
+						<option value="ABPOSITIVE">{{'lmsApp.BloodGroup.ABPOSITIVE'
+							| translate}}</option>
+						<option value="ANEGATIVE">{{'lmsApp.BloodGroup.ANEGATIVE'
+							| translate}}</option>
+						<option value="ONEGATIVE">{{'lmsApp.BloodGroup.ONEGATIVE'
+							| translate}}</option>
+						<option value="BNEGATIVE">{{'lmsApp.BloodGroup.BNEGATIVE'
+							| translate}}</option>
+						<option value="ABNEGATIVE">{{'lmsApp.BloodGroup.ABNEGATIVE'
+							| translate}}</option>
+					</select>
+					<div
+						[hidden]="!(editForm.controls.bloodGroup?.dirty && editForm.controls.bloodGroup?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.bloodGroup?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.maritalStatus"
+						for="field_maritalStatus">Marital Status</label> <select
+						class="form-control" name="maritalStatus"
+						[(ngModel)]="employee.maritalStatus" id="field_maritalStatus"
+						required>
+						<option value="MARRIED">{{'lmsApp.MaritalStatus.MARRIED'
+							| translate}}</option>
+						<option value="UNMMARIED">{{'lmsApp.MaritalStatus.UNMMARIED'
+							| translate}}</option>
+						<option value="DIVORCED">{{'lmsApp.MaritalStatus.DIVORCED'
+							| translate}}</option>
+					</select>
+					<div
+						[hidden]="!(editForm.controls.maritalStatus?.dirty && editForm.controls.maritalStatus?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.maritalStatus?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<br>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.physicalFit" for="field_physicalFit">Physical
+						Fit</label> <input type="checkbox" class="form-control" name="physicalFit"
+						id="field_physicalFit" [(ngModel)]="employee.physicalFit" />
+					<div
+						[hidden]="!(editForm.controls.physicalFit?.dirty && editForm.controls.physicalFit?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.physicalFit?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.payband" for="field_payband">Payband</label>
+					<input type="number" class="form-control" name="payband"
+						id="field_payband" [(ngModel)]="employee.payband" required />
+					<div
+						[hidden]="!(editForm.controls.payband?.dirty && editForm.controls.payband?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.payband?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small> <small class="form-text text-danger"
+							[hidden]="!editForm.controls.payband?.errors?.number"
+							jhiTranslate="entity.validation.number"> This field
+							should be a number. </small>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.employee.otheNote" for="field_otheNote">Othe
+						Note</label> <input type="text" class="form-control" name="otheNote"
+						id="field_otheNote" [(ngModel)]="employee.otheNote" />
+				</div>
+			</div>
+		</div>
+	<div class="row">	
+		<div class="modal-footer">
+		<div class="col-md-6">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal"
+				(click)="clear()">
+				<span class="fa fa-ban"></span>&nbsp;<span
+					jhiTranslate="entity.action.cancel">Cancel</span>
+			</button>
+			</div>
+			<div class="col-md-6">
+			<button type="submit" [disabled]="editForm.form.invalid || isSaving"
+				class="btn btn-primary">
+				<span class="fa fa-save"></span>&nbsp;<span
+					jhiTranslate="entity.action.save">Save</span>
+			</button>
+			</div>
+		</div>
+		</div>
+	</div>
 </form>

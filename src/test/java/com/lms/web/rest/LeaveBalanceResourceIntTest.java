@@ -1,11 +1,19 @@
 package com.lms.web.rest;
 
-import com.lms.LmsApp;
+import static com.lms.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.lms.domain.LeaveBalance;
-import com.lms.domain.Employee;
-import com.lms.repository.LeaveBalanceRepository;
-import com.lms.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,14 +29,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static com.lms.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.lms.LmsApp;
+import com.lms.domain.Employee;
+import com.lms.domain.LeaveBalance;
+import com.lms.repository.EmployeeRepository;
+import com.lms.repository.LeaveBalanceRepository;
+import com.lms.web.rest.errors.ExceptionTranslator;
 
 /**
  * Test class for the LeaveBalanceResource REST controller.
@@ -39,11 +45,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = LmsApp.class)
 public class LeaveBalanceResourceIntTest {
 
-    private static final Integer DEFAULT_NO_OF_LEAVE = 1;
-    private static final Integer UPDATED_NO_OF_LEAVE = 2;
+    private static final Double DEFAULT_NO_OF_LEAVE = 1.0;
+    private static final Double UPDATED_NO_OF_LEAVE = 2.0;
 
     @Autowired
     private LeaveBalanceRepository leaveBalanceRepository;
+    
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -64,7 +73,7 @@ public class LeaveBalanceResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final LeaveBalanceResource leaveBalanceResource = new LeaveBalanceResource(leaveBalanceRepository);
+        final LeaveBalanceResource leaveBalanceResource = new LeaveBalanceResource(leaveBalanceRepository,employeeRepository);
         this.restLeaveBalanceMockMvc = MockMvcBuilders.standaloneSetup(leaveBalanceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

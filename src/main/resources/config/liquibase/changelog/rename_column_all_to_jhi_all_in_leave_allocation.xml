@@ -5,7 +5,4 @@
             <column name="jhi_all" type="bit"/>
         </addColumn>
     </changeSet>
-    <changeSet author="Bhavesh Sarvaiya (generated)" id="1519024029073-2">
-        <dropColumn columnName="all" tableName="leave_allocation"/>
-    </changeSet>
 </databaseChangeLog>

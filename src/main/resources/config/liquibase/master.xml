@@ -18,8 +18,8 @@
     <include file="config/liquibase/changelog/20180212142933_added_entity_constraints_Employee.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180214143555_added_entity_constraints_LeaveBalance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180214143557_added_entity_constraints_LeaveAllocation.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/addes_field_all_to_leave_allocation.xml" relativeToChangelogFile="false"/>
-   
+<!--     <include file="config/liquibase/changelog/addes_field_all_to_leave_allocation.xml" relativeToChangelogFile="false"/>
+ -->   
    
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

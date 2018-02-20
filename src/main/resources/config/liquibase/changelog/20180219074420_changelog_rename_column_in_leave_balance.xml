@@ -7,7 +7,4 @@
             </column>
         </addColumn>
     </changeSet>
-    <changeSet author="Bhavesh Sarvaiya (generated)" id="1519026297602-2">
-        <dropColumn columnName="no_leave" tableName="leave_balance"/>
-    </changeSet>
 </databaseChangeLog>

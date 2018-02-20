@@ -28,6 +28,10 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+       /* if (!this.principal.isAuthenticated() ) {
+        console.log(this.principal.isAuthenticated());
+        this.login();
+        }*/
     }
 
     registerAuthenticationSuccess() {
