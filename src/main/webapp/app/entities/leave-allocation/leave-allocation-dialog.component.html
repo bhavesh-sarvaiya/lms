@@ -15,54 +15,60 @@
 				type="text" class="form-control" id="id" name="id"
 				[(ngModel)]="leaveAllocation.id" readonly />
 		</div>
-		<div class="form-group" [hidden]="leaveAllocation.id">
-			<div class="row">
-				<div class="col-md-1" >
-					<label class="form-control-label"
-						jhiTranslate="lmsApp.leaveAllocation.all" for="field_all">All</label>
-				</div>
-				<div class="col-md-1">
-					<input type="checkbox" ng-model="checked"
-						(click)="initLoadAllEmp($event)" class="form-control" name="all"
-						id="field_all" [(ngModel)]="leaveAllocation.all" />
-				</div>
-
-				<div class="col-md-2">
-					<label class="form-control-label"
-						jhiTranslate="lmsApp.leaveAllocation.teachingstaff"
-						for="field_teachingstaff">Teachingstaff</label>
-				</div>
-				<div class="col-md-1">
-					<input type="checkbox" (click)="loadEmployee($event)"
-						class="form-control" name="teachingstaff" id="field_teachingstaff"
-						[(ngModel)]="leaveAllocation.teachingstaff" />
-				</div>
-
-				<div class="col-md-2">
-					<label class="form-control-label"
-						jhiTranslate="lmsApp.leaveAllocation.canHaveVacation"
-						for="field_canHaveVacation">Can Have Vacation</label>
-				</div>
-				<div class="col-md-1">
-					<input type="checkbox" (click)="loadEmployee($event)"
-						class="form-control" name="canHaveVacation"
-						id="field_canHaveVacation"
-						[(ngModel)]="leaveAllocation.canHaveVacation" />
-				</div>
-
-				<div class="col-md-2">
-					<label class="form-control-label"
-						jhiTranslate="lmsApp.leaveAllocation.granted" for="field_granted">Granted</label>
-				</div>
-				<div class="col-md-1">
-					<input type="checkbox" (click)="loadEmployee($event)"
-						class="form-control" name="granted" id="field_granted"
-						[(ngModel)]="leaveAllocation.granted" />
-				</div>
+		<div class="card" [hidden]="leaveAllocation.id">
+			<div class="card-header">Employee Type</div>
+			<div class="card-body">
+					<div class="form-group" >
+							<div class="row">
+								<div class="col-md-1" >
+									<label class="form-control-label"
+										jhiTranslate="lmsApp.leaveAllocation.all" for="field_all">All</label>
+								</div>
+								<div class="col-md-1">
+									<input type="checkbox" ng-model="checked"
+										(click)="initLoadAllEmp($event)" class="form-control" name="all"
+										id="field_all" [(ngModel)]="leaveAllocation.all" />
+								</div>
+				
+								<div class="col-md-2">
+									<label class="form-control-label"
+										jhiTranslate="lmsApp.leaveAllocation.teachingstaff"
+										for="field_teachingstaff">Teachingstaff</label>
+								</div>
+								<div class="col-md-1">
+									<input type="checkbox" (click)="loadEmployee($event)"
+										class="form-control" name="teachingstaff" id="field_teachingstaff"
+										[(ngModel)]="leaveAllocation.teachingstaff" />
+								</div>
+				
+								<div class="col-md-2">
+									<label class="form-control-label"
+										jhiTranslate="lmsApp.leaveAllocation.canHaveVacation"
+										for="field_canHaveVacation">Can Have Vacation</label>
+								</div>
+								<div class="col-md-1">
+									<input type="checkbox" (click)="loadEmployee($event)"
+										class="form-control" name="canHaveVacation"
+										id="field_canHaveVacation"
+										[(ngModel)]="leaveAllocation.canHaveVacation" />
+								</div>
+				
+								<div class="col-md-2">
+									<label class="form-control-label"
+										jhiTranslate="lmsApp.leaveAllocation.granted" for="field_granted">Granted</label>
+								</div>
+								<div class="col-md-1">
+									<input type="checkbox" (click)="loadEmployee($event)"
+										class="form-control" name="granted" id="field_granted"
+										[(ngModel)]="leaveAllocation.granted" />
+								</div>
+							</div>
+				
+				
+						</div>
 			</div>
-
-
 		</div>
+		
 		<div class="form-group">
 			<label class="form-control-label"
 				jhiTranslate="lmsApp.leaveAllocation.noOfLeave"

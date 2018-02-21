@@ -16,7 +16,7 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <!-- <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th> -->
              <th jhiSortBy="all"><span jhiTranslate="lmsApp.leaveAllocation.all">All</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="teachingstaff"><span jhiTranslate="lmsApp.leaveAllocation.teachingstaff">Teachingstaff</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="canHaveVacation"><span jhiTranslate="lmsApp.leaveAllocation.canHaveVacation">Can Have Vacation</span> <span class="fa fa-sort"></span></th>
@@ -29,7 +29,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let leaveAllocation of leaveAllocations ;trackBy: trackId">
-                <td><a [routerLink]="['../leave-allocation', leaveAllocation.id ]">{{leaveAllocation.id}}</a></td>
+                <!-- <td><a [routerLink]="['../leave-allocation', leaveAllocation.id ]">{{leaveAllocation.id}}</a></td> -->
                  <td>{{leaveAllocation.all}}</td>
                 <td>{{leaveAllocation.teachingstaff}}</td>
                 <td>{{leaveAllocation.canHaveVacation}}</td>
