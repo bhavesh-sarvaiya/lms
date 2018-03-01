@@ -185,6 +185,14 @@ public class EmployeeResource {
 		return employeeRepository.findAllByTeachingstaffAndCanHaveVacationAndGranted(teachingstaff, canHaveVacation, granted);
 		
 	}
+
+	@GetMapping("/employee/email/{email}")
+	@Timed
+	public ResponseEntity<Employee> getAllEmployeeByEmail(@PathVariable String email) {
+		log.debug("REST request to get  Employees by Email");
+		Employee employee = employeeRepository.findOneByEmpEnrollmentNo(email);
+		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(employee));
+	}
 	/**
 	 * DELETE /employees/:id : delete the "id" employee.
 	 *

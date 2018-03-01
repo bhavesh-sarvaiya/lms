@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.lms.domain.Department;
 import com.lms.domain.Employee;
 
 
@@ -20,6 +21,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	Employee findOneByEmail(String email);
 	List<Employee> findAllByTeachingstaffAndCanHaveVacationAndGranted(boolean teachingstaff,boolean canHaveVacation,boolean granted);
 	Employee findOneByEmpEnrollmentNo(String enrollmentNo);
+	//List<Employee> findAllByDepartment
+	List<Employee> findAllByDepartment(Department department);
 
 
 

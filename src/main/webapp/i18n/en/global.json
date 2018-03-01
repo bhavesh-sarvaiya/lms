@@ -12,6 +12,7 @@
                 "leaveBalance": "Leave Balance",
                 "leaveType": "Leave Type",
                 "leaveAllocation": "Leave Allocation",
+                "leaveApplication": "Leave Application",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -133,7 +134,8 @@
         "userexists": "Login name already used!",
         "emailexists": "Email is already in use!",
         "idexists": "A new {{ entityName }} cannot already have an ID",
-        "emptyEmp": "No Employee are selected!..."
+        "emptyEmp": "No Employee are selected!...",
+        "invalid.date": "Please Input valid date"
     },
     "footer": "This is your footer"
 }

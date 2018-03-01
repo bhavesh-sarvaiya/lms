@@ -1,0 +1,31 @@
+
+{
+    "lmsApp": {
+        "leaveApplication" : {
+            "home": {
+                "title": "Leave Applications",
+                "createLabel": "Create a new Leave Application",
+                "createOrEditLabel": "Create or edit a Leave Application"
+            },
+            "created": "A new Leave Application is created with identifier {{ param }}",
+            "updated": "A Leave Application is updated with identifier {{ param }}",
+            "deleted": "A Leave Application is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Leave Application {{ id }}?"
+            },
+            "detail": {
+                "title": "Leave Application"
+            },
+            "reason": "Reason",
+            "fromDate": "From Date",
+            "toDate": "To Date",
+            "noofday": "Noofday",
+            "status": "Status",
+            "flowStatus": "Flow Status",
+            "comment": "Comment",
+            "employee": "Employee",
+            "approvedBy": "Approved By",
+            "leaveType": "Leave Type"
+        }
+    }
+}

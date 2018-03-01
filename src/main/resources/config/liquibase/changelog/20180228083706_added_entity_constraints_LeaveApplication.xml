@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity LeaveApplication.
+    -->
+    <changeSet id="20180228083706-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="employee_id"
+                                 baseTableName="leave_application"
+                                 constraintName="fk_leave_application_employee_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="employee"/>
+
+        <addForeignKeyConstraint baseColumnNames="approved_by_id"
+                                 baseTableName="leave_application"
+                                 constraintName="fk_leave_application_approved_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="employee"/>
+
+        <addForeignKeyConstraint baseColumnNames="leave_type_id"
+                                 baseTableName="leave_application"
+                                 constraintName="fk_leave_application_leave_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="leave_type"/>
+
+    </changeSet>
+</databaseChangeLog>

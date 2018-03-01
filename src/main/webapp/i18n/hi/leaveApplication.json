@@ -1,0 +1,31 @@
+
+{
+    "lmsApp": {
+        "leaveApplication" : {
+            "home": {
+                "title": "LeaveApplications",
+                "createLabel": "नया Leave Application बनाएँ",
+                "createOrEditLabel": "Leave Application बनाएँ या संपादित करें"
+            },
+            "created": "एक नया Leave Application [identifier: {{ param }}] तैयार है",
+            "updated": "एक Leave Application [identifier: {{ param }}] का अद्यतन हुआ है",
+            "deleted": "Leave Application [identifier: {{ param }}] हटा दिया है",
+            "delete": {
+                "question": "Leave Application [id: {{ id }}] हटाने की पुष्टि करें"
+            },
+            "detail": {
+                "title": "Leave Application"
+            },
+            "reason": "Reason",
+            "fromDate": "From Date",
+            "toDate": "To Date",
+            "noofday": "Noofday",
+            "status": "Status",
+            "flowStatus": "Flow Status",
+            "comment": "Comment",
+            "employee": "Employee",
+            "approvedBy": "Approved By",
+            "leaveType": "Leave Type"
+        }
+    }
+}

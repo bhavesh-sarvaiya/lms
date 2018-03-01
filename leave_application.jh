@@ -1,0 +1,18 @@
+
+    
+entity LeaveApplication{
+    reason String required
+    fromDate LocalDate required
+    toDate LocalDate required
+    no_of_day Double
+    status String
+    flowStatus String
+    comment String maxlength(500)
+}
+
+
+
+
+
+
+

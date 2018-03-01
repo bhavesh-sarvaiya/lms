@@ -11,7 +11,7 @@ import { ITEMS_PER_PAGE, Principal } from '../../shared';
 @Component({
     selector: 'jhi-employee',
     templateUrl: './employee.component.html',
-    styles: ['td { font-size: 12px; }']
+    styles: []
 })
 export class EmployeeComponent implements OnInit, OnDestroy {
 

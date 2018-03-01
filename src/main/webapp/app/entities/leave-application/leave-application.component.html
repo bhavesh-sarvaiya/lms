@@ -1,0 +1,102 @@
+
+<div>
+    <h2>
+        <span jhiTranslate="lmsApp.leaveApplication.home.title">Leave Applications</span>
+        <button class="btn btn-primary float-right jh-create-entity create-leave-application" [routerLink]="['/', { outlets: { popup: ['leave-application-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="lmsApp.leaveApplication.home.createLabel">
+            Create new Leave Application
+            </span>
+        </button>
+    </h2>
+
+     <ul class="nav nav-tabs">
+     
+        <li class="nav-item">
+          <a class="nav-link " (click)="ngOnInit('PENDDING')">Pandding</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="ngOnInit('APPROVED')">Approved</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="ngOnInit('   ')">Applied</a>
+        </li>
+      </ul>  
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="leaveApplications">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.reason">Reason</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.fromDate">From Date</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.toDate">To Date</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.noofday">Noofday</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.status">Status</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.flowStatus">Flow Status</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.comment">Comment</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.approvedBy">Approved By</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.leaveType">Leave Type</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let leaveApplication of leaveApplications ;trackBy: trackId">
+                <td><a [routerLink]="['../leave-application', leaveApplication.id ]">{{leaveApplication.id}}</a></td>
+                <td>{{leaveApplication.reason}}</td>
+                <td>{{leaveApplication.fromDate | date:'mediumDate'}}</td>
+                <td>{{leaveApplication.toDate | date:'mediumDate'}}</td>
+                <td>{{leaveApplication.noofday}}</td>
+                <td>{{leaveApplication.status}}</td>
+                <td>{{leaveApplication.flowStatus}}</td>
+                <td>{{leaveApplication.comment}}</td>
+                <td>
+                    <div *ngIf="leaveApplication.employee">
+                        <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee?.empEnrollmentNo}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="leaveApplication.approvedBy">
+                        <a [routerLink]="['../employee', leaveApplication.approvedBy?.id ]" >{{leaveApplication.approvedBy?.post}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="leaveApplication.leaveType">
+                        <a [routerLink]="['../leave-type', leaveApplication.leaveType?.id ]" >{{leaveApplication.leaveType?.code}}</a>
+                    </div>  
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../leave-application', leaveApplication.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

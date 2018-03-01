@@ -1,0 +1,68 @@
+
+<div *ngIf="leaveApplication">
+    <h2><span jhiTranslate="lmsApp.leaveApplication.detail.title">Leave Application</span> {{leaveApplication.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="lmsApp.leaveApplication.reason">Reason</span></dt>
+        <dd>
+            <span>{{leaveApplication.reason}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplication.fromDate">From Date</span></dt>
+        <dd>
+            <span>{{leaveApplication.fromDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplication.toDate">To Date</span></dt>
+        <dd>
+            <span>{{leaveApplication.toDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplication.noofday">Noofday</span></dt>
+        <dd>
+            <span>{{leaveApplication.noofday}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplication.status">Status</span></dt>
+        <dd>
+            <span>{{leaveApplication.status}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplication.flowStatus">Flow Status</span></dt>
+        <dd>
+            <span>{{leaveApplication.flowStatus}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplication.comment">Comment</span></dt>
+        <dd>
+            <span>{{leaveApplication.comment}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></dt>
+        <dd>
+            <div *ngIf="leaveApplication.employee">
+                <a [routerLink]="['/employee', leaveApplication.employee?.id]">{{leaveApplication.employee?.empEnrollmentNo}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplication.approvedBy">Approved By</span></dt>
+        <dd>
+            <div *ngIf="leaveApplication.approvedBy">
+                <a [routerLink]="['/employee', leaveApplication.approvedBy?.id]">{{leaveApplication.approvedBy?.post}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplication.leaveType">Leave Type</span></dt>
+        <dd>
+            <div *ngIf="leaveApplication.leaveType">
+                <a [routerLink]="['/leave-type', leaveApplication.leaveType?.id]">{{leaveApplication.leaveType?.code}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

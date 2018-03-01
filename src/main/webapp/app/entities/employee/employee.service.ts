@@ -34,6 +34,11 @@ export class EmployeeService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+    findByEmail(email: string): Observable<EntityResponseType> {
+        return this.http.get<Employee>(`api/employee/email/${email}`, { observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
     query(req?: any): Observable<HttpResponse<Employee[]>> {
         const options = createRequestOption(req);
         return this.http.get<Employee[]>(this.resourceUrl, { params: options, observe: 'response' })
