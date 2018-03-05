@@ -23,7 +23,7 @@
             "status": "Status",
             "flowStatus": "Flow Status",
             "comment": "Comment",
-            "employee": "Employee",
+            "employee": "Name",
             "approvedBy": "Approved By",
             "leaveType": "Leave Type"
         }

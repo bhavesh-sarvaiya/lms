@@ -19,7 +19,7 @@
           <a class="nav-link" (click)="ngOnInit('APPROVED')">Approved</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="ngOnInit('   ')">Applied</a>
+          <a class="nav-link" (click)="ngOnInit('APPLIED')">Applied</a>
         </li>
       </ul>  
     <jhi-alert></jhi-alert>
@@ -36,8 +36,10 @@
             <th><span jhiTranslate="lmsApp.leaveApplication.toDate">To Date</span></th>
             <th><span jhiTranslate="lmsApp.leaveApplication.noofday">Noofday</span></th>
             <th><span jhiTranslate="lmsApp.leaveApplication.status">Status</span></th>
-            <th><span jhiTranslate="lmsApp.leaveApplication.flowStatus">Flow Status</span></th>
-            <th><span jhiTranslate="lmsApp.leaveApplication.comment">Comment</span></th>
+            <!-- <th><span jhiTranslate="lmsApp.leaveApplication.status">Status</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.status">Status</span></th> -->
+            <!-- <th><span jhiTranslate="lmsApp.leaveApplication.flowStatus">Flow Status</span></th>
+            <th><span jhiTranslate="lmsApp.leaveApplication.comment">Comment</span></th> -->
             <th><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></th>
             <th><span jhiTranslate="lmsApp.leaveApplication.approvedBy">Approved By</span></th>
             <th><span jhiTranslate="lmsApp.leaveApplication.leaveType">Leave Type</span></th>
@@ -52,8 +54,8 @@
                 <td>{{leaveApplication.toDate | date:'mediumDate'}}</td>
                 <td>{{leaveApplication.noofday}}</td>
                 <td>{{leaveApplication.status}}</td>
-                <td>{{leaveApplication.flowStatus}}</td>
-                <td>{{leaveApplication.comment}}</td>
+                <!-- <td>{{leaveApplication.flowStatus}}</td>
+                <td>{{leaveApplication.comment}}</td> -->
                 <td>
                     <div *ngIf="leaveApplication.employee">
                         <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee?.empEnrollmentNo}}</a>

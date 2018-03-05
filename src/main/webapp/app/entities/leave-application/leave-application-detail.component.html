@@ -1,9 +1,28 @@
 
-<div *ngIf="leaveApplication">
+<div *ngIf="leaveApplication" class="container">
     <h2><span jhiTranslate="lmsApp.leaveApplication.detail.title">Leave Application</span> {{leaveApplication.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                        <div class="col-md-6">
+                            <dt><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></dt>
+                        </div>
+                        <div class="col-md-6 col-md-offset-2">
+                            <dd>
+                                <div *ngIf="leaveApplication.employee">
+                                    <a [routerLink]="['/employee', leaveApplication.employee?.id]">{{leaveApplication.employee?.firstName}} {{leaveApplication.employee?.lastName}}</a>
+                                </div>
+                            </dd>            
+                         </div>
+                </div>
+            </div>
+            <div class="col-md-6"></div>
+        </div>
+            
+        
         <dt><span jhiTranslate="lmsApp.leaveApplication.reason">Reason</span></dt>
         <dd>
             <span>{{leaveApplication.reason}}</span>
@@ -32,12 +51,7 @@
         <dd>
             <span>{{leaveApplication.comment}}</span>
         </dd>
-        <dt><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></dt>
-        <dd>
-            <div *ngIf="leaveApplication.employee">
-                <a [routerLink]="['/employee', leaveApplication.employee?.id]">{{leaveApplication.employee?.empEnrollmentNo}}</a>
-            </div>
-        </dd>
+        
         <dt><span jhiTranslate="lmsApp.leaveApplication.approvedBy">Approved By</span></dt>
         <dd>
             <div *ngIf="leaveApplication.approvedBy">

@@ -34,52 +34,21 @@ leaveApplications: LeaveApplication[];
                 this.employee = employeeResponse.body;
             });
     }
-    loadAll(a?) {
+    loadAll(status?) {
     console.log('loadAll');
-        this.leaveApplicationService.query().subscribe(
+        this.leaveApplicationService.query(status).subscribe(
             (res: HttpResponse<LeaveApplication[]>) => {
                 this.leaveApplications = res.body;
-                // console.log('application bfore filter' + this.leaveApplications);
-                // console.log('a ' + a);
-                    if ( a === 'APPROVED') {
-                        console.log('inside a ' + a);
-                        this.leaveApplications = _.filter(this.leaveApplications, {
-                            'status': a,
-                            'employee': {
-                                'email': this.currentAccount.email
-                            }
-                        });
-                    } else if ( a === 'PENDDING') {
-                        // console.log('employee post ' + this.employee.post);
-                         this.post = '' + this.employee.post;
-                        if (this.post === 'HOD') {
-                            console.log('inside PENDDING');
-                        this.leaveApplications = _.filter(this.leaveApplications, {
-                            'status': 'APPLIED'
-                        });
-                    } else if (this.post === 'FACULTY') {
-                        console.log('inside FACULTY');
-                        this.leaveApplications = undefined;
-                    }
-                    } else {
-                        console.log('inside a ' + a);
-                        this.leaveApplications = _.filter(this.leaveApplications, {
-                            'status': 'APPLIED',
-                            'employee': {
-                                'email': this.currentAccount.email
-                            }
-                        });
-                    }
-            console.log('application' + JSON.stringify( this.leaveApplications));
+            console.log('application' + this.leaveApplications);
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
-    ngOnInit(a?) {
-        this.loadAll(a);
+    ngOnInit(status?) {
+        this.loadAll(status);
         this.principal.identity().then((account) => {
             this.currentAccount = account;
-            this.loadEmployee(this.currentAccount.login);
+            // this.loadEmployee(this.currentAccount.login);
         });
         this.registerChangeInLeaveApplications();
     }
@@ -92,6 +61,7 @@ leaveApplications: LeaveApplication[];
         return item.id;
     }
     registerChangeInLeaveApplications() {
+        console.log('inside register');
         this.eventSubscriber = this.eventManager.subscribe('leaveApplicationListModification', (response) => this.loadAll());
     }
 

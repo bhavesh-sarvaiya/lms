@@ -34,8 +34,8 @@ export class LeaveApplicationService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    query(req?: any): Observable<HttpResponse<LeaveApplication[]>> {
-        const options = createRequestOption(req);
+    query(status: string): Observable<HttpResponse<LeaveApplication[]>> {
+        const options = createRequestOption({status});
         return this.http.get<LeaveApplication[]>(this.resourceUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<LeaveApplication[]>) => this.convertArrayResponse(res));
     }
