@@ -146,7 +146,7 @@ public class LeaveApplicationResource {
             }
             else if(employee.getPost().toString().equals("REGISTRAR"))
             {
-                for (Employee employee2 : employeeRepository.findAllByPostOrPost(employee.getPost(),Post.HOD)) 
+                for (Employee employee2 : employeeRepository.findAllByPostOrPostOrPost(employee.getPost(),Post.HOD,Post.DEPUTYREGISTER)) 
                 {
                     LeaveApplication l=leaveApplicationRepository.findOneByEmployee(employee2);
                     if(l!=null)
