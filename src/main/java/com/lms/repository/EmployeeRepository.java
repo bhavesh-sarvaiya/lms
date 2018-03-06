@@ -25,6 +25,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	//List<Employee> findAllByDepartment
 	List<Employee> findAllByDepartment(Department department);
 	List<Employee> findAllByPostOrPostOrPost(Post post,Post hod,Post deputyRegistrar);
+	List<Employee> findAllByPost(Post viceChanceller);
+	List<Employee> findAllByPostOrPost(Post post,Post viceChanceller);
 
 
 

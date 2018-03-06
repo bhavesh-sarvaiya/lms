@@ -144,28 +144,41 @@ public class LeaveApplicationResource {
                      }	
                 }
             }
-            else if(employee.getPost().toString().equals("REGISTRAR"))
+            else if(employee.getPost().toString().equals("REGISTRAR") || employee.getPost().toString().equals("CHANCELLOR") || employee.getPost().toString().equals("VICECHANCELLOR") || employee.getPost().toString().equals("DEPUTYREGISTER") || employee.getPost().toString().equals("ASSISTANTREGISTER"))
             {
-                for (Employee employee2 : employeeRepository.findAllByPostOrPostOrPost(employee.getPost(),Post.HOD,Post.DEPUTYREGISTER)) 
+                List<Employee> empList;
+                if(employee.getPost().toString().equals("CHANCELLOR"))
+                    empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.VICECHANCELLOR);
+                else if(employee.getPost().toString().equals("VICECHANCELLOR"))
+                    empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.REGISTRAR);
+                else if(employee.getPost().toString().equals("REGISTRAR"))
+                    empList = employeeRepository.findAllByPostOrPostOrPost(employee.getPost(),Post.HOD,Post.DEPUTYREGISTER);
+                else if(employee.getPost().toString().equals("DEPUTYREGISTER"))
+                    empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.ASSISTANTREGISTER);
+                else
+                    empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.SECTIONOFFICER);
+                
+                 for (Employee employee2 : empList) 
                 {
-                    LeaveApplication l=leaveApplicationRepository.findOneByEmployee(employee2);
+                    for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
                     if(l!=null)
                     {
                         if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
-                        {
                                 list.add(l);
-                        } 
                         else if(status.equals("APPROVED") && l.getStatus().equals("APPROVED") && l.getApprovedBy().equals(employee))
-                        {
                             list.add(l);
-                        }
                         else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
-                        {
                             list.add(l);
-                        }
                     }
                 }
                 //System.err.println("post "+Post.HOD);
+            }
+            else if(employee.getPost().toString().equals("FACULTY"))
+            {
+                if(status.equals("APPLIED"))
+                {
+                    list = leaveApplicationRepository.findAllByEmployeeAndStatus(employee,status);
+                }
             }
        /* if(employee==null)
         {
