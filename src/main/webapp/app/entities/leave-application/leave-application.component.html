@@ -53,7 +53,9 @@
                 <td>{{leaveApplication.fromDate | date:'mediumDate'}}</td>
                 <td>{{leaveApplication.toDate | date:'mediumDate'}}</td>
                 <td>{{leaveApplication.noofday}}</td>
-                <td>{{leaveApplication.status}}</td>
+                <td  *ngIf="leaveApplication.status == 'APPLIED'"><span class="badge badge-primary">{{leaveApplication.status}}</span></td>
+                <td  *ngIf="leaveApplication.status == 'APPROVED'" ><span  class="badge badge-success" >{{leaveApplication.status}}</span></td>
+                <td  *ngIf="leaveApplication.status == 'REJECTED'"><span  class="badge badge-danger">{{leaveApplication.status}}</span></td>
                 <!-- <td>{{leaveApplication.flowStatus}}</td>
                 <td>{{leaveApplication.comment}}</td> -->
                 <td>
@@ -63,7 +65,7 @@
                 </td>
                 <td>
                     <div *ngIf="leaveApplication.approvedBy">
-                        <a [routerLink]="['../employee', leaveApplication.approvedBy?.id ]" >{{leaveApplication.approvedBy?.post}}</a>
+                        <a [routerLink]="['../employee', leaveApplication.approvedBy?.id ]" >{{leaveApplication.approvedBy?.post}}, {{leaveApplication.approvedBy?.firstName}}</a>
                     </div>
                 </td>
                 <td>

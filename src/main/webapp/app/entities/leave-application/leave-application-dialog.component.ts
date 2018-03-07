@@ -75,6 +75,7 @@ export class LeaveApplicationDialogComponent implements OnInit {
     }
     save() {
         this.isSaving = true;
+        console.log(this.leaveApplication);
         if (this.leaveApplication.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.leaveApplicationService.update(this.leaveApplication));

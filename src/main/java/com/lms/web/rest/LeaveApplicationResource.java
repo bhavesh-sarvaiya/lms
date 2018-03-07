@@ -104,12 +104,29 @@ public class LeaveApplicationResource {
         if (leaveApplication.getId() == null) {
             return createLeaveApplication(leaveApplication); 
         }
+        if(leaveApplication.getStatus().equals("APPROVED"))
+        {
+            leaveApplication.setApprovedBy(getLoggedUser());
+        }
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveApplication.getId().toString()))
             .body(result);
     }
 
+   /*@PutMapping("/leave-applications")
+    @Timed
+    public ResponseEntity<LeaveApplication> updateLeaveApplicationStatus(@RequestParam String status) throws URISyntaxException {
+        log.debug("REST request to update LeaveApplication  Status: {}", status);
+        if (leaveApplication.getId() == null) {
+            return createLeaveApplication(leaveApplication); 
+        }
+        LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveApplication.getId().toString()))
+            .body(result);
+    }
+*/
     /**
      * GET  /leave-applications : get all the leaveApplications.
      *
@@ -155,9 +172,11 @@ public class LeaveApplicationResource {
                     empList = employeeRepository.findAllByPostOrPostOrPost(employee.getPost(),Post.HOD,Post.DEPUTYREGISTER);
                 else if(employee.getPost().toString().equals("DEPUTYREGISTER"))
                     empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.ASSISTANTREGISTER);
-                else
+                else if(employee.getPost().toString().equals("ASSISTANTREGISTER"))
                     empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.SECTIONOFFICER);
-                
+                else
+                    empList = employeeRepository.findAllByPostOrPostOrPost(employee.getPost(),Post.LDC,Post.UDP);
+              
                  for (Employee employee2 : empList) 
                 {
                     for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
@@ -173,27 +192,11 @@ public class LeaveApplicationResource {
                 }
                 //System.err.println("post "+Post.HOD);
             }
-            else if(employee.getPost().toString().equals("FACULTY"))
+            else if(employee.getPost().toString().equals("FACULTY") || employee.getPost().toString().equals("UDP") || employee.getPost().toString().equals("LDP"))
             {
                 if(status.equals("APPLIED"))
-                {
-                    list = leaveApplicationRepository.findAllByEmployeeAndStatus(employee,status);
-                }
+                    list = leaveApplicationRepository.findAllByEmployee(employee);
             }
-       /* if(employee==null)
-        {
-            return leaveApplicationRepository.findAll();
-        }
-        System.out.println("post"+employee.getPost());
-        
-        else if(employee.getPost().toString() == "FACLUTY" || employee.getPost().toString()=="LDC" || employee.getPost().toString()=="UDP" || employee.getPost().toString()=="SECTIONOFFICER" || employee.getPost().toString()=="ASSISTANTREGISTER" || employee.getPost().toString()=="DEPUTYREGISTER")
-        {
-         System.out.println("\n\nemployee "+employee.getEmpEnrollmentNo());
-            list=leaveApplicationRepository.findAllByEmployee(employee);
-        }
-        else
-            return leaveApplicationRepository.findAll();
-        return list;*/
         return  list;
         }
 
