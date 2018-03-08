@@ -188,8 +188,9 @@ public class EmployeeResource {
 	@GetMapping("/employee/email/{email}")
 	@Timed
 	public ResponseEntity<Employee> getAllEmployeeByEmail(@PathVariable String email) {
-		log.debug("REST request to get  Employees by Email");
+		log.debug("REST request to get  Employees by Enrollment");
 		Employee employee = employeeRepository.findOneByEmpEnrollmentNo(email);
+		System.out.println("\nemployee: "+employee);
 		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(employee));
 	}
 	/**

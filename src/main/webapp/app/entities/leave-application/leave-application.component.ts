@@ -6,7 +6,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { LeaveApplication } from './leave-application.model';
 import { LeaveApplicationService } from './leave-application.service';
 import { Principal, User } from '../../shared';
-import * as _ from 'lodash';
 import { Employee, EmployeeService, Post } from '../employee';
 
 @Component({
@@ -46,10 +45,10 @@ leaveApplications: LeaveApplication[];
     }
     ngOnInit(status?) {
         this.loadAll(status);
-        this.principal.identity().then((account) => {
-            this.currentAccount = account;
+            this.principal.identity().then((account) => {
+                this.currentAccount = account;
             // this.loadEmployee(this.currentAccount.login);
-        });
+            });
         this.registerChangeInLeaveApplications();
     }
 

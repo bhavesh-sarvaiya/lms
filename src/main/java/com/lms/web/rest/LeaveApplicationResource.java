@@ -104,10 +104,11 @@ public class LeaveApplicationResource {
         if (leaveApplication.getId() == null) {
             return createLeaveApplication(leaveApplication); 
         }
-        if(leaveApplication.getStatus().equals("APPROVED"))
+        if(leaveApplication.getStatus().equals("APPROVED") || leaveApplication.getStatus().equals("REJECTED"))
         {
             leaveApplication.setApprovedBy(getLoggedUser());
         }
+        System.out.println("status: "+leaveApplication.getStatus());
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveApplication.getId().toString()))

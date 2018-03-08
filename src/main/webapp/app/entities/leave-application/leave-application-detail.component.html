@@ -110,29 +110,32 @@
         </dd>
         --> 
     </dl>
-    <form name="editForm" role="form" (ngSubmit)="save('APPROVED')" #editForm="ngForm">
+    
     <button type="submit"
             (click)="previousState()"
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
     </button>
 
-    <button type="button"
+    <!-- <button type="button"
             [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
-
+    </button> -->
+   <br> <br>
+    <form *ngIf="employee.post != 'FACULTY'" name="editForm" role="form" (ngSubmit)="save('APPROVED')" #editForm="ngForm">
     <button *ngIf="leaveApplication.status != 'APPROVED'"  type="submit" class="btn btn-success">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.approved">Approved</span>
         </button>
         </form>
-        <form name="editForm1" role="form" (ngSubmit)="save('REJECTED')" #editForm1="ngForm">
+    <br>
+        <form *ngIf="employee.post != 'FACULTY'" name="editForm1" role="form" (ngSubmit)="save('REJECTED')" #editForm1="ngForm">
         <button *ngIf="leaveApplication.status != 'APPROVED'"  type="submit" class="btn btn-danger">
                 <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.reject">Reject</span>
             </button>
         </form>
+
         
 </div>
