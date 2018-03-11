@@ -3,7 +3,7 @@
         "Post" : {
             "null": "",
             "LDC": "LDC",
-            "UDP": "UDP",
+            "UDC": "UDC",
             "SECTIONOFFICER": "SECTIONOFFICER",
             "ASSISTANTREGISTER": "ASSISTANTREGISTER",
             "DEPUTYREGISTER": "DEPUTYREGISTER",

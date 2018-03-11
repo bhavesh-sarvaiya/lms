@@ -71,7 +71,7 @@ leaveApplications: LeaveApplication[];
 /*
 export enum post {
     'LDC',
-    'UDP',
+    'UDC',
     'SECTIONOFFICER',
     'ASSISTANTREGISTER',
     'DEPUTYREGISTER',

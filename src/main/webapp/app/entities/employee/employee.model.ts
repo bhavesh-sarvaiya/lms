@@ -2,7 +2,7 @@ import { BaseEntity } from './../../shared';
 
 export const enum Post {
     'LDC',
-    'UDP',
+    'UDC',
     'SECTIONOFFICER',
     'ASSISTANTREGISTER',
     'DEPUTYREGISTER',

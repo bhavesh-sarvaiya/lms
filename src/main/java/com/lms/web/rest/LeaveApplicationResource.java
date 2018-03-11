@@ -138,6 +138,9 @@ public class LeaveApplicationResource {
     public List<LeaveApplication> getAllLeaveApplications(@RequestParam String status) {
         log.debug("REST request to get all LeaveApplications");
         List<LeaveApplication> list = new ArrayList<LeaveApplication>();
+        if(SecurityUtils.getCurrentUserLogin().toString().equals("admin")) {
+            list=leaveApplicationRepository.findAllByStatus(status);
+        }
         Employee employee = getLoggedUser();
        System.out.println("status: "+status);
             if(employee.getPost().toString() == "HOD")
@@ -176,7 +179,7 @@ public class LeaveApplicationResource {
                 else if(employee.getPost().toString().equals("ASSISTANTREGISTER"))
                     empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.SECTIONOFFICER);
                 else
-                    empList = employeeRepository.findAllByPostOrPostOrPost(employee.getPost(),Post.LDC,Post.UDP);
+                    empList = employeeRepository.findAllByPostOrPostOrPost(employee.getPost(),Post.LDC,Post.UDC);
               
                  for (Employee employee2 : empList) 
                 {
@@ -193,7 +196,7 @@ public class LeaveApplicationResource {
                 }
                 //System.err.println("post "+Post.HOD);
             }
-            else if(employee.getPost().toString().equals("FACULTY") || employee.getPost().toString().equals("UDP") || employee.getPost().toString().equals("LDP"))
+            else if(employee.getPost().toString().equals("FACULTY") || employee.getPost().toString().equals("UDC") || employee.getPost().toString().equals("LDP"))
             {
                 if(status.equals("APPLIED"))
                     list = leaveApplicationRepository.findAllByEmployee(employee);
