@@ -65,8 +65,10 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.currentAccount = account;
-           this.loadEmployee(this.currentAccount.login);
-           console.log(this.currentAccount);
+            if (this.currentAccount.login !== 'admin') {
+            this.loadEmployee(this.currentAccount.login);
+            console.log(this.currentAccount);
+        }
         });
         this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);

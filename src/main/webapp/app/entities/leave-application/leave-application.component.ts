@@ -35,6 +35,12 @@ leaveApplications: LeaveApplication[];
     }
     loadAll(status?) {
     console.log('loadAll');
+    if (this.currentAccount.login === 'admin') {
+        status = 'all';
+    } else if (status === undefined) {
+        status = 'APPLIED';
+    }
+        console.log('status: ' + status);
         this.leaveApplicationService.query(status).subscribe(
             (res: HttpResponse<LeaveApplication[]>) => {
                 this.leaveApplications = res.body;
@@ -44,10 +50,10 @@ leaveApplications: LeaveApplication[];
         );
     }
     ngOnInit(status?) {
-        this.loadAll(status);
             this.principal.identity().then((account) => {
                 this.currentAccount = account;
             // this.loadEmployee(this.currentAccount.login);
+            this.loadAll(status);
             });
         this.registerChangeInLeaveApplications();
     }

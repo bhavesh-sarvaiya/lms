@@ -138,9 +138,11 @@ public class LeaveApplicationResource {
     public List<LeaveApplication> getAllLeaveApplications(@RequestParam String status) {
         log.debug("REST request to get all LeaveApplications");
         List<LeaveApplication> list = new ArrayList<LeaveApplication>();
-        if(SecurityUtils.getCurrentUserLogin().toString().equals("admin")) {
-            list=leaveApplicationRepository.findAllByStatus(status);
-        }
+        System.out.println(SecurityUtils.getCurrentUserLogin().get());
+
+        if(status.equalsIgnoreCase("all")) {
+            list=leaveApplicationRepository.findAll();
+        }else{
         Employee employee = getLoggedUser();
        System.out.println("status: "+status);
             if(employee.getPost().toString() == "HOD")
@@ -201,6 +203,7 @@ public class LeaveApplicationResource {
                 if(status.equals("APPLIED"))
                     list = leaveApplicationRepository.findAllByEmployee(employee);
             }
+        }
         return  list;
         }
 
