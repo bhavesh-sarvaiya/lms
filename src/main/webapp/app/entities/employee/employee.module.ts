@@ -15,6 +15,7 @@ import {
     employeePopupRoute,
     EmployeeResolvePagingParams,
 } from './';
+import { LoadingModule } from 'ngx-loading';
 
 const ENTITY_STATES = [
     ...employeeRoute,
@@ -24,7 +25,8 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         LmsSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
+        RouterModule.forChild(ENTITY_STATES),
+        LoadingModule
     ],
     declarations: [
         EmployeeComponent,

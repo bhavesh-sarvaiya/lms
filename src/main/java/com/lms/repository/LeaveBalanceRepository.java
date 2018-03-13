@@ -1,5 +1,7 @@
 package com.lms.repository;
 
+import java.util.List;
+
 import com.lms.domain.Employee;
 import com.lms.domain.LeaveBalance;
 import com.lms.domain.LeaveType;
@@ -20,6 +22,7 @@ public interface LeaveBalanceRepository extends JpaRepository<LeaveBalance, Long
 	LeaveBalance findOneByLeaveTypeAndEmployee(LeaveType leaveType, Employee employee);
 
 	Page<LeaveBalance> findAllByEmployee(Employee empoyee, Pageable pageable);
+	LeaveBalance findOneByEmployeeAndLeaveType(Employee empoyee,LeaveType leaveType);
 
 
 }

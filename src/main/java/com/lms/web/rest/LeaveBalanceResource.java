@@ -96,7 +96,7 @@ public class LeaveBalanceResource {
     public ResponseEntity<List<LeaveBalance>> getAllLeaveBalances(Pageable pageable) {
         log.debug("REST request to get a page of LeaveBalances");
         Page<LeaveBalance> page=null;
-        if(SecurityUtils.isCurrentUserInRole("ROLE_ADMIN"))
+        if(SecurityUtils.getCurrentUserLogin().get().equals("admin"))
         {
         	page = leaveBalanceRepository.findAll(pageable);
         }

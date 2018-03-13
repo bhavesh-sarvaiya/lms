@@ -1,4 +1,5 @@
 <div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <h2>
         <span jhiTranslate="lmsApp.employee.home.title">Employees</span>
         <button class="btn btn-primary float-right jh-create-entity create-employee" [routerLink]="['/', { outlets: { popup: ['employee-new'] } }]">
@@ -11,7 +12,9 @@
     <jhi-alert></jhi-alert>
     <!-- <div class="row"></div> -->
     <br/>
+    
     <div class="table-responsive" *ngIf="employees">
+           
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">

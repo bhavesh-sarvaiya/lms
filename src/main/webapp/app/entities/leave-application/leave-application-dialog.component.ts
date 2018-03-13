@@ -11,6 +11,7 @@ import { LeaveApplicationPopupService } from './leave-application-popup.service'
 import { LeaveApplicationService } from './leave-application.service';
 import { Employee, EmployeeService } from '../employee';
 import { LeaveType, LeaveTypeService } from '../leave-type';
+import { LeaveBalance, LeaveBalanceService } from '../leave-balance';
 
 @Component({
     selector: 'jhi-leave-application-dialog',
@@ -25,6 +26,7 @@ export class LeaveApplicationDialogComponent implements OnInit {
     fromDate1: string;
     toDate1: string;
     leavetypes: LeaveType[];
+    leaveBalance: LeaveBalance[];
     fromDateDp: any;
     toDateDp: any;
     constructor(
@@ -33,7 +35,8 @@ export class LeaveApplicationDialogComponent implements OnInit {
         private leaveApplicationService: LeaveApplicationService,
         private employeeService: EmployeeService,
         private leaveTypeService: LeaveTypeService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private leaveBalanceService: LeaveBalanceService
     ) {
     }
 
@@ -41,7 +44,11 @@ export class LeaveApplicationDialogComponent implements OnInit {
         this.isSaving = false;
        // this.employeeService.query()
           //  .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.leaveTypeService.query()
+          this.leaveBalanceService.query()
+          .subscribe((res: HttpResponse<LeaveBalance[]>) => { this.leaveBalance = res.body;
+            console.log(JSON.stringify(this.leaveBalance));
+        }, (res: HttpErrorResponse) => this.onError(res.message));
+          this.leaveTypeService.query()
             .subscribe((res: HttpResponse<LeaveType[]>) => { this.leavetypes = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 

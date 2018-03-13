@@ -52,7 +52,7 @@ leaveApplications: LeaveApplication[];
     ngOnInit(status?) {
             this.principal.identity().then((account) => {
                 this.currentAccount = account;
-            // this.loadEmployee(this.currentAccount.login);
+                this.loadEmployee(this.currentAccount.login);
             this.loadAll(status);
             });
         this.registerChangeInLeaveApplications();

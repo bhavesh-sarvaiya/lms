@@ -12,6 +12,66 @@
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="leaveApplication.id" readonly />
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                    <div class="form-group">
+                            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.leaveType" for="field_leaveType">Leave Type</label>
+                            <select class="form-control" id="field_leaveType" name="leaveType" [(ngModel)]="leaveApplication.leaveType"  required>
+                                <option *ngIf="!editForm.value.leaveType" [ngValue]="null" selected></option>
+                                <option [ngValue]="leaveTypeOption.id === leaveApplication.leaveType?.id ? leaveApplication.leaveType : leaveTypeOption" *ngFor="let leaveTypeOption of leavetypes; trackBy: trackLeaveTypeById">{{leaveTypeOption.code}}</option>
+                            </select>
+                        </div>
+                        <div [hidden]="!(editForm.controls.leaveType?.dirty && editForm.controls.leaveType?.invalid)">
+                            <small class="form-text text-danger"
+                                [hidden]="!editForm.controls.leaveType?.errors?.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+            
+            <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.fromDate" for="field_fromDate">From Date</label>
+                    <div class="input-group">
+                        <input id="field_fromDate" type="text" (input)="fromDate($event)" class="form-control" name="fromDate" ngbDatepicker  #fromDateDp="ngbDatepicker" [(ngModel)]="leaveApplication.fromDate"
+                        required/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary"  (click)="fromDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                        </span>
+                    </div>
+                    <div [hidden]="!(editForm.controls.fromDate?.dirty && editForm.controls.fromDate?.invalid)">
+                        <small class="form-text text-danger"
+                           [hidden]="!editForm.controls.fromDate?.errors?.required" jhiTranslate="entity.validation.required">
+                           This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.toDate" for="field_toDate">To Date</label>
+                        <div class="input-group">
+                            <input id="field_toDate" type="text" (change)="toDate($event)" class="form-control" name="toDate" ngbDatepicker  #toDateDp="ngbDatepicker" [(ngModel)]="leaveApplication.toDate"
+                            required/>
+                            <span class="input-group-append">
+                                <button type="button" class="btn btn-secondary" (click)="toDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                            </span>
+                        </div>
+                        <div [hidden]="!(editForm.controls.toDate?.dirty && editForm.controls.toDate?.invalid)">
+                            <small class="form-text text-danger"
+                               [hidden]="!editForm.controls.toDate?.errors?.required" jhiTranslate="entity.validation.required">
+                               This field is required.
+                            </small>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-6">
+                <br>
+                <dl>Avaibale Leave Balance:    
+                    <div class="row" *ngFor="let leaveBalances of leaveBalance;">
+                        <div class="col-md-6">{{leaveBalances.leaveType.code}}</div>  
+                        <div class="col-md-6">{{leaveBalances.noOfLeave}}</div>
+                    </div>
+            </dl>
+            </div>  
+        </div>
+      
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.reason" for="field_reason">Reason</label>
             <input type="text" class="form-control" name="reason" id="field_reason"
@@ -23,41 +83,11 @@
                 </small>
             </div>
         </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.fromDate" for="field_fromDate">From Date</label>
-            <div class="input-group">
-                <input id="field_fromDate" type="text" (input)="fromDate($event)" class="form-control" name="fromDate" ngbDatepicker  #fromDateDp="ngbDatepicker" [(ngModel)]="leaveApplication.fromDate"
-                required/>
-                <span class="input-group-append">
-                    <button type="button" class="btn btn-secondary"  (click)="fromDateDp.toggle()"><i class="fa fa-calendar"></i></button>
-                </span>
-            </div>
-            <div [hidden]="!(editForm.controls.fromDate?.dirty && editForm.controls.fromDate?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.fromDate?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.toDate" for="field_toDate">To Date</label>
-            <div class="input-group">
-                <input id="field_toDate" type="text" (change)="toDate($event)" class="form-control" name="toDate" ngbDatepicker  #toDateDp="ngbDatepicker" [(ngModel)]="leaveApplication.toDate"
-                required/>
-                <span class="input-group-append">
-                    <button type="button" class="btn btn-secondary" (click)="toDateDp.toggle()"><i class="fa fa-calendar"></i></button>
-                </span>
-            </div>
-            <div [hidden]="!(editForm.controls.toDate?.dirty && editForm.controls.toDate?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.toDate?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
+       
+       
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.noofday" for="field_noofday">Noofday</label>
-            <input type="text" class="form-control" name="noofday" (change)="toDate($event)" id="field_noofday" value="{{leaveApplication.fromDate}}" disabled
+            <input type="text" class="form-control" name="noofday" (change)="toDate($event)" id="field_noofday" value="{{leaveApplication.fromDate | date:'mediumDate'}}" disabled
                 [(ngModel)]="leaveApplication.noofday" />
         </div>
     <!--    <div class="form-group">
@@ -96,19 +126,7 @@
                 <option [ngValue]="employeeOption.id === leaveApplication.approvedBy?.id ? leaveApplication.approvedBy : employeeOption" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.post}}</option>
             </select>
         </div>-->
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.leaveType" for="field_leaveType">Leave Type</label>
-            <select class="form-control" id="field_leaveType" name="leaveType" [(ngModel)]="leaveApplication.leaveType"  required>
-                <option *ngIf="!editForm.value.leaveType" [ngValue]="null" selected></option>
-                <option [ngValue]="leaveTypeOption.id === leaveApplication.leaveType?.id ? leaveApplication.leaveType : leaveTypeOption" *ngFor="let leaveTypeOption of leavetypes; trackBy: trackLeaveTypeById">{{leaveTypeOption.code}}</option>
-            </select>
-        </div>
-        <div [hidden]="!(editForm.controls.leaveType?.dirty && editForm.controls.leaveType?.invalid)">
-            <small class="form-text text-danger"
-                [hidden]="!editForm.controls.leaveType?.errors?.required" jhiTranslate="entity.validation.required">
-                This field is required.
-            </small>
-        </div>
+       
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

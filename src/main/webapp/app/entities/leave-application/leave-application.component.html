@@ -10,12 +10,12 @@
         </button>
     </h2>
 
-     <ul *ngIf="currentAccount.login != 'admin'" class="nav nav-tabs">
+     <ul *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY'" class="nav nav-tabs">
      
-        <li class="nav-item">
+        <li class="nav-item" >
           <a class="nav-link " (click)="ngOnInit('PENDDING')">Pandding</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" >
           <a class="nav-link" (click)="ngOnInit('APPROVED')">Approved</a>
         </li>
         <li class="nav-item">
@@ -81,7 +81,7 @@
                             <span class="fa fa-eye"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button *ngIf="currentAccount.login != 'admin' && leaveApplication.status != 'REJECTED'" type="submit"
+                        <button *ngIf="currentAccount.login != 'admin' && leaveApplication.status != 'REJECTED' && leaveApplication.status != 'APPROVED'" type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/edit'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
@@ -89,7 +89,7 @@
                             <span class="fa fa-pencil"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button *ngIf="currentAccount.login != 'admin' && leaveApplication.status != 'REJECTED'"  type="submit"
+                        <button *ngIf="currentAccount.login != 'admin' && leaveApplication.status != 'REJECTED' && leaveApplication.status != 'APPROVED'"  type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"

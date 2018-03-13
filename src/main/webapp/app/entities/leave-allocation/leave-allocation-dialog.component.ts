@@ -106,6 +106,10 @@ export class LeaveAllocationDialogComponent implements OnInit {
     trackLeaveTypeById(index: number, item: LeaveType) {
         return item.id;
     }
+
+    trackEmployeeById(index: number, item: LeaveType) {
+        return item.id;
+    }
 }
 
 @Component({

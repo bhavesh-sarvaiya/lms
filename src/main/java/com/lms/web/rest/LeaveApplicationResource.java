@@ -27,9 +27,11 @@ import ch.qos.logback.core.joran.conditional.ElseAction;
 import com.codahale.metrics.annotation.Timed;
 import com.lms.domain.Employee;
 import com.lms.domain.LeaveApplication;
+import com.lms.domain.LeaveBalance;
 import com.lms.domain.enumeration.Post;
 import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveApplicationRepository;
+import com.lms.repository.LeaveBalanceRepository;
 import com.lms.security.SecurityUtils;
 import com.lms.web.rest.errors.BadRequestAlertException;
 import com.lms.web.rest.util.HeaderUtil;
@@ -49,10 +51,12 @@ public class LeaveApplicationResource {
 
     private final LeaveApplicationRepository leaveApplicationRepository;
     private final EmployeeRepository employeeRepository;
+    private final LeaveBalanceRepository leaveBalanceRepository;
 
-    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,EmployeeRepository employeeRepository) {
+    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository) {
         this.leaveApplicationRepository = leaveApplicationRepository;
         this.employeeRepository=employeeRepository;
+        this.leaveBalanceRepository = leaveBalanceRepository;
     }
 
     /**
@@ -75,10 +79,22 @@ public class LeaveApplicationResource {
         {
             throw new BadRequestAlertException("Please Input valid date", ENTITY_NAME, "invalid.date");
         }
+        leaveApplication.setEmployee(getLoggedUser());
         leaveApplication.setNoofday(intervalDays.doubleValue());
+        LeaveBalance leaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(), leaveApplication.getLeaveType());
+        if(leaveBalance == null)
+        {
+            throw new BadRequestAlertException("You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME, "leaveNotAssign");
+        }
+        System.out.println("day: " + leaveBalance.getNoOfLeave());
+        System.out.println("employee: "+ leaveApplication.getEmployee());
+        System.out.println("Leave Type: "+ leaveApplication.getLeaveType());
+        if(leaveApplication.getNoofday() > leaveBalance.getNoOfLeave()){
+            throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "+leaveBalance.getNoOfLeave() + " and you are requested more than that ", ENTITY_NAME, "notEligible");
+        }
+       
         leaveApplication.setStatus("APPLIED");
         leaveApplication.setFlowStatus("NEW");
-        leaveApplication.setEmployee(getLoggedUser());
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
         return ResponseEntity.created(new URI("/api/leave-applications/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
