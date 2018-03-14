@@ -57,7 +57,7 @@ public class EmployeeResourceIntTest {
     private static final Boolean UPDATED_CAN_HAVE_VACATION = true;
 
     private static final Post DEFAULT_POST = Post.LDC;
-    private static final Post UPDATED_POST = Post.UDP;
+    private static final Post UPDATED_POST = Post.UDC;
 
     private static final String DEFAULT_MIDDLE_NAME = "AAAAAAAAAA";
     private static final String UPDATED_MIDDLE_NAME = "BBBBBBBBBB";

@@ -158,54 +158,115 @@ public class LeaveApplicationResource {
 
         if(status.equalsIgnoreCase("all")) {
             list=leaveApplicationRepository.findAll();
-        }else{
+        }else {
         Employee employee = getLoggedUser();
-       System.out.println("status: "+status);
-            if(employee.getPost().toString() == "HOD")
+        String post = employee.getPost().toString();
+        log.info(post + " Login");
+        System.out.println("status: "+status);
+        if(post.equalsIgnoreCase("HOD"))
+        {
+            //list = leaveApplicationRepository.findAllByALLEmployee(employeeRepository.findAllByDepartment(employee.getDepartment()));
+            for (Employee employee2 : employeeRepository.findAllByDepartment(employee.getDepartment())) 
             {
-                //list = leaveApplicationRepository.findAllByALLEmployee(employeeRepository.findAllByDepartment(employee.getDepartment()));
-                for (Employee employee2 : employeeRepository.findAllByDepartment(employee.getDepartment())) 
+                for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
                 {
-                    for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
-                    {
-                        if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
-                        {
-                                list.add(l);
-                        } 
-                        else if(status.equals("APPROVED") && l.getStatus().equals("APPROVED") && l.getApprovedBy().equals(employee))
-                        {
+                    if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
                             list.add(l);
-                        }
-                        else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
-                        {
-                            list.add(l);
-                        }
-                     }	
-                }
+                    else if(status.equals("APPROVED") && l.getStatus().equals("APPROVED") && l.getApprovedBy().equals(employee))
+                        list.add(l);
+                    else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
+                        list.add(l);
+                }	
             }
-            else if(employee.getPost().toString().equals("REGISTRAR") || employee.getPost().toString().equals("CHANCELLOR") || employee.getPost().toString().equals("VICECHANCELLOR") || employee.getPost().toString().equals("DEPUTYREGISTER") || employee.getPost().toString().equals("ASSISTANTREGISTER"))
+        }
+        else if(post.equalsIgnoreCase("REGISTRAR") || post.equalsIgnoreCase("CHANCELLOR") || post.equalsIgnoreCase("VICECHANCELLOR") || post.equalsIgnoreCase("DEPUTYREGISTER") || post.equalsIgnoreCase("ASSISTANTREGISTER") || post.equalsIgnoreCase("SECTIONOFFICER"))
+        {
+            
+            List<Employee> empList;
+            List<Post> postList=new ArrayList<Post>();
+            postList.add(employee.getPost());
+            switch (post)
             {
-                List<Employee> empList;
-                if(employee.getPost().toString().equals("CHANCELLOR"))
-                    empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.VICECHANCELLOR);
+                case "CHANCELLOR":
+                    postList.add(Post.VICECHANCELLOR);
+                    empList = employeeRepository.findAllByPostIn(postList);
+                    if(status.equalsIgnoreCase("Applied"))
+                        status = "PENDDING";
+                    break;
+                case "VICECHANCELLOR":
+                    postList.add(Post.REGISTRAR);
+                    empList = employeeRepository.findAllByPostIn(postList);
+                    break;
+                case "REGISTRAR":
+                    postList.add(Post.HOD);
+                    postList.add(Post.DEPUTYREGISTER);
+                    empList = employeeRepository.findAllByPostIn(postList);
+                    break;
+                case "DEPUTYREGISTER":
+                    postList.add(Post.ASSISTANTREGISTER);
+                    empList = employeeRepository.findAllByPostIn(postList);
+                    break;
+                case "ASSISTANTREGISTER":
+                    postList.add(Post.SECTIONOFFICER);
+                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                    break;
+                case "SECTIONOFFICER":
+                    postList.add(Post.LDC);
+                    postList.add(Post.UDC);
+                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                    break;
+                default: 
+                        empList = null;
+                        log.info("can't not find valid employee");
+            }
+               /* {
+                   if(employee.getPost().toString().equals("CHANCELLOR"))
+                {
+                    postList.add(Post.VICECHANCELLOR);
+                    empList = employeeRepository.findAllByPostIn(postList);
+                    if(status.equalsIgnoreCase("Applied"))
+                        status = "PENDDING";
+                }
                 else if(employee.getPost().toString().equals("VICECHANCELLOR"))
-                    empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.REGISTRAR);
+                {  
+                   // postList.add(employee.getPost());
+                    postList.add(Post.REGISTRAR);
+                    empList = employeeRepository.findAllByPostIn(postList);
+                }
                 else if(employee.getPost().toString().equals("REGISTRAR"))
-                    empList = employeeRepository.findAllByPostOrPostOrPost(employee.getPost(),Post.HOD,Post.DEPUTYREGISTER);
+                {
+                  //  postList.add(employee.getPost());
+                    postList.add(Post.HOD);
+                    postList.add(Post.DEPUTYREGISTER);
+                    empList = employeeRepository.findAllByPostIn(postList);
+                }
                 else if(employee.getPost().toString().equals("DEPUTYREGISTER"))
-                    empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.ASSISTANTREGISTER);
+                {
+                   // postList.add(employee.getPost());
+                    postList.add(Post.ASSISTANTREGISTER);
+                    empList = employeeRepository.findAllByPostIn(postList);
+                }
                 else if(employee.getPost().toString().equals("ASSISTANTREGISTER"))
-                    empList = employeeRepository.findAllByPostOrPost(employee.getPost(),Post.SECTIONOFFICER);
-                else
-                    empList = employeeRepository.findAllByPostOrPostOrPost(employee.getPost(),Post.LDC,Post.UDC);
-              
+                {
+                   // postList.add(employee.getPost());
+                    postList.add(Post.SECTIONOFFICER);
+                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                }
+                 else
+                {
+                   // postList.add(employee.getPost());
+                    postList.add(Post.LDC);
+                    postList.add(Post.UDC);
+                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                }
+            }*/
                  for (Employee employee2 : empList) 
                 {
                     for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
                     if(l!=null)
                     {
                         if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
-                                list.add(l);
+                            list.add(l);
                         else if(status.equals("APPROVED") && l.getStatus().equals("APPROVED") && l.getApprovedBy().equals(employee))
                             list.add(l);
                         else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
@@ -214,7 +275,7 @@ public class LeaveApplicationResource {
                 }
                 //System.err.println("post "+Post.HOD);
             }
-            else if(employee.getPost().toString().equals("FACULTY") || employee.getPost().toString().equals("UDC") || employee.getPost().toString().equals("LDP"))
+            else if(post.equalsIgnoreCase("FACULTY") || post.equalsIgnoreCase("UDC") || post.equalsIgnoreCase("LDC"))
             {
                 if(status.equals("APPLIED"))
                     list = leaveApplicationRepository.findAllByEmployee(employee);

@@ -15,7 +15,7 @@
     
     <div class="table-responsive" *ngIf="employees">
            
-        <table class="table table-striped">
+        <table class="table table-hover">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
              <th jhiSortBy="empEnrollmentNo"><span jhiTranslate="lmsApp.employee.empEnrollmentNo">Emp Enrollment No</span> <span class="fa fa-sort"></span></th>

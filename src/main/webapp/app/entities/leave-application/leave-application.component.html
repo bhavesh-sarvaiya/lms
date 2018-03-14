@@ -10,7 +10,7 @@
         </button>
     </h2>
 
-     <ul *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY'" class="nav nav-tabs">
+     <ul *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.post != 'LDC' && employee.post != 'UDC'" class="nav nav-tabs">
      
         <li class="nav-item" >
           <a class="nav-link " (click)="ngOnInit('PENDDING')">Pandding</a>
@@ -19,7 +19,7 @@
           <a class="nav-link" (click)="ngOnInit('APPROVED')">Approved</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="ngOnInit('APPLIED')">Applied</a>
+          <a *ngIf="employee.post != 'CHANCELLOR'" class="nav-link" (click)="ngOnInit('APPLIED')">Applied</a>
         </li>
       </ul>  
     <jhi-alert></jhi-alert>
