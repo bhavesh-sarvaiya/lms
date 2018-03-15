@@ -18,6 +18,7 @@ import { VERSION } from '../../app.constants';
 export class NavbarComponent implements OnInit {
     inProduction: boolean;
     isNavbarCollapsed: boolean;
+    account: Account;
     languages: any[];
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
@@ -40,7 +41,9 @@ export class NavbarComponent implements OnInit {
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
-
+        this.principal.identity().then((account) => {
+            this.account = account;
+        });
         this.profileService.getProfileInfo().then((profileInfo) => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;

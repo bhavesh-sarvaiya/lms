@@ -5425,6 +5425,10 @@ ngx-infinite-scroll@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-0.5.1.tgz#dd9452c602ff7c3222f0ca168481aa14140286b7"
 
+ngx-loading@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/ngx-loading/-/ngx-loading-1.0.14.tgz#19758c33ea3fa9bb96dca1f40ca19d4d86b8042c"
+
 ngx-webstorage@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/ngx-webstorage/-/ngx-webstorage-2.0.1.tgz#232446262241e8fd0d794a03821c0b5e28459295"

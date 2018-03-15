@@ -29,15 +29,12 @@
                 <td>{{leaveBalance.noOfLeave}}</td>
                 <td>
                     <div *ngIf="leaveBalance.leaveType">
-<!--                         <a [routerLink]="['../leave-type', leaveBalance.leaveType?.id ]" >{{leaveBalance.leaveType?.code}}</a>
- -->                       {{leaveBalance.leaveType?.code}}
-                        
+                         <a [routerLink]="['../leave-type', leaveBalance.leaveType?.id ]" >{{leaveBalance.leaveType?.code}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="leaveBalance.employee">
-<!--                         <a [routerLink]="['../employee', leaveBalance.employee?.id ]" >{{leaveBalance.employee?.empEnrollmentNo}}</a>
- -->                       {{leaveBalance.employee?.empEnrollmentNo}}
+                         <a [routerLink]="['../employee', leaveBalance.employee?.id ]" >{{leaveBalance.employee?.empEnrollmentNo}}</a>
                     </div>
                 </td>
                 <td class="text-right" style="display: none;">

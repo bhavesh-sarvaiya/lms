@@ -11,7 +11,7 @@ export const departmentRoute: Routes = [
         path: 'department',
         component: DepartmentComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.department.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const departmentRoute: Routes = [
         path: 'department/:id',
         component: DepartmentDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.department.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const departmentPopupRoute: Routes = [
         path: 'department-new',
         component: DepartmentPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.department.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const departmentPopupRoute: Routes = [
         path: 'department/:id/edit',
         component: DepartmentPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.department.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const departmentPopupRoute: Routes = [
         path: 'department/:id/delete',
         component: DepartmentDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.department.home.title'
         },
         canActivate: [UserRouteAccessService],

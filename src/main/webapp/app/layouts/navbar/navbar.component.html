@@ -7,9 +7,17 @@
            <!--  <span class="logo-img"></span> -->
             <span jhiTranslate="global.title" class="navbar-title">LMS</span><!--  <span class="navbar-version">{{version}}</span> -->
         </a>
+       
     </div>
+   
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
         <ul class="navbar-nav ml-auto">
+                <li  *ngSwitchCase="true" class="nav-item">
+                        <div class="alert alert-primary" *ngSwitchCase="true">
+                                <!-- <span *ngIf="account">{{account.login}} </span> -->
+                                <strong  *ngIf="account">{{account.login}}</strong>
+                            </div>
+                    </li>
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
                     <span>

@@ -11,7 +11,7 @@ export const leaveTypeRoute: Routes = [
         path: 'leave-type',
         component: LeaveTypeComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveType.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const leaveTypeRoute: Routes = [
         path: 'leave-type/:id',
         component: LeaveTypeDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveType.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const leaveTypePopupRoute: Routes = [
         path: 'leave-type-new',
         component: LeaveTypePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveType.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const leaveTypePopupRoute: Routes = [
         path: 'leave-type/:id/edit',
         component: LeaveTypePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveType.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const leaveTypePopupRoute: Routes = [
         path: 'leave-type/:id/delete',
         component: LeaveTypeDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveType.home.title'
         },
         canActivate: [UserRouteAccessService],

@@ -32,7 +32,7 @@ export const leaveAllocationRoute: Routes = [
             'pagingParams': LeaveAllocationResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveAllocation.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -40,7 +40,7 @@ export const leaveAllocationRoute: Routes = [
         path: 'leave-allocation/:id',
         component: LeaveAllocationDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveAllocation.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -52,7 +52,7 @@ export const leaveAllocationPopupRoute: Routes = [
         path: 'leave-allocation-new',
         component: LeaveAllocationPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveAllocation.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -62,7 +62,7 @@ export const leaveAllocationPopupRoute: Routes = [
         path: 'leave-allocation/:id/edit',
         component: LeaveAllocationPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveAllocation.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -72,7 +72,7 @@ export const leaveAllocationPopupRoute: Routes = [
         path: 'leave-allocation/:id/delete',
         component: LeaveAllocationDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'lmsApp.leaveAllocation.home.title'
         },
         canActivate: [UserRouteAccessService],

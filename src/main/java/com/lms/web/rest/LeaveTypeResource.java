@@ -18,6 +18,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Future;
 
 /**
  * REST controller for managing LeaveType.
@@ -88,6 +89,12 @@ public class LeaveTypeResource {
     @Timed
     public List<LeaveType> getAllLeaveTypes() {
         log.debug("REST request to get all LeaveTypes");
+       //List<LeaveType> list=leaveTypeRepository.findAllGroupByCode("CL");
+      //System.out.println("list: "+list);
+    
+   
+           
+     
         return leaveTypeRepository.findAll();
         }
 
