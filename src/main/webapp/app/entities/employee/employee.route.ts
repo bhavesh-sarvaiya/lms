@@ -40,7 +40,7 @@ export const employeeRoute: Routes = [
         path: 'employee/:id',
         component: EmployeeDetailComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'lmsApp.employee.home.title'
         },
         canActivate: [UserRouteAccessService]

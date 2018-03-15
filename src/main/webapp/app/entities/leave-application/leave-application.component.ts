@@ -53,7 +53,7 @@ leaveApplications: LeaveApplication[];
             this.principal.identity().then((account) => {
                 this.currentAccount = account;
                 this.loadEmployee(this.currentAccount.login);
-            this.loadAll(status);
+                this.loadAll(status);
             });
         this.registerChangeInLeaveApplications();
     }

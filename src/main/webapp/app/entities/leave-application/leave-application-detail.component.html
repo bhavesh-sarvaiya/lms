@@ -110,12 +110,30 @@
         </dd>
         --> 
     </dl>
-    
-    <button type="submit"
+    <div class="row">
+        <div class="col-md-3"> <button type="submit"
             (click)="previousState()"
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+    </button></div>
+    
+            <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email"> 
+                <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED'"  (click)="save('APPROVED')" class="btn btn-success">
+                        <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.approved">Approved</span>
+                    </button>
+        </div>
+            <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email" >
+            <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED'"  (click)="save('REJECTED')" class="btn btn-danger">
+                    <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.reject">Reject</span>
+                </button>
+            </div>
+            <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email" >
+                <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED'"   class="btn btn-primary">
+                        <span>Forward to Superior</span>&nbsp;<span class="fa fa-arrow-right"></span>
+                    </button>
+                </div>
+    </div>
+   
 
     <!-- <button type="button"
             [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/edit'} }]"
@@ -124,18 +142,9 @@
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button> -->
-   <br> <br>
-    <form *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email" name="editForm" role="form" (ngSubmit)="save('APPROVED')" #editForm="ngForm">
-    <button *ngIf="leaveApplication.status != 'APPROVED'"  type="submit" class="btn btn-success">
-            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.approved">Approved</span>
-        </button>
-        </form>
-    <br>
-        <form *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email" name="editForm1" role="form" (ngSubmit)="save('REJECTED')" #editForm1="ngForm">
-        <button *ngIf="leaveApplication.status != 'APPROVED'"  type="submit" class="btn btn-danger">
-                <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.reject">Reject</span>
-            </button>
-        </form>
+
+ 
+  
 
         
 </div>

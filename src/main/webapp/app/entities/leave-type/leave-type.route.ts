@@ -19,7 +19,7 @@ export const leaveTypeRoute: Routes = [
         path: 'leave-type/:id',
         component: LeaveTypeDetailComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'lmsApp.leaveType.home.title'
         },
         canActivate: [UserRouteAccessService]

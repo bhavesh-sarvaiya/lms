@@ -45,6 +45,7 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
             this.leaveApplication.status = status;
              this.subscribeToSaveResponse(
             this.leaveApplicationService.update(this.leaveApplication));
+            this.registerChangeInLeaveApplications();
         }
     }
     private subscribeToSaveResponse(result: Observable<HttpResponse<LeaveApplication>>) {
@@ -102,9 +103,11 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInLeaveApplications() {
+        console.log('registerChangeInLeaveApplications1');
         this.eventSubscriber = this.eventManager.subscribe(
             'leaveApplicationListModification',
             (response) => this.load(this.leaveApplication.id)
         );
+        console.log('registerChangeInLeaveApplications2');
     }
 }

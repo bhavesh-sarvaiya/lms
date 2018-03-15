@@ -19,7 +19,7 @@ export const departmentRoute: Routes = [
         path: 'department/:id',
         component: DepartmentDetailComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'lmsApp.department.home.title'
         },
         canActivate: [UserRouteAccessService]

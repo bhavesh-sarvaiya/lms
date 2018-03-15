@@ -81,17 +81,18 @@ public class LeaveApplicationResource {
         }
         leaveApplication.setEmployee(getLoggedUser());
         leaveApplication.setNoofday(intervalDays.doubleValue());
-        LeaveBalance leaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(), leaveApplication.getLeaveType());
-        if(leaveBalance == null)
+        Double leave = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),leaveApplication.getLeaveType());
+      //  LeaveBalance leaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(), leaveApplication.getLeaveType());
+        if(leave == null)
         {
-            throw new BadRequestAlertException("You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME, "leaveNotAssign");
-        }
-        System.out.println("day: " + leaveBalance.getNoOfLeave());
+           throw new BadRequestAlertException("You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME, "leaveNotAssign");
+       }
+        System.out.println("day: " + leave);
         System.out.println("employee: "+ leaveApplication.getEmployee());
         System.out.println("Leave Type: "+ leaveApplication.getLeaveType());
-        if(leaveApplication.getNoofday() > leaveBalance.getNoOfLeave()){
-            throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "+leaveBalance.getNoOfLeave() + " and you are requested more than that ", ENTITY_NAME, "notEligible");
-        }
+       if(leaveApplication.getNoofday() > leave){
+           throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "+leave+ " and you are requested more than that ", ENTITY_NAME, "notEligible");
+       }
        
         leaveApplication.setStatus("APPLIED");
         leaveApplication.setFlowStatus("NEW");
@@ -122,8 +123,22 @@ public class LeaveApplicationResource {
         }
         if(leaveApplication.getStatus().equals("APPROVED") || leaveApplication.getStatus().equals("REJECTED"))
         {
+            if(leaveApplication.getStatus().equalsIgnoreCase("APPROVED"))
+            {
+                LeaveBalance leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveApplication.getLeaveType(),leaveApplication.getEmployee());
+                if(leaveApplication.getNoofday() > leaveBalance.getNoOfLeave() )
+                {
+                    leaveApplication.setStatus("APPLIED");
+                    throw new BadRequestAlertException("The Person who is requested for this application is not eligible for this leave(he/she has no enough leave balance) ", ENTITY_NAME, "notEligibleWhenApprove");
+                }
+                leaveBalance.setNoOfLeave(leaveBalance.getNoOfLeave()-leaveApplication.getNoofday());
+                leaveBalanceRepository.save(leaveBalance);
+            }
             leaveApplication.setApprovedBy(getLoggedUser());
+           // System.out.println("balance: "+);
+            
         }
+        //leaveApplication.setStatus("APPLIED");
         System.out.println("status: "+leaveApplication.getStatus());
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
         return ResponseEntity.ok()
@@ -172,7 +187,7 @@ public class LeaveApplicationResource {
                 {
                     if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
                             list.add(l);
-                    else if(status.equals("APPROVED") && l.getStatus().equals("APPROVED") && l.getApprovedBy().equals(employee))
+                    else if(status.equals("APPROVED") && (l.getStatus().equals("APPROVED") || l.getStatus().equals("REJECTED")) && l.getApprovedBy().equals(employee))
                         list.add(l);
                     else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
                         list.add(l);

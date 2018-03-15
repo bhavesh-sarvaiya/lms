@@ -4,8 +4,7 @@ import com.lms.LmsApp;
 
 import com.lms.domain.LeaveApplication;
 import com.lms.domain.LeaveType;
-import com.lms.repository.EmployeeRepository;
-import com.lms.repository.LeaveApplicationRepository;
+import com.lms.repository.*;
 import com.lms.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -68,6 +67,9 @@ public class LeaveApplicationResourceIntTest {
      @Autowired
     private EmployeeRepository employeeRepository;
 
+     @Autowired 
+    private LeaveBalanceRepository leaveBalanceRepository;
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -87,7 +89,7 @@ public class LeaveApplicationResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final LeaveApplicationResource leaveApplicationResource = new LeaveApplicationResource(leaveApplicationRepository,employeeRepository);
+        final LeaveApplicationResource leaveApplicationResource = new LeaveApplicationResource(leaveApplicationRepository,employeeRepository,leaveBalanceRepository);
         this.restLeaveApplicationMockMvc = MockMvcBuilders.standaloneSetup(leaveApplicationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
