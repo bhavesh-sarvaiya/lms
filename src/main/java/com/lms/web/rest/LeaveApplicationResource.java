@@ -121,7 +121,8 @@ public class LeaveApplicationResource {
         if (leaveApplication.getId() == null) {
             return createLeaveApplication(leaveApplication); 
         }
-        if(leaveApplication.getStatus().equals("APPROVED") || leaveApplication.getStatus().equals("REJECTED"))
+        String status=leaveApplication.getStatus();
+        if(status.equals("APPROVED") || status.equals("REJECTED"))
         {
             if(leaveApplication.getStatus().equalsIgnoreCase("APPROVED"))
             {
@@ -137,6 +138,24 @@ public class LeaveApplicationResource {
             leaveApplication.setApprovedBy(getLoggedUser());
            // System.out.println("balance: "+);
             
+        }
+        else if(status.equals("FORWARD") ){
+            String flowStatus = leaveApplication.getFlowStatus();
+            Employee employee = getLoggedUser();
+            String post = employee.getPost().toString();
+            switch(post)
+            {
+                case "HOD":
+                    leaveApplication.setFlowStatus(leaveApplication.getFlowStatus()+"->HOD->REGISTRAR");
+                    break;
+                case "REGISTRAR":
+                    leaveApplication.setFlowStatus(leaveApplication.getFlowStatus()+"->REGISTRAR->VICECHANCELLOR");
+                    break;
+                case "VICECHANCELLOR":
+                    leaveApplication.setFlowStatus(leaveApplication.getFlowStatus()+"->VICECHANCELLOR->CHANCELLOR");
+                    break;
+            }
+            leaveApplication.setStatus("APPLIED");
         }
         //leaveApplication.setStatus("APPLIED");
         System.out.println("status: "+leaveApplication.getStatus());
@@ -185,18 +204,19 @@ public class LeaveApplicationResource {
             {
                 for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
                 {
-                    if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
-                            list.add(l);
+                    if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()) && l.getFlowStatus().equalsIgnoreCase("New")){
+                        list.add(l);
+                    }
                     else if(status.equals("APPROVED") && (l.getStatus().equals("APPROVED") || l.getStatus().equals("REJECTED")) && l.getApprovedBy().equals(employee))
                         list.add(l);
                     else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
                         list.add(l);
                 }	
             }
+            
         }
         else if(post.equalsIgnoreCase("REGISTRAR") || post.equalsIgnoreCase("CHANCELLOR") || post.equalsIgnoreCase("VICECHANCELLOR") || post.equalsIgnoreCase("DEPUTYREGISTER") || post.equalsIgnoreCase("ASSISTANTREGISTER") || post.equalsIgnoreCase("SECTIONOFFICER"))
         {
-            
             List<Employee> empList;
             List<Post> postList=new ArrayList<Post>();
             postList.add(employee.getPost());
@@ -275,11 +295,14 @@ public class LeaveApplicationResource {
                     empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
                 }
             }*/
-                 for (Employee employee2 : empList) 
+                /* for (Employee employee2 : empList) 
                 {
                     for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
                     if(l!=null)
                     {
+                        String flowStatus[] = l.getFlowStatus().split("->");
+                        String flowPost = flowStatus[flowStatus.length-1];
+                        System.out.println("flow Post:"+flowPost);
                         if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
                             list.add(l);
                         else if(status.equals("APPROVED") && l.getStatus().equals("APPROVED") && l.getApprovedBy().equals(employee))
@@ -287,6 +310,12 @@ public class LeaveApplicationResource {
                         else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
                             list.add(l);
                     }
+                }*/
+                List<String> flowList = new ArrayList<String>();
+                flowList.add("NEW");
+                flowList.add("NEW->HOD->REGISTRAR");
+                if(status.equals("PENDDING")){
+                    list=leaveApplicationRepository.findAllByStatusAndFlowStatusIn("APPLIED", flowList);
                 }
                 //System.err.println("post "+Post.HOD);
             }

@@ -128,7 +128,7 @@
                 </button>
             </div>
             <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email" >
-                <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED'"   class="btn btn-primary">
+                <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED'" (click)="save('FORWARD')"  class="btn btn-primary">
                         <span>Forward to Superior</span>&nbsp;<span class="fa fa-arrow-right"></span>
                     </button>
                 </div>
