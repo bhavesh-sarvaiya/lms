@@ -22,4 +22,7 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 	List<LeaveApplication> findAllByEmployeeAndStatus(Employee employee,String status);
 	List<LeaveApplication> findAllByStatus(String status);
 	List<LeaveApplication> findAllByStatusAndFlowStatusIn(String status,List<String> flowStatus);
+	List<LeaveApplication> findAllByEmployeeInAndFlowStatusOrFlowStatus(List<Employee> employeeList,String flowStatus,String flowStatus1);
+	List<LeaveApplication> findAllByEmployeeInAndFlowStatusOrFlowStatusIn(List<Employee> employeeList,String flowStatus,List<String> flowStatusList);
+	
 }

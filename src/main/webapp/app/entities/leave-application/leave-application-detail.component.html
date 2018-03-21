@@ -37,15 +37,17 @@
                             </div>
                     </div>
                     <div class="row">
-                            <div class="col-md-4">
-                                    <dt><span jhiTranslate="lmsApp.leaveApplication.flowStatus">Flow Status</span></dt>
-                            </div>
-                            <div class="col-md-8">
-                                    <dd>
-                                            <span>{{leaveApplication.flowStatus}}</span>
-                                        </dd>
-                                </div>
+                        <div class="col-md-4">
+                                <dt><span jhiTranslate="lmsApp.leaveApplication.leaveType">Leave Type</span></dt>
                         </div>
+                        <div class="col-md-8">
+                                <dd>
+                                        <div *ngIf="leaveApplication.leaveType">
+                                            <a [routerLink]="['/leave-type', leaveApplication.leaveType?.id]">{{leaveApplication.leaveType?.code}}</a>
+                                        </div>
+                                    </dd>
+                            </div>
+                    </div>
                     
             </div>
             <div class="col-md-6">
@@ -73,21 +75,18 @@
                                 </dd>
                         </div>
                 </div>
-                <div class="row">
-                        <div class="col-md-6">
-                                <dt><span jhiTranslate="lmsApp.leaveApplication.leaveType">Leave Type</span></dt>
-                        </div>
-                        <div class="col-md-6">
-                                <dd>
-                                        <div *ngIf="leaveApplication.leaveType">
-                                            <a [routerLink]="['/leave-type', leaveApplication.leaveType?.id]">{{leaveApplication.leaveType?.code}}</a>
-                                        </div>
-                                    </dd>
-                            </div>
-                    </div>
             </div>
         </div>
-            
+        <div class="row">
+            <div class="col-md-2">
+                    <dt><span jhiTranslate="lmsApp.leaveApplication.flowStatus">Flow Status</span></dt>
+            </div>
+            <div class="col-md-10">
+                    <dd>
+                            <span>{{leaveApplication.flowStatus}}</span>
+                        </dd>
+                </div>
+        </div>      
       <div class="row">
           <div class="col-md-2"> <dt><span jhiTranslate="lmsApp.leaveApplication.comment">Comment</span></dt>
             <dd></div>
@@ -97,18 +96,6 @@
                </dt>
           </div>
       </div>
-        <!-- <dt><span jhiTranslate="lmsApp.leaveApplication.comment">Comment</span></dt>
-        <dd>
-            <span>{{leaveApplication.comment}}</span>
-        </dd> -->
-        
-        <!-- <dt><span jhiTranslate="lmsApp.leaveApplication.approvedBy">Approved By</span></dt>
-        <dd>
-            <div *ngIf="leaveApplication.approvedBy">
-                <a [routerLink]="['/employee', leaveApplication.approvedBy?.id]">{{leaveApplication.approvedBy?.post}}</a>
-            </div>
-        </dd>
-        --> 
     </dl>
     <div class="row">
         <div class="col-md-3"> <button type="submit"
@@ -116,7 +103,6 @@
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
     </button></div>
-    
             <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email"> 
                 <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED'"  (click)="save('APPROVED')" class="btn btn-success">
                         <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.approved">Approved</span>
@@ -127,24 +113,17 @@
                     <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.reject">Reject</span>
                 </button>
             </div>
-            <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email" >
+            <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.post != 'CHANCELLOR' && employee.email != leaveApplication.employee.email" >
                 <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED'" (click)="save('FORWARD')"  class="btn btn-primary">
                         <span>Forward to Superior</span>&nbsp;<span class="fa fa-arrow-right"></span>
                     </button>
                 </div>
     </div>
-   
-
     <!-- <button type="button"
             [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button> -->
-
- 
-  
-
-        
+    </button> -->   
 </div>

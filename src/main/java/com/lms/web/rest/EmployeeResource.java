@@ -131,11 +131,12 @@ public class EmployeeResource {
 		if (employee.getId() == null) {
 			return createEmployee(employee);
 		}
+		System.out.println("email"+employeeRepository.findOne(employee.getId()).getEmail());
 		User user = userRepository.findOneByEmail(employeeRepository.findOne(employee.getId()).getEmail());
 		user.setEmail(employee.getEmail());
 		user.setFirstName(employee.getFirstName());
 		user.setLastName(employee.getLastName());
-		user.setLogin(""+employee.getEmpEnrollmentNo());
+		user.setLogin(employee.getEmpEnrollmentNo());
 		Employee result = employeeRepository.save(employee);
 		userRepository.save(user);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, employee.getId().toString()))

@@ -87,9 +87,9 @@ public class LeaveApplicationResource {
         {
            throw new BadRequestAlertException("You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME, "leaveNotAssign");
        }
-        System.out.println("day: " + leave);
-        System.out.println("employee: "+ leaveApplication.getEmployee());
-        System.out.println("Leave Type: "+ leaveApplication.getLeaveType());
+        //System.out.println("day: " + leave);
+        //System.out.println("employee: "+ leaveApplication.getEmployee());
+       // System.out.println("Leave Type: "+ leaveApplication.getLeaveType());
        if(leaveApplication.getNoofday() > leave){
            throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "+leave+ " and you are requested more than that ", ENTITY_NAME, "notEligible");
        }
@@ -145,14 +145,35 @@ public class LeaveApplicationResource {
             String post = employee.getPost().toString();
             switch(post)
             {
+                case "SECTIONOFFICER":
+                    leaveApplication.setFlowStatus(flowStatus+"->SECTIONOFFICER->ASSISTANTREGISTER");
+                    break;
+                case "ASSISTANTREGISTER":
+                    if(flowStatus.equalsIgnoreCase("New"))
+                        leaveApplication.setFlowStatus(flowStatus+"->ASSISTANTREGISTER->DEPUTYREGISTER");
+                    else
+                        leaveApplication.setFlowStatus(flowStatus+"->DEPUTYREGISTER");
+                    break;
+                case "DEPUTYREGISTER":
+                    if(flowStatus.equalsIgnoreCase("New"))
+                        leaveApplication.setFlowStatus(flowStatus+"->DEPUTYREGISTER->REGISTRAR");
+                    else
+                        leaveApplication.setFlowStatus(flowStatus+"->REGISTRAR");
+                    break;
                 case "HOD":
-                    leaveApplication.setFlowStatus(leaveApplication.getFlowStatus()+"->HOD->REGISTRAR");
+                    leaveApplication.setFlowStatus(flowStatus+"->HOD->REGISTRAR");
                     break;
                 case "REGISTRAR":
-                    leaveApplication.setFlowStatus(leaveApplication.getFlowStatus()+"->REGISTRAR->VICECHANCELLOR");
+                    if(flowStatus.equalsIgnoreCase("New"))
+                        leaveApplication.setFlowStatus(flowStatus+"->REGISTRAR->VICECHANCELLOR");
+                    else
+                        leaveApplication.setFlowStatus(flowStatus+"->VICECHANCELLOR");
                     break;
                 case "VICECHANCELLOR":
-                    leaveApplication.setFlowStatus(leaveApplication.getFlowStatus()+"->VICECHANCELLOR->CHANCELLOR");
+                    if(flowStatus.equalsIgnoreCase("New"))
+                        leaveApplication.setFlowStatus(flowStatus+"->VICECHANCELLOR->CHANCELLOR");
+                    else
+                        leaveApplication.setFlowStatus(flowStatus+"->CHANCELLOR");
                     break;
             }
             leaveApplication.setStatus("APPLIED");
@@ -188,145 +209,169 @@ public class LeaveApplicationResource {
     public List<LeaveApplication> getAllLeaveApplications(@RequestParam String status) {
         log.debug("REST request to get all LeaveApplications");
         List<LeaveApplication> list = new ArrayList<LeaveApplication>();
-        System.out.println(SecurityUtils.getCurrentUserLogin().get());
+        //System.out.println(""SecurityUtils.getCurrentUserLogin().get());
 
         if(status.equalsIgnoreCase("all")) {
-            list=leaveApplicationRepository.findAll();
-        }else {
-        Employee employee = getLoggedUser();
-        String post = employee.getPost().toString();
-        log.info(post + " Login");
-        System.out.println("status: "+status);
-        if(post.equalsIgnoreCase("HOD"))
-        {
-            //list = leaveApplicationRepository.findAllByALLEmployee(employeeRepository.findAllByDepartment(employee.getDepartment()));
-            for (Employee employee2 : employeeRepository.findAllByDepartment(employee.getDepartment())) 
-            {
-                for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
-                {
-                    if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()) && l.getFlowStatus().equalsIgnoreCase("New")){
-                        list.add(l);
-                    }
-                    else if(status.equals("APPROVED") && (l.getStatus().equals("APPROVED") || l.getStatus().equals("REJECTED")) && l.getApprovedBy().equals(employee))
-                        list.add(l);
-                    else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
-                        list.add(l);
-                }	
-            }
-            
+            list=leaveApplicationRepository.findAll();// all for admin
         }
-        else if(post.equalsIgnoreCase("REGISTRAR") || post.equalsIgnoreCase("CHANCELLOR") || post.equalsIgnoreCase("VICECHANCELLOR") || post.equalsIgnoreCase("DEPUTYREGISTER") || post.equalsIgnoreCase("ASSISTANTREGISTER") || post.equalsIgnoreCase("SECTIONOFFICER"))
+        else 
         {
-            List<Employee> empList;
-            List<Post> postList=new ArrayList<Post>();
-            postList.add(employee.getPost());
-            switch (post)
-            {
-                case "CHANCELLOR":
-                    postList.add(Post.VICECHANCELLOR);
-                    empList = employeeRepository.findAllByPostIn(postList);
-                    if(status.equalsIgnoreCase("Applied"))
-                        status = "PENDDING";
-                    break;
-                case "VICECHANCELLOR":
-                    postList.add(Post.REGISTRAR);
-                    empList = employeeRepository.findAllByPostIn(postList);
-                    break;
-                case "REGISTRAR":
-                    postList.add(Post.HOD);
-                    postList.add(Post.DEPUTYREGISTER);
-                    empList = employeeRepository.findAllByPostIn(postList);
-                    break;
-                case "DEPUTYREGISTER":
-                    postList.add(Post.ASSISTANTREGISTER);
-                    empList = employeeRepository.findAllByPostIn(postList);
-                    break;
-                case "ASSISTANTREGISTER":
-                    postList.add(Post.SECTIONOFFICER);
-                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
-                    break;
-                case "SECTIONOFFICER":
-                    postList.add(Post.LDC);
-                    postList.add(Post.UDC);
-                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
-                    break;
-                default: 
-                        empList = null;
-                        log.info("can't not find valid employee");
-            }
-               /* {
-                   if(employee.getPost().toString().equals("CHANCELLOR"))
-                {
-                    postList.add(Post.VICECHANCELLOR);
-                    empList = employeeRepository.findAllByPostIn(postList);
-                    if(status.equalsIgnoreCase("Applied"))
-                        status = "PENDDING";
-                }
-                else if(employee.getPost().toString().equals("VICECHANCELLOR"))
-                {  
-                   // postList.add(employee.getPost());
-                    postList.add(Post.REGISTRAR);
-                    empList = employeeRepository.findAllByPostIn(postList);
-                }
-                else if(employee.getPost().toString().equals("REGISTRAR"))
-                {
-                  //  postList.add(employee.getPost());
-                    postList.add(Post.HOD);
-                    postList.add(Post.DEPUTYREGISTER);
-                    empList = employeeRepository.findAllByPostIn(postList);
-                }
-                else if(employee.getPost().toString().equals("DEPUTYREGISTER"))
-                {
-                   // postList.add(employee.getPost());
-                    postList.add(Post.ASSISTANTREGISTER);
-                    empList = employeeRepository.findAllByPostIn(postList);
-                }
-                else if(employee.getPost().toString().equals("ASSISTANTREGISTER"))
-                {
-                   // postList.add(employee.getPost());
-                    postList.add(Post.SECTIONOFFICER);
-                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
-                }
-                 else
-                {
-                   // postList.add(employee.getPost());
-                    postList.add(Post.LDC);
-                    postList.add(Post.UDC);
-                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
-                }
-            }*/
-                /* for (Employee employee2 : empList) 
-                {
-                    for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
-                    if(l!=null)
-                    {
-                        String flowStatus[] = l.getFlowStatus().split("->");
-                        String flowPost = flowStatus[flowStatus.length-1];
-                        System.out.println("flow Post:"+flowPost);
-                        if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
-                            list.add(l);
-                        else if(status.equals("APPROVED") && l.getStatus().equals("APPROVED") && l.getApprovedBy().equals(employee))
-                            list.add(l);
-                        else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
-                            list.add(l);
-                    }
-                }*/
-                List<String> flowList = new ArrayList<String>();
-                flowList.add("NEW");
-                flowList.add("NEW->HOD->REGISTRAR");
-                if(status.equals("PENDDING")){
-                    list=leaveApplicationRepository.findAllByStatusAndFlowStatusIn("APPLIED", flowList);
-                }
-                //System.err.println("post "+Post.HOD);
-            }
-            else if(post.equalsIgnoreCase("FACULTY") || post.equalsIgnoreCase("UDC") || post.equalsIgnoreCase("LDC"))
+            Employee employee = getLoggedUser();
+            String post = employee.getPost().toString();
+            log.info(post + " Login");
+            System.out.println("status: "+status);
+            if(post.equalsIgnoreCase("FACULTY") || post.equalsIgnoreCase("UDC") || post.equalsIgnoreCase("LDC"))
             {
                 if(status.equals("APPLIED"))
                     list = leaveApplicationRepository.findAllByEmployee(employee);
             }
+            else{
+                List<String> flowStatusList = new ArrayList<String>();
+                List<Employee> empList;
+                List<Post> postList=new ArrayList<Post>();
+                postList.add(employee.getPost());
+                String flowStatus="";
+                switch (post)
+                {   
+                   
+
+                    case "CHANCELLOR":
+                        postList.add(Post.VICECHANCELLOR);
+                        flowStatusList.add("NEW->HOD->REGISTRAR->VICECHANCELLOR->CHANCELLOR");
+                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR->CHANCELLOR");
+                        empList = employeeRepository.findAllByPostIn(postList);
+                        break;
+                    case "VICECHANCELLOR":
+                        postList.add(Post.REGISTRAR);
+                        flowStatusList.add("NEW->HOD->REGISTRAR->VICECHANCELLOR");
+                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR");
+                        empList = employeeRepository.findAllByPostIn(postList);
+                        break;
+                    case "REGISTRAR":
+                        postList.add(Post.HOD);
+                        postList.add(Post.DEPUTYREGISTER);
+                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR");
+                        flowStatusList.add("NEW->HOD->REGISTRAR");
+                        empList = employeeRepository.findAllByPostIn(postList);   
+                        break;
+                    case "HOD":
+                        empList = employeeRepository.findAllByDepartment(employee.getDepartment());
+                        break;
+                    case "DEPUTYREGISTER":
+                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER");
+                        postList.add(Post.ASSISTANTREGISTER);
+                        empList = employeeRepository.findAllByPostIn(postList);
+                        break;
+                    case "ASSISTANTREGISTER":
+                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER");
+                        postList.add(Post.SECTIONOFFICER);
+                        empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                        break;
+                    case "SECTIONOFFICER":
+                        postList.add(Post.LDC);
+                        postList.add(Post.UDC);
+                        empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                        break;
+                    default: 
+                            empList = null;
+                            log.info("can't not find valid employee");
+                }
+                List<LeaveApplication> leaveAppList = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusOrFlowStatusIn(empList,"NEW",flowStatusList);
+                for(LeaveApplication l : leaveAppList ){
+                    System.out.println("\nleave: "+l);
+                    if(l!=null)
+                    {   
+                        if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
+                            list.add(l);
+                        else if(status.equals("APPROVED") && (l.getStatus().equals("APPROVED") || l.getStatus().equals("REJECTED")) && l.getApprovedBy().equals(employee))
+                            list.add(l);
+                        else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
+                            list.add(l);
+                    }
+                }
+                    /* if(post.equalsIgnoreCase("HOD"))
+                        {
+                            //list = leaveApplicationRepository.findAllByALLEmployee(employeeRepository.findAllByDepartment(employee.getDepartment()));
+                            for (Employee employee2 : employeeRepository.findAllByDepartment(employee.getDepartment())) 
+                            {
+                                for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
+                                {
+                                    if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()) && l.getFlowStatus().equalsIgnoreCase("New")){
+                                        list.add(l);
+                                    }
+                                    else if(status.equals("APPROVED") && (l.getStatus().equals("APPROVED") || l.getStatus().equals("REJECTED")) && l.getApprovedBy().equals(employee))
+                                        list.add(l);
+                                    else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
+                                        list.add(l);
+                                }	
+                            }
+                            
+                        }
+                        else if(post.equalsIgnoreCase("REGISTRAR") || post.equalsIgnoreCase("CHANCELLOR") || post.equalsIgnoreCase("VICECHANCELLOR") || post.equalsIgnoreCase("DEPUTYREGISTER") || post.equalsIgnoreCase("ASSISTANTREGISTER") || post.equalsIgnoreCase("SECTIONOFFICER"))
+                        {
+                            List<Employee> empList;
+                            List<Post> postList=new ArrayList<Post>();
+                            postList.add(employee.getPost());
+                            String flowStatus="";
+                            switch (post)
+                            {
+                                case "CHANCELLOR":
+                                    postList.add(Post.VICECHANCELLOR);
+                                    flowStatus = "NEW->HOD->REGISTRAR->VICECHANCELLOR->CHANCELLOR";
+                                    empList = employeeRepository.findAllByPostIn(postList);
+                                    break;
+                                case "VICECHANCELLOR":
+                                    postList.add(Post.REGISTRAR);
+                                    flowStatus = "NEW->HOD->REGISTRAR->VICECHANCELLOR";
+                                    empList = employeeRepository.findAllByPostIn(postList);
+                                    break;
+                                case "REGISTRAR":
+                                    postList.add(Post.HOD);
+                                    postList.add(Post.DEPUTYREGISTER);
+                                // postList.add(Post.REGISTRAR);
+                                    empList = employeeRepository.findAllByPostIn(postList);
+                                    flowStatus = "NEW->HOD->REGISTRAR";
+                                    break;
+                                case "DEPUTYREGISTER":
+                                    postList.add(Post.ASSISTANTREGISTER);
+                                    empList = employeeRepository.findAllByPostIn(postList);
+                                    break;
+                                case "ASSISTANTREGISTER":
+                                    postList.add(Post.SECTIONOFFICER);
+                                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                                    break;
+                                case "SECTIONOFFICER":
+                                    postList.add(Post.LDC);
+                                    postList.add(Post.UDC);
+                                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                                    break;
+                                default: 
+                                        empList = null;
+                                        log.info("can't not find valid employee");
+                            }
+                        
+
+                            // System.out.println("\nEmployee: "+employee2);
+                                List<LeaveApplication> leaveAppList = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusOrFlowStatus(empList,"NEW",flowStatus);
+                                for(LeaveApplication l : leaveAppList ){
+                                System.out.println("\nleave: "+l);
+                                if(l!=null)
+                                {   
+                                    if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
+                                        list.add(l);
+                                    else if(status.equals("APPROVED") && l.getStatus().equals("APPROVED") && l.getApprovedBy().equals(employee))
+                                        list.add(l);
+                                    else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
+                                        list.add(l);
+                                }
+                            }
+                            
+                        }*/
+        
+            }
         }
         return  list;
-        }
+    }
 
     /**
      * GET  /leave-applications/:id : get the "id" leaveApplication.
