@@ -282,10 +282,12 @@ public class LeaveApplicationResource {
                     if(l!=null)
                     {   
                         if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
-                            list.add(l);
+                            list.add(l); 
+                        if(status.equalsIgnoreCase("Forward") && !employee.equals(l.getEmployee()))
+                            list.add(l); 
                         else if(status.equals("APPROVED") && (l.getStatus().equals("APPROVED") || l.getStatus().equals("REJECTED")) && l.getApprovedBy().equals(employee))
                             list.add(l);
-                        else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
+                        else if(status.equals("APPLIED") && employee.equals(l.getEmployee()))
                             list.add(l);
                     }
                 }

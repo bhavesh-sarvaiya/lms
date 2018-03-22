@@ -19,8 +19,11 @@
           <a class="nav-link" (click)="ngOnInit('APPROVED')">Approved/Rejected</a>
         </li>
         <li class="nav-item">
-          <a *ngIf="employee.post != 'CHANCELLOR'" class="nav-link" (click)="ngOnInit('APPLIED')">Applied</a>
+          <a *ngIf="employee.post != 'CHANCELLOR'" class="nav-link" (click)="ngOnInit('APPLIED')">Your Leave</a>
         </li>
+        <li class="nav-item" >
+            <a class="nav-link " (click)="ngOnInit('Forward')">Fowarded</a>
+          </li>
       </ul>  
     <jhi-alert></jhi-alert>
     <div class="row">

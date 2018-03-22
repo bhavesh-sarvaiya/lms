@@ -18,6 +18,7 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
 
     fromDate: any;
     toDate: any;
+    flowStatus: any;
     employee: Employee;
     leaveApplication: LeaveApplication;
     private subscription: Subscription;
@@ -80,7 +81,7 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
         this.employeeService.findByEmail(email)
             .subscribe((employeeResponse: HttpResponse<Employee>) => {
                 this.employee = employeeResponse.body;
-                console.log(this.employee);
+                console.log('logged user: ' + JSON.stringify(this.employee));
             });
     }
     load(id) {
@@ -89,6 +90,9 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
                 this.leaveApplication = leaveApplicationResponse.body;
                 this.fromDate = this.leaveApplication.fromDate;
                 this.toDate = this.leaveApplication.toDate;
+                this.flowStatus = this.leaveApplication.flowStatus.split('->');
+                this.flowStatus = this.flowStatus[this.flowStatus.length - 1];
+                console.log('flow Status: ' + this.flowStatus );
             });
            // this.employee = this.leaveComponent.getEmployee();
            // console.log('employee' + this.employee);
