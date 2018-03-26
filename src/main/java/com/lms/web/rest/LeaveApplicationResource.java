@@ -245,6 +245,7 @@ public class LeaveApplicationResource {
                         postList.add(Post.REGISTRAR);
                         flowStatusList.add("NEW->HOD->REGISTRAR->VICECHANCELLOR");
                         flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR");
+                        flowStatus = "NEW->HOD->REGISTRAR->VICECHANCELLOR->CHANCELLOR";
                         empList = employeeRepository.findAllByPostIn(postList);
                         break;
                     case "REGISTRAR":
@@ -252,124 +253,57 @@ public class LeaveApplicationResource {
                         postList.add(Post.DEPUTYREGISTER);
                         flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR");
                         flowStatusList.add("NEW->HOD->REGISTRAR");
+                        flowStatus = "NEW->HOD->REGISTRAR->VICECHANCELLOR";
                         empList = employeeRepository.findAllByPostIn(postList);   
                         break;
                     case "HOD":
+                        flowStatus = "NEW->HOD";
                         empList = employeeRepository.findAllByDepartment(employee.getDepartment());
                         break;
                     case "DEPUTYREGISTER":
                         flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER");
+                        flowStatus = "NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER";
                         postList.add(Post.ASSISTANTREGISTER);
                         empList = employeeRepository.findAllByPostIn(postList);
                         break;
                     case "ASSISTANTREGISTER":
                         flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER");
+                        flowStatus = "NEW->SECTIONOFFICER->ASSISTANTREGISTER";
                         postList.add(Post.SECTIONOFFICER);
                         empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
                         break;
                     case "SECTIONOFFICER":
                         postList.add(Post.LDC);
                         postList.add(Post.UDC);
+                        flowStatus = "NEW->SECTIONOFFICER";
                         empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
                         break;
                     default: 
                             empList = null;
                             log.info("can't not find valid employee");
                 }
-                List<LeaveApplication> leaveAppList = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusOrFlowStatusIn(empList,"NEW",flowStatusList);
+                List<LeaveApplication> leaveAppList = null;
+                if(status.equalsIgnoreCase("Forward"))
+                {
+                    System.out.println("Forward status");
+                    list = leaveApplicationRepository.findAllByFlowStatusLike(flowStatus);
+                }
+                else{
+                 leaveAppList = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusOrFlowStatusIn(empList,"NEW",flowStatusList);
+                
                 for(LeaveApplication l : leaveAppList ){
                     System.out.println("\nleave: "+l);
                     if(l!=null)
                     {   
                         if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
-                            list.add(l); 
-                        if(status.equalsIgnoreCase("Forward") && !employee.equals(l.getEmployee()))
-                            list.add(l); 
+                            list.add(l);  
                         else if(status.equals("APPROVED") && (l.getStatus().equals("APPROVED") || l.getStatus().equals("REJECTED")) && l.getApprovedBy().equals(employee))
                             list.add(l);
                         else if(status.equals("APPLIED") && employee.equals(l.getEmployee()))
                             list.add(l);
                     }
                 }
-                    /* if(post.equalsIgnoreCase("HOD"))
-                        {
-                            //list = leaveApplicationRepository.findAllByALLEmployee(employeeRepository.findAllByDepartment(employee.getDepartment()));
-                            for (Employee employee2 : employeeRepository.findAllByDepartment(employee.getDepartment())) 
-                            {
-                                for(LeaveApplication l : leaveApplicationRepository.findAllByEmployee(employee2))
-                                {
-                                    if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()) && l.getFlowStatus().equalsIgnoreCase("New")){
-                                        list.add(l);
-                                    }
-                                    else if(status.equals("APPROVED") && (l.getStatus().equals("APPROVED") || l.getStatus().equals("REJECTED")) && l.getApprovedBy().equals(employee))
-                                        list.add(l);
-                                    else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
-                                        list.add(l);
-                                }	
-                            }
-                            
-                        }
-                        else if(post.equalsIgnoreCase("REGISTRAR") || post.equalsIgnoreCase("CHANCELLOR") || post.equalsIgnoreCase("VICECHANCELLOR") || post.equalsIgnoreCase("DEPUTYREGISTER") || post.equalsIgnoreCase("ASSISTANTREGISTER") || post.equalsIgnoreCase("SECTIONOFFICER"))
-                        {
-                            List<Employee> empList;
-                            List<Post> postList=new ArrayList<Post>();
-                            postList.add(employee.getPost());
-                            String flowStatus="";
-                            switch (post)
-                            {
-                                case "CHANCELLOR":
-                                    postList.add(Post.VICECHANCELLOR);
-                                    flowStatus = "NEW->HOD->REGISTRAR->VICECHANCELLOR->CHANCELLOR";
-                                    empList = employeeRepository.findAllByPostIn(postList);
-                                    break;
-                                case "VICECHANCELLOR":
-                                    postList.add(Post.REGISTRAR);
-                                    flowStatus = "NEW->HOD->REGISTRAR->VICECHANCELLOR";
-                                    empList = employeeRepository.findAllByPostIn(postList);
-                                    break;
-                                case "REGISTRAR":
-                                    postList.add(Post.HOD);
-                                    postList.add(Post.DEPUTYREGISTER);
-                                // postList.add(Post.REGISTRAR);
-                                    empList = employeeRepository.findAllByPostIn(postList);
-                                    flowStatus = "NEW->HOD->REGISTRAR";
-                                    break;
-                                case "DEPUTYREGISTER":
-                                    postList.add(Post.ASSISTANTREGISTER);
-                                    empList = employeeRepository.findAllByPostIn(postList);
-                                    break;
-                                case "ASSISTANTREGISTER":
-                                    postList.add(Post.SECTIONOFFICER);
-                                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
-                                    break;
-                                case "SECTIONOFFICER":
-                                    postList.add(Post.LDC);
-                                    postList.add(Post.UDC);
-                                    empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
-                                    break;
-                                default: 
-                                        empList = null;
-                                        log.info("can't not find valid employee");
-                            }
-                        
-
-                            // System.out.println("\nEmployee: "+employee2);
-                                List<LeaveApplication> leaveAppList = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusOrFlowStatus(empList,"NEW",flowStatus);
-                                for(LeaveApplication l : leaveAppList ){
-                                System.out.println("\nleave: "+l);
-                                if(l!=null)
-                                {   
-                                    if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
-                                        list.add(l);
-                                    else if(status.equals("APPROVED") && l.getStatus().equals("APPROVED") && l.getApprovedBy().equals(employee))
-                                        list.add(l);
-                                    else if(status.equals("APPLIED") && l.getStatus().equals("APPLIED") && employee.equals(l.getEmployee()))
-                                        list.add(l);
-                                }
-                            }
-                            
-                        }*/
-        
+            }
             }
         }
         return  list;

@@ -2,7 +2,7 @@
 <div>
     <h2>
         <span jhiTranslate="lmsApp.leaveApplication.home.title">Leave Applications</span>
-        <button *ngIf="currentAccount.login != 'admin'" class="btn btn-primary float-right jh-create-entity create-leave-application" [routerLink]="['/', { outlets: { popup: ['leave-application-new'] } }]">
+        <button *ngIf="currentAccount && currentAccount.login != 'admin'" class="btn btn-primary float-right jh-create-entity create-leave-application" [routerLink]="['/', { outlets: { popup: ['leave-application-new'] } }]">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="lmsApp.leaveApplication.home.createLabel">
             Create new Leave Application
@@ -10,7 +10,7 @@
         </button>
     </h2>
 
-     <ul *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.post != 'LDC' && employee.post != 'UDC'" class="nav nav-tabs">
+     <ul *ngIf="currentAccount && employee &&currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.post != 'LDC' && employee.post != 'UDC'" class="nav nav-tabs">
      
         <li class="nav-item" >
           <a class="nav-link " (click)="ngOnInit('PENDDING')">Pandding</a>
@@ -18,10 +18,10 @@
         <li class="nav-item" >
           <a class="nav-link" (click)="ngOnInit('APPROVED')">Approved/Rejected</a>
         </li>
-        <li class="nav-item">
-          <a *ngIf="employee.post != 'CHANCELLOR'" class="nav-link" (click)="ngOnInit('APPLIED')">Your Leave</a>
+        <li *ngIf="employee.post != 'CHANCELLOR'" class="nav-item">
+          <a  class="nav-link" (click)="ngOnInit('APPLIED')">Your Leave</a>
         </li>
-        <li class="nav-item" >
+        <li *ngIf="employee.post != 'CHANCELLOR'" class="nav-item" >
             <a class="nav-link " (click)="ngOnInit('Forward')">Fowarded</a>
           </li>
       </ul>  

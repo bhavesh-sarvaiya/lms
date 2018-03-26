@@ -97,27 +97,29 @@
           </div>
       </div>
     </dl>
-    <div class="row">
+    <div class="row"  *ngIf="employee">
         <div class="col-md-3"> <button type="submit"
             (click)="previousState()"
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
     </button></div>
-            <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email"> 
-                <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED' && (flowStatus == 'NEW' || flowStatus == employee.post)"  (click)="save('APPROVED')" class="btn btn-success">
+    <div  class="row" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email && leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED' && (flowStatus == 'NEW' || flowStatus == employee.post) ">
+            <div class="col-md-3"> 
+                <button (click)="save('APPROVED')" class="btn btn-success">
                         <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.approved">Approved</span>
                     </button>
         </div>
-            <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email" >
-            <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED' && (flowStatus == 'NEW' || flowStatus == employee.post)"  (click)="save('REJECTED')" class="btn btn-danger">
+            <div class="col-md-3">
+            <button  (click)="save('REJECTED')" class="btn btn-danger">
                     <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.reject">Reject</span>
                 </button>
             </div>
-            <div class="col-md-3" *ngIf="currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.post != 'CHANCELLOR' && employee.email != leaveApplication.employee.email" >
-                <button *ngIf="leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED' && (flowStatus == 'NEW' || flowStatus == employee.post) "  (click)="save('FORWARD')"  class="btn btn-primary">
+            <div class="col-md-3" *ngIf="employee.post != 'CHANCELLOR'">
+                <button   (click)="save('FORWARD')"  class="btn btn-primary">
                         <span>Forward to Superior</span>&nbsp;<span class="fa fa-arrow-right"></span>
                     </button>
                 </div>
+            </div>
     </div>
     <!-- <button type="button"
             [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/edit'} }]"

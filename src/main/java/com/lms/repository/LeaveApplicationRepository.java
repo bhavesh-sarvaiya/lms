@@ -24,5 +24,6 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 	List<LeaveApplication> findAllByStatusAndFlowStatusIn(String status,List<String> flowStatus);
 	List<LeaveApplication> findAllByEmployeeInAndFlowStatusOrFlowStatus(List<Employee> employeeList,String flowStatus,String flowStatus1);
 	List<LeaveApplication> findAllByEmployeeInAndFlowStatusOrFlowStatusIn(List<Employee> employeeList,String flowStatus,List<String> flowStatusList);
-	
+	@Query("select l from LeaveApplication l where l.flowStatus LIKE ?1%")
+	List<LeaveApplication> findAllByFlowStatusLike(String floStatus);
 }

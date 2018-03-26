@@ -15,7 +15,7 @@
                 <li  *ngSwitchCase="true" class="nav-item">
                         <div class="alert alert-primary">
                                 <!-- <span *ngIf="account">{{account.login}} </span> -->
-                                <strong  *ngIf="account">{{account.login}}</strong>
+                                <span  *ngIf="account"  [innerHTML]="account.login"></span>
                             </div>
                     </li>
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -25,6 +25,32 @@
                         <span jhiTranslate="global.menu.home">Home</span>
                     </span>
                 </a>
+            </li>
+          
+            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer"  routerLinkActive="active"  [routerLinkActiveOptions]="{ exact: true }" >
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="leave-menu">
+                    <i class="fa fa-th-list" aria-hidden="true"></i>
+                    <span jhiTranslate="global.menu.entities.leaveApplication.leave">
+                        Leave 
+                    </span>
+                </a>
+                
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                <li>
+                        <a class="dropdown-item" routerLink="leave-application" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.leaveApplication.leaveList">Leave List</span>
+                        </a>
+                    </li>
+
+                    <li *ngIf="account && account.login != 'admin'">
+                            <a class="dropdown-item" [routerLink]="['/', { outlets: { popup: ['leave-application-new'] } }]" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                                <span jhiTranslate="global.menu.entities.leaveApplication.leaveRequest">Leave Request</span>
+                            </a>
+                        </li>
+
+                </ul>
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
             <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -67,12 +93,12 @@
                             <span jhiTranslate="global.menu.entities.leaveAllocation">Leave Allocation</span>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a class="dropdown-item" routerLink="leave-application" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.leaveApplication">Leave Application</span>
                         </a>
-                    </li>
+                    </li> -->
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

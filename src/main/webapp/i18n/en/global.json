@@ -12,7 +12,10 @@
                 "leaveBalance": "Leave Balance",
                 "leaveType": "Leave Type",
                 "leaveAllocation": "Leave Allocation",
-                "leaveApplication": "Leave Application",
+                "leaveApplication": { "leave":"Leave",
+                                    "leaveList":"List",
+                                    "leaveRequest":"Apply"
+                                },
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
