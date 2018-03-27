@@ -7,6 +7,7 @@ import { LeaveApplication } from './leave-application.model';
 import { LeaveApplicationService } from './leave-application.service';
 import { Principal, User } from '../../shared';
 import { Employee, EmployeeService, Post } from '../employee';
+import { test } from './test.js';
 
 @Component({
     selector: 'jhi-leave-application',
@@ -50,6 +51,7 @@ leaveApplications: LeaveApplication[];
         );
     }
     ngOnInit(status?) {
+            test();
             this.principal.identity().then((account) => {
                 this.currentAccount = account;
                 this.loadEmployee(this.currentAccount.login);

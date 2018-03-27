@@ -16,11 +16,11 @@
             "detail": {
                 "title": "Employee"
             },
-            "teachingstaff": "Teachingstaff",
+            "teachingstaff": "Teaching Staff",
             "canHaveVacation": "Can Have Vacation",
             "post": "Post",
             "middleName": "Middle Name",
-            "fatherHusbandName": "Father Husband Name",
+            "fatherHusbandName": "Father/Husband Name",
             "gender": "Gender",
             "dob": "Dob",
             "address": "Address",
@@ -41,7 +41,7 @@
             "email": "Email",
             "firstName": "First Name",
             "lastName": "Last Name",
-            "empEnrollmentNo": "Emp Enrollment No",
+            "empEnrollmentNo": "Enrollment No",
             "department": "Department"
         }
     }

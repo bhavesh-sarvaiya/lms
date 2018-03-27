@@ -2,8 +2,8 @@ package com.lms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 
-import com.lms.domain.User;
-import com.lms.repository.UserRepository;
+import com.lms.domain.*;
+import com.lms.repository.*;
 import com.lms.security.SecurityUtils;
 import com.lms.service.MailService;
 import com.lms.service.UserService;
@@ -32,16 +32,17 @@ public class AccountResource {
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
 
     private final UserRepository userRepository;
-
+    private final EmployeeRepository employeeRepository;
     private final UserService userService;
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService,EmployeeRepository employeeRepository) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.employeeRepository = employeeRepository;
     }
 
     /**
@@ -126,8 +127,17 @@ public class AccountResource {
         if (!user.isPresent()) {
             throw new InternalServerErrorException("User could not be found");
         }
+        
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
             userDTO.getLangKey(), userDTO.getImageUrl());
+            if(!userLogin.equalsIgnoreCase("admin"))
+            {
+                Employee employee = employeeRepository.findOneByEmpEnrollmentNo(userLogin);
+                employee.setFirstName(userDTO.getFirstName());
+                employee.setLastName(userDTO.getLastName());
+                employee.setEmail(userDTO.getEmail());
+                employeeRepository.save(employee);
+            }
    }
 
     /**

@@ -3,7 +3,348 @@
     <h2><span jhiTranslate="lmsApp.employee.detail.title">Employee</span> {{employee.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
+    <div class="container">
+        <div class="card">
+			<div class="card-header bg-info text-white" >General Information</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-6">
+						<!-- <div class="form-group"> -->
+							<label
+								
+                                for="field_empEnrollmentNo">Enrollment No</label> 
+                                <input
+								type="text" class="form-control" name="empEnrollmentNo"
+								id="field_empEnrollmentNo" [(ngModel)]="employee.empEnrollmentNo"
+								required readonly />
+						
+						<!-- </div> -->
+		
+						<!-- <div class="form-group"> -->
+							<label class="form-control-label"
+								for="field_firstName">First
+								Name</label> <input type="text" class="form-control" name="firstName"
+								id="field_firstName" [(ngModel)]="employee.firstName" required readonly/>
+							
+						<!-- </div> -->
+						<!-- <div class="form-group"> -->
+							<label class="form-control-label"
+								 for="field_middleName">Middle
+								Name</label> <input type="text" class="form-control" name="middleName"
+								id="field_middleName" [(ngModel)]="employee.middleName" required readonly />
+							
+						<!-- </div> -->
+						<!-- <div class="form-group"> -->
+							<label class="form-control-label"
+							 for="field_lastName">Last
+								Name</label> <input type="text" class="form-control" name="lastName"
+								id="field_lastName" [(ngModel)]="employee.lastName" required readonly/>
+							
+						<!-- </div> -->
+						<!-- <div class="form-group"> -->
+							<label class="form-control-label"
+								 for="field_gender">Gender</label>
+							<select class="form-control" name="gender"
+								[(ngModel)]="employee.gender" id="field_gender" required readonly>
+								<option value="MALE">{{'lmsApp.GenderEnum.MALE' |
+									translate}}</option>
+								<option value="FEMALE">{{'lmsApp.GenderEnum.FEMALE' |
+									translate}}</option>
+							</select>
+							
+						<!-- </div> -->
+					</div>
+					<div class="col-md-6">
+						<!-- <div class="form-group"> -->
+							<label class="form-control-label"
+								 for="field_department">Department</label>
+							<select class="form-control" id="field_department"
+								name="department" [(ngModel)]="employee.department" disabled>
+								<option
+									[ngValue]="employee.department">{{employee.department.name}}</option>
+							</select>
+		
+						<!-- </div> -->
+		
+						<!-- <div class="form-group"> -->
+							<label class="form-control-label"
+								 for="field_post">Post</label>
+							<select class="form-control" name="post"
+								[(ngModel)]="employee.post" id="field_post" required disabled>
+								<option
+									[ngValue]="employee.post"
+									>{{employee.post}}</option>
+                            </select>
+                        <br>
+						<div class="card">
+							<div class="card-header">Employee Type</div>
+							<div class="card-body">
+										<div class="row">
+											<div class="col-md-6">
+													<label class="form-control-label"
+													
+													for="field_teachingstaff">Teaching Staff</label>
+											</div>
+											<div class="col-md-6">
+													<input
+													type="checkbox" class="form-control" name="teachingstaff"
+													id="field_teachingstaff" [(ngModel)]="employee.teachingstaff" disabled />
+											</div>
+										</div>
+									
+										<div class="row">	
+												<div class="col-md-6">
+														<label class="form-control-label"
+														
+														for="field_canHaveVacation">Can Have Vacation</label> 
+												</div>
+												<div class="col-md-6">
+														<input
+													type="checkbox" class="form-control" name="canHaveVacation"
+													id="field_canHaveVacation" [(ngModel)]="employee.canHaveVacation" disabled />
+												</div>
+											
+										</div>
+											<div class="row">
+												<div class="col-md-6">
+														<label class="form-control-label"
+													 for="field_granted">Granted</label>
+												</div>
+												<div class="col-md-6">
+														<input type="checkbox" class="form-control" name="granted"
+														id="field_granted" [(ngModel)]="employee.granted" disabled />
+												</div>	
+											</div>
+							</div>
+                        </div>
+                        	</div>
+				</div>
+			</div> 
+        </div>
+        <br>
+	<div class="card ">
+		<div class="card-header bg-info text-white">Address Information</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-6">
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_address">Address</label>
+						<input type="text" class="form-control" name="address"
+							id="field_address" [(ngModel)]="employee.address" required readonly />
+					
+					<!-- </div> -->
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_city">City</label>
+						<input type="text" class="form-control" name="city" id="field_city"
+							[(ngModel)]="employee.city" required readonly/>
+						
+					<!-- </div> -->
+				</div>
+				<div class="col-md-6">
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_state">State</label>
+						<input type="text" class="form-control" name="state"
+							id="field_state" [(ngModel)]="employee.state" required readonly/>
+						
+					<!-- </div> -->
+	
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_pincode">Pincode</label>
+						<input type="text" class="form-control" name="pincode"
+							id="field_pincode" [(ngModel)]="employee.pincode" required readonly/>
+						
+					<!-- </div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="card">
+		<div class="card-header bg-info text-white">Personal Information</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-6">
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_email">Email</label>
+						<input type="text" class="form-control" name="email"
+							id="field_email" [(ngModel)]="employee.email" required readonly
+							maxlength="255" />
+						
+					<!-- </div> -->
+	
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							
+							for="field_mobileNumber">Mobile Number</label> <input type="text"
+							class="form-control" name="mobileNumber" id="field_mobileNumber"
+							[(ngModel)]="employee.mobileNumber" required readonly/>
+						
+					<!-- </div> -->
+	
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_phoneNumber">Phone
+							Number</label> <input type="text" class="form-control" name="phoneNumber"
+							id="field_phoneNumber" [(ngModel)]="employee.phoneNumber" required readonly/>
+					
+					<!-- </div> -->
+	
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_dob">Dob</label>
+						<div class="input-group">
+							<input id="field_dob" type="text" class="form-control" name="dob" value="{{employee.dob | date:'mediumDate'}}"
+                                required readonly/> 
+                                <span
+								class="input-group-append">
+								<button type="button" class="btn btn-secondary" readonly>
+									<i class="fa fa-calendar"></i>
+								</button>
+                                </span>                                        
+                            </div>
+						
+					<!-- </div> -->
+	
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_joinDate">Join
+							Date</label>
+						<div class="input-group">
+							<input id="field_joinDate" type="text" class="form-control"
+								name="joinDate" value="{{employee.joinDate | date:'mediumDate'}}" required readonly/> <span
+								class="input-group-append">
+								<button type="button" class="btn btn-secondary">
+									<i class="fa fa-calendar" disabled></i>
+								</button>
+							</span>
+						</div>
+						
+					<!-- </div> -->
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_retiredDate">Retired
+							Date</label>
+						<div class="input-group">
+							<input id="field_retiredDate" type="text" class="form-control"
+								name="retiredDate" value="{{employee.joinDate | date:'mediumDate'}}" required readonly /> <span
+								class="input-group-append">
+								<button type="button" class="btn btn-secondary">
+									<i class="fa fa-calendar"></i>
+								</button>
+							</span>
+						</div>
+						
+					<!-- </div> -->
+	
+				</div>
+				<div class="col-md-6">
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							
+							for="field_fatherHusbandName">Father Husband Name</label> <input
+							type="text" class="form-control" name="fatherHusbandName"
+							id="field_fatherHusbandName"
+							[(ngModel)]="employee.fatherHusbandName" required readonly/>
+					
+					<!-- </div> -->
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							
+							for="field_qualification">Qualification</label> <input type="text"
+							class="form-control" name="qualification" id="field_qualification"
+							[(ngModel)]="employee.qualification" required readonly/>
+					
+					<!-- </div> -->
+	
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_bloodGroup">Blood
+							Group</label> <select class="form-control" name="bloodGroup"
+							[(ngModel)]="employee.bloodGroup" id="field_bloodGroup" required disabled>
+							<option value="APOSITIVE">{{employee.bloodGroup}}</option>
+							
+						</select>
+						
+					<!-- </div> -->
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							
+							for="field_maritalStatus">Marital Status</label> <select
+							class="form-control" name="maritalStatus"
+							[(ngModel)]="employee.maritalStatus" id="field_maritalStatus"
+							required disabled>
+							<option value="MARRIED">{{employee.maritalStatus}}</option>
+						</select>
+						
+					<!-- </div> -->
+					
+					<!-- <div class="form-group"> -->
+						<br>
+						<div class="row">
+							<div class="col-md-6">
+									<label class="form-control-label"
+									 for="field_physicalFit">Physical
+									Fit</label>
+							</div>
+							<div class="col-md-6">
+									<input type="checkbox" class="form-control" name="physicalFit"
+									id="field_physicalFit" [(ngModel)]="employee.physicalFit" disabled/>
+							</div>
+							
+						</div>
+						
+						<br>
+					<!-- </div> -->
+					<!-- <div class="form-group"> -->
+						<label class="form-control-label"
+							 for="field_payband">Payband</label>
+						<input type="number" class="form-control" name="payband"
+							id="field_payband" [(ngModel)]="employee.payband" required readonly/>
+						
+					<!-- </div> -->
+				</div>
+			</div>
+		</div> 
+		
+	 
+	</div>
+	<br>
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="form-control-label"
+							 for="field_otheNote">Othe
+							Note</label> <input type="text" class="form-control" name="otheNote"
+							id="field_otheNote" [(ngModel)]="employee.otheNote"readonly />
+					</div>
+				</div>
+			</div>
+		</div> 
+		
+	  </div>
+        <br>
+          <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'employee/'+ employee.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+    </div>
+    <!-- <dl class="row-md jh-entity-details">
         <dt><span jhiTranslate="lmsApp.employee.teachingstaff">Teachingstaff</span></dt>
         <dd>
             <span>{{employee.teachingstaff}}</span>
@@ -114,19 +455,7 @@
                 <a [routerLink]="['/department', employee.department?.id]">{{employee.department?.name}}</a>
             </div>
         </dd>
-    </dl>
+    </dl> -->
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'employee/'+ employee.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+  
 </div>

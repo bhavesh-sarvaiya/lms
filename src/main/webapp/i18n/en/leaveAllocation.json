@@ -4,7 +4,7 @@
         "leaveAllocation" : {
             "home": {
                 "title": "Leave Allocations",
-                "createLabel": "Create a new Leave Allocation",
+                "createLabel": "Allocate Leave",
                 "createOrEditLabel": "Create or edit a Leave Allocation"
             },
             "created": "A new Leave Allocation is created with identifier {{ param }}",
@@ -16,13 +16,13 @@
             "detail": {
                 "title": "Leave Allocation"
             },
-            "teachingstaff": "Teachingstaff",
+            "teachingstaff": "Teaching Staff",
             "canHaveVacation": "Can Have Vacation",
             "granted": "Granted",
-            "noOfLeave": "No Of Leave",
+            "noOfLeave": "Number Of Leave",
             "allocationDate": "Allocation Date",
             "leaveType": "Leave Type",
-            "all": "All"
+            "all": "All Employee"
         }
     }
 }

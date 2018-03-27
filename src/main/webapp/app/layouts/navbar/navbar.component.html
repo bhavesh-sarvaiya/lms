@@ -26,7 +26,18 @@
                     </span>
                 </a>
             </li>
-          
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                        <a class="nav-link" routerLink="employee"  >
+                           <i class="fa fa-user-o" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.employee">Employee</span>
+                        </a>
+            </li>
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" >
+                        <a class="nav-link" routerLink="department"  >
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.department">Department</span>
+                        </a>
+                    </li>
             <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer"  routerLinkActive="active"  [routerLinkActiveOptions]="{ exact: true }" >
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="leave-menu">
                     <i class="fa fa-th-list" aria-hidden="true"></i>
@@ -49,11 +60,31 @@
                                 <span jhiTranslate="global.menu.entities.leaveApplication.leaveRequest">Leave Request</span>
                             </a>
                         </li>
-
+                    <li>
+                        <a class="dropdown-item" routerLink="leave-balance" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.leaveBalance">Leave Balance</span>
+                        </a>
+                    </li>
+                     
+                    
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'" >
+                        <a class="dropdown-item" routerLink="leave-type" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.leaveType">Leave Type</span>
+                        </a>
+                    </li>
+                     <li *jhiHasAnyAuthority="'ROLE_ADMIN'" >
+                        <a class="dropdown-item" routerLink="leave-allocation" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.leaveAllocation">Leave Allocation</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
+           
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <!-- <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                     <span>
                         <i class="fa fa-th-list" aria-hidden="true"></i>
@@ -63,45 +94,24 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'" >
-                        <a class="dropdown-item" routerLink="department" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.department">Department</span>
-                        </a>
-                    </li>
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'" >
+                    
+                    <!-- <li *jhiHasAnyAuthority="'ROLE_ADMIN'" >
                         <a class="dropdown-item" routerLink="employee" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.employee">Employee</span>
                         </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="leave-balance" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.leaveBalance">Leave Balance</span>
-                        </a>
-                    </li>
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'" >
-                        <a class="dropdown-item" routerLink="leave-type" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.leaveType">Leave Type</span>
-                        </a>
-                    </li>
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'" >
-                        <a class="dropdown-item" routerLink="leave-allocation" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.leaveAllocation">Leave Allocation</span>
-                        </a>
-                    </li>
+                    </li> -->
+                   
+                   
                     <!-- <li>
                         <a class="dropdown-item" routerLink="leave-application" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.leaveApplication">Leave Application</span>
                         </a>
                     </li> -->
-                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here 
                 </ul>
-            </li>
+            </li> -->
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                     <span>

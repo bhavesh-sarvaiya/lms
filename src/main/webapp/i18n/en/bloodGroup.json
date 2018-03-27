@@ -2,14 +2,14 @@
     "lmsApp": {
         "BloodGroup" : {
             "null": "",
-            "APOSITIVE": "APOSITIVE",
-            "OPOSITIVE": "OPOSITIVE",
-            "BPOSITIVE": "BPOSITIVE",
-            "ABPOSITIVE": "ABPOSITIVE",
-            "ANEGATIVE": "ANEGATIVE",
-            "ONEGATIVE": "ONEGATIVE",
-            "BNEGATIVE": "BNEGATIVE",
-            "ABNEGATIVE": "ABNEGATIVE"
+            "APOSITIVE": "A+ve",
+            "OPOSITIVE": "O+ve",
+            "BPOSITIVE": "B+ve",
+            "ABPOSITIVE": "AB+ve",
+            "ANEGATIVE": "A-ve",
+            "ONEGATIVE": "O-ve",
+            "BNEGATIVE": "B-ve",
+            "ABNEGATIVE": "AB-ve"
         }
     }
 }
