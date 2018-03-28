@@ -90,43 +90,6 @@
             <input type="text" class="form-control" name="noofday" (change)="toDate($event)" id="field_noofday" value="{{leaveApplication.fromDate | date:'mediumDate'}}" disabled
                 [(ngModel)]="leaveApplication.noofday" />
         </div>
-    <!--    <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.status" for="field_status">Status</label>
-            <input type="text" class="form-control" name="status" id="field_status"
-                [(ngModel)]="leaveApplication.status" />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.flowStatus" for="field_flowStatus">Flow Status</label>
-            <input type="text" class="form-control" name="flowStatus" id="field_flowStatus"
-                [(ngModel)]="leaveApplication.flowStatus" />
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.comment" for="field_comment">Comment</label>
-            <input type="text" class="form-control" name="comment" id="field_comment"
-                [(ngModel)]="leaveApplication.comment" maxlength="500"/>
-            <div [hidden]="!(editForm.controls.comment?.dirty && editForm.controls.comment?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.comment?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 500 }">
-                   This field cannot be longer than 500 characters.
-                </small>
-            </div>
-        </div>
-
-         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.employee" for="field_employee">Employee</label>
-            <select class="form-control" id="field_employee" name="employee" [(ngModel)]="leaveApplication.employee" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="employeeOption.id === leaveApplication.employee?.id ? leaveApplication.employee : employeeOption" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.empEnrollmentNo}}</option>
-            </select>
-        </div> 
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.approvedBy" for="field_approvedBy">Approved By</label>
-            <select class="form-control" id="field_approvedBy" name="approvedBy" [(ngModel)]="leaveApplication.approvedBy" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="employeeOption.id === leaveApplication.approvedBy?.id ? leaveApplication.approvedBy : employeeOption" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.post}}</option>
-            </select>
-        </div>-->
-       
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

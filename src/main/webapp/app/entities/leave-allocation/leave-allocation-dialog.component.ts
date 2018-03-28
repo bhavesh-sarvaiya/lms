@@ -48,6 +48,7 @@ export class LeaveAllocationDialogComponent implements OnInit {
         this.leaveAllocation.canHaveVacation = false;
         this.leaveAllocation.granted = false;
         this.leaveAllocation.all = true;
+        console.log(this.employeeService);
         this.employeeService.query().subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         } else {
             this.loadEmployee(event);
@@ -107,7 +108,7 @@ export class LeaveAllocationDialogComponent implements OnInit {
         return item.id;
     }
 
-    trackEmployeeById(index: number, item: LeaveType) {
+    trackEmployeeById(index: number, item: Employee) {
         return item.id;
     }
 }

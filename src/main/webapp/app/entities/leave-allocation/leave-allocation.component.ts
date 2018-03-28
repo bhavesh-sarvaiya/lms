@@ -7,7 +7,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { LeaveAllocation } from './leave-allocation.model';
 import { LeaveAllocationService } from './leave-allocation.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
-
+import { Employee, EmployeeService } from '../employee';
 @Component({
     selector: 'jhi-leave-allocation',
     templateUrl: './leave-allocation.component.html'
@@ -16,6 +16,7 @@ export class LeaveAllocationComponent implements OnInit, OnDestroy {
 
 currentAccount: any;
     leaveAllocations: LeaveAllocation[];
+      employees: Employee[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -36,6 +37,7 @@ currentAccount: any;
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
+        private employeeService: EmployeeService,
         private eventManager: JhiEventManager
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
@@ -83,17 +85,26 @@ currentAccount: any;
     }
     ngOnInit() {
         this.loadAll();
+        console.log(this.employeeService);
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
         this.registerChangeInLeaveAllocations();
     }
-
+    loadEmployee(leaveAllocation: LeaveAllocation) {
+        this.employeeService.query1(leaveAllocation.teachingstaff, leaveAllocation.canHaveVacation, leaveAllocation.granted)
+        .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+     }
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: LeaveAllocation) {
+    trackBy(index: number, item: LeaveAllocation) {
+        // console.log(item);
+        // this.loadEmployee(item);
+       /* this.employeeService.query1(item.teachingstaff, item.canHaveVacation, item.granted)
+        .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        console.log(this.employees);*/
         return item.id;
     }
     registerChangeInLeaveAllocations() {
