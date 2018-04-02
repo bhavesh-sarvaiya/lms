@@ -89,12 +89,6 @@ public class LeaveTypeResource {
     @Timed
     public List<LeaveType> getAllLeaveTypes() {
         log.debug("REST request to get all LeaveTypes");
-       //List<LeaveType> list=leaveTypeRepository.findAllGroupByCode("CL");
-      //System.out.println("list: "+list);
-    
-   
-           
-     
         return leaveTypeRepository.findAll();
         }
 

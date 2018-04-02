@@ -100,13 +100,16 @@ currentAccount: any;
     }
 
     trackBy(index: number, item: LeaveAllocation) {
-        // console.log(item);
-        // this.loadEmployee(item);
-       /* this.employeeService.query1(item.teachingstaff, item.canHaveVacation, item.granted)
+        console.log(item);
+       // this.loadEmployee(item);
+       this.employeeService.query1(item.teachingstaff, item.canHaveVacation, item.granted)
         .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        console.log(this.employees);*/
+        console.log(this.employees);
         return item.id;
     }
+    /*trackEmployeeById(index: number, item: Employee) {
+        return item.id;
+    }*/
     registerChangeInLeaveAllocations() {
         this.eventSubscriber = this.eventManager.subscribe('leaveAllocationListModification', (response) => this.loadAll());
     }

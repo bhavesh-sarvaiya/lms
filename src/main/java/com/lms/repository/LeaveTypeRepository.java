@@ -16,10 +16,5 @@ import org.springframework.scheduling.annotation.Async;
 @SuppressWarnings("unused")
 @Repository
 public interface LeaveTypeRepository extends JpaRepository<LeaveType, Long> {
-    @Query(value = "select l from LeaveType l group by l.code")
-    List<LeaveType> findAll();
-  
-     
-    
     //Future<List<Employee>> findDistinctByFirstName(String firstName);
 }
