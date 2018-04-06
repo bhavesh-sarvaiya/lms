@@ -17,26 +17,28 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <!-- <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th> -->
-            <th jhiSortBy="noOfLeave"><span jhiTranslate="lmsApp.leaveBalance.noOfLeave">No Of Leave</span> <span class="fa fa-sort"></span></th>
+             <th jhiSortBy="employee.empEnrollmentNo"><span jhiTranslate="lmsApp.leaveBalance.employee">Employee</span> <span class="fa fa-sort"></span></th>
+           
             <th jhiSortBy="leaveType.code"><span jhiTranslate="lmsApp.leaveBalance.leaveType">Leave Type</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="employee.empEnrollmentNo"><span jhiTranslate="lmsApp.leaveBalance.employee">Employee</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="noOfLeave"><span jhiTranslate="lmsApp.leaveBalance.noOfLeave">No Of Leave</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let leaveBalance of leaveBalances ;trackBy: trackId">
                <!--  <td><a [routerLink]="['../leave-balance', leaveBalance.id ]">{{leaveBalance.id}}</a></td> -->
-                <td>{{leaveBalance.noOfLeave}}</td>
+                <td>
+                    <div *ngIf="leaveBalance.employee">
+                         <a [routerLink]="['../employee', leaveBalance.employee?.id ]" >{{leaveBalance.employee?.empEnrollmentNo}}</a>
+                    </div>
+                </td> 
+             
                 <td>
                     <div *ngIf="leaveBalance.leaveType">
                          <a [routerLink]="['../leave-type', leaveBalance.leaveType?.id ]" >{{leaveBalance.leaveType?.code}}</a>
                     </div>
                 </td>
-                <td>
-                    <div *ngIf="leaveBalance.employee">
-                         <a [routerLink]="['../employee', leaveBalance.employee?.id ]" >{{leaveBalance.employee?.empEnrollmentNo}}</a>
-                    </div>
-                </td>
+                 <td>{{leaveBalance.noOfLeave}}</td>
                 <td class="text-right" style="display: none;">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

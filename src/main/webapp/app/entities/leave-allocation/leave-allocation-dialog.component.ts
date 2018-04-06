@@ -55,7 +55,7 @@ export class LeaveAllocationDialogComponent implements OnInit {
             this.loadEmployee(event);
         }*/
     }
-    loadEmployee(event) {
+    loadEmployee() {
        /* this.isSaving = false;
         this.leaveAllocation.all = false;
         if (event.target.name === 'teachingstaff') {
@@ -77,16 +77,17 @@ export class LeaveAllocationDialogComponent implements OnInit {
         /* if (this.leaveAllocation.all === undefined) {
         this.leaveAllocation.all = false;
         }*/
-        let temp = '';
-        for (const entry of this.leaveAllocation.employee) {
-           temp = temp + entry + ',';
-        }
-        console.log(temp);
-        this.leaveAllocation.employee = temp.substring(0, temp.length - 1);
         if (this.leaveAllocation.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.leaveAllocationService.update(this.leaveAllocation));
         } else {
+            let temp = '';
+            if ( this.leaveAllocation.employee !== undefined) {
+                for (const entry of this.leaveAllocation.employee) {
+                temp = temp + entry + ',';
+                }
+            }
+            this.leaveAllocation.employee = temp.substring(0, temp.length - 1);
             this.subscribeToSaveResponse(
                 this.leaveAllocationService.create(this.leaveAllocation));
         }

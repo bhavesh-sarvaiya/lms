@@ -17,7 +17,7 @@ export class LeaveAllocationComponent implements OnInit, OnDestroy {
 
 currentAccount: any;
     leaveAllocations: LeaveAllocation[];
-    emp: Employee;
+    employees: Employee[];
     error: any;
     no: number;
     success: any;
@@ -52,6 +52,7 @@ currentAccount: any;
     }
 
     loadAll() {
+
         this.leaveAllocationService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
@@ -65,6 +66,14 @@ currentAccount: any;
             this.previousPage = page;
             this.transition();
         }
+    }
+     loadEmployee() {
+        console.log('load Employee');
+        this.employeeService.query()
+            .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body;
+            console.log('Employee loded');
+            this.loadAll();
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
     transition() {
         this.router.navigate(['/leave-allocation'], {queryParams:
@@ -86,8 +95,7 @@ currentAccount: any;
         this.loadAll();
     }
     ngOnInit() {
-        this.no = 0;
-        this.loadAll();
+        this.loadEmployee();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
@@ -114,6 +122,7 @@ currentAccount: any;
     }
 
     private onSuccess(data, headers) {
+         console.log('leave Allocation loded');
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
@@ -121,20 +130,18 @@ currentAccount: any;
         this.leaveAllocations = data;
         let employee = '';
         this.leaveAllocations.forEach((item, index) => {
+             console.log('setting');
             employee = '';
             for (const e of item.employee.split(',')) {
-                this.employeeService.find(parseInt(e, 10))
-                .subscribe((employeeResponse: HttpResponse<Employee>) => {
-                    this.emp = employeeResponse.body;
-                    employee += this.emp.empEnrollmentNo + ',';
-                    console.log(this.emp.id + ' ' + employee);
-                   // this.leaveAllocations[this.no].employee = employee;
-                   // this.no++;
-                });
+                for (const e1 of this.employees) {
+                    if ( e === e1.id + '' ) {
+                            employee += e1.empEnrollmentNo + ',';
+                        }
+                }
             }
-            console.log(index + employee);
             item.employee = employee.substring(0, employee.length - 1);
-            console.log(item.employee);
+            item.employees = employee.split(',');
+            console.log(item.employees);
             this.leaveAllocations[index] = item;
         });
     }

@@ -4,8 +4,7 @@ import com.lms.config.Constants;
 import com.lms.LmsApp;
 import com.lms.domain.Authority;
 import com.lms.domain.User;
-import com.lms.repository.AuthorityRepository;
-import com.lms.repository.UserRepository;
+import com.lms.repository.*;
 import com.lms.security.AuthoritiesConstants;
 import com.lms.service.MailService;
 import com.lms.service.dto.UserDTO;
@@ -31,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDate; 
 
 import java.util.*;
 
@@ -59,6 +58,9 @@ public class AccountResourceIntTest {
     private AuthorityRepository authorityRepository;
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+    
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -79,16 +81,15 @@ public class AccountResourceIntTest {
     private MockMvc restMvc;
 
     private MockMvc restUserMockMvc;
-
+ 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(anyObject());
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, mockMailService);
-
+            new AccountResource(userRepository, mockUserService, mockMailService, employeeRepository);
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, mockMailService);
+            new AccountResource(userRepository, mockUserService, mockMailService,employeeRepository);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
             .setControllerAdvice(exceptionTranslator)

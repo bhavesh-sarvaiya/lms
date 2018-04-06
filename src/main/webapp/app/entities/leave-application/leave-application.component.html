@@ -33,7 +33,8 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <!-- <th><span jhiTranslate="global.field.id">ID</span></th> -->
+            <th><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></th>
             <th><span jhiTranslate="lmsApp.leaveApplication.reason">Reason</span></th>
             <th><span jhiTranslate="lmsApp.leaveApplication.fromDate">From Date</span></th>
             <th><span jhiTranslate="lmsApp.leaveApplication.toDate">To Date</span></th>
@@ -43,7 +44,7 @@
             <th><span jhiTranslate="lmsApp.leaveApplication.status">Status</span></th> -->
             <!-- <th><span jhiTranslate="lmsApp.leaveApplication.flowStatus">Flow Status</span></th>
             <th><span jhiTranslate="lmsApp.leaveApplication.comment">Comment</span></th> -->
-            <th><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></th>
+            
             <th><span jhiTranslate="lmsApp.leaveApplication.approvedBy">Approved By</span></th>
             <th><span jhiTranslate="lmsApp.leaveApplication.leaveType">Leave Type</span></th>
             <th></th>
@@ -51,7 +52,12 @@
             </thead>
             <tbody>
             <tr *ngFor="let leaveApplication of leaveApplications ;trackBy: trackId">
-                <td><a [routerLink]="['../leave-application', leaveApplication.id ]">{{leaveApplication.id}}</a></td>
+                <!-- <td><a [routerLink]="['../leave-application', leaveApplication.id ]">{{leaveApplication.id}}</a></td> -->
+                 <td>
+                    <div *ngIf="leaveApplication.employee">
+                        <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee?.empEnrollmentNo}}</a>
+                    </div>
+                </td>
                 <td>{{leaveApplication.reason}}</td>
                 <td>{{leaveApplication.fromDate | date:'mediumDate'}}</td>
                 <td>{{leaveApplication.toDate | date:'mediumDate'}}</td>
@@ -61,11 +67,7 @@
                 <td  *ngIf="leaveApplication.status == 'REJECTED'"><span  class="badge badge-danger">{{leaveApplication.status}}</span></td>
                 <!-- <td>{{leaveApplication.flowStatus}}</td>
                 <td>{{leaveApplication.comment}}</td> -->
-                <td>
-                    <div *ngIf="leaveApplication.employee">
-                        <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee?.empEnrollmentNo}}</a>
-                    </div>
-                </td>
+               
                 <td>
                     <div *ngIf="leaveApplication.approvedBy">
                         <a [routerLink]="['../employee', leaveApplication.approvedBy?.id ]" >{{leaveApplication.approvedBy?.post}}, {{leaveApplication.approvedBy?.firstName}}</a>

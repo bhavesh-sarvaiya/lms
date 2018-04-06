@@ -16,7 +16,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <!-- <th><span jhiTranslate="global.field.id">ID</span></th> -->
             <th><span jhiTranslate="lmsApp.leaveType.name">Name</span></th>
             <th><span jhiTranslate="lmsApp.leaveType.code">Code</span></th>
             <th><span jhiTranslate="lmsApp.leaveType.description">Description</span></th>
@@ -25,7 +25,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let leaveType of leaveTypes ;trackBy: trackId">
-                <td><a [routerLink]="['../leave-type', leaveType.id ]">{{leaveType.id}}</a></td>
+                <!-- <td><a [routerLink]="['../leave-type', leaveType.id ]">{{leaveType.id}}</a></td> -->
                 <td>{{leaveType.name}}</td>
                 <td>{{leaveType.code}}</td>
                 <td>{{leaveType.description}}</td>

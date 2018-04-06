@@ -57,7 +57,6 @@ currentAccount: any;
             sort: this.sort()}).subscribe(
                 (res: HttpResponse<Employee[]>) => {
                      this.onSuccess(res.body, res.headers);
-                     // this.loading = false;
                     },
                 (res: HttpErrorResponse) => this.onError(res.message)
         );

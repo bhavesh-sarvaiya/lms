@@ -72,54 +72,49 @@ public class LeaveAllocationResource {
 			throw new BadRequestAlertException("A new leaveAllocation cannot already have an ID", ENTITY_NAME,
 					"idexists");
 		}
+
 		//List<Employee> employeeList = findEmployee(leaveAllocation);
 		LeaveAllocation result = null;
 		//System.out.println("\n\nsize:" + employeeList.size() + "\n\n");
-		/*if (employeeList.isEmpty()) {
+		System.out.println("\n:"+leaveAllocation.getEmployee());
+		if (leaveAllocation.getEmployee() == null) {
 			throw new BadRequestAlertException("No Employee are selected!...", ENTITY_NAME, "emptyEmp");
 		} else {
-			saveLeaveBalance(employeeList, leaveAllocation);
+			saveLeaveBalance(leaveAllocation.getEmployee(), leaveAllocation);
 			
-		}*/
+		}
 		result = leaveAllocationRepository.save(leaveAllocation);
 		return ResponseEntity.created(new URI("/api/leave-allocations/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 		}
 
-	private void saveLeaveBalance(List<Employee> employeeList, LeaveAllocation leaveAllocation) {
+	private void saveLeaveBalance(String emp, LeaveAllocation leaveAllocation) {
 		// Save LeaveBalance 
 		LeaveBalance leaveBalance;
 		log.debug("method: saveLeaveBalance: Starting");
-		for (Employee employee : employeeList) {
-			leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveAllocation.getLeaveType(),
-					employee);
-			if (leaveBalance == null) {
-				log.debug("leaveBalance: null, Creating new LeaveBalance");
-				leaveBalance = new LeaveBalance();
-				leaveBalance.setNoOfLeave(leaveAllocation.getNoOfLeave());
-				leaveBalance.setEmployee(employee);
-				leaveBalance.setLeaveType(leaveAllocation.getLeaveType());
-			} else {
-				leaveBalance.setNoOfLeave((leaveBalance.getNoOfLeave() + leaveAllocation.getNoOfLeave()));
+		String[] employeeList = emp.split(",");
+		for(String e : employeeList){
+			Employee employee = employeeRepository.getOne(Long.parseLong(e));
+			if(employee != null) {
+					leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveAllocation.getLeaveType(),
+							employee);
+					if (leaveBalance == null) {
+						log.debug("leaveBalance: null, Creating new LeaveBalance");
+						leaveBalance = new LeaveBalance();
+						leaveBalance.setNoOfLeave(leaveAllocation.getNoOfLeave());
+						leaveBalance.setEmployee(employee);
+						leaveBalance.setLeaveType(leaveAllocation.getLeaveType());
+					} else {
+						leaveBalance.setNoOfLeave((leaveBalance.getNoOfLeave() + leaveAllocation.getNoOfLeave()));
+					}
+			}
+			else{
+				throw new BadRequestAlertException("No Employee are selected!...", ENTITY_NAME, "emptyEmp");
 			}
 			log.debug("REST request to save LeaveBalance : {}", leaveBalance);
 			leaveBalanceRepository.save(leaveBalance);
 		}
 		log.debug("method: saveLeaveBalance: Completed");
-	}
-
-	private List<Employee> findEmployee(LeaveAllocation leaveAllocation) {
-		// Find Employee
-		List<Employee> employeeList;
-		if (leaveAllocation.isAll())
-			employeeList = employeeRepository.findAll();
-		else
-			employeeList = employeeRepository.findAllByTeachingstaffAndCanHaveVacationAndGranted(
-					leaveAllocation.isTeachingstaff(), leaveAllocation.isCanHaveVacation(),
-					leaveAllocation.isGranted());
-
-		return employeeList;
-
 	}
 
 	/**
@@ -143,19 +138,13 @@ public class LeaveAllocationResource {
 			return createLeaveAllocation(leaveAllocation);
 		}
 		LeaveAllocation l=leaveAllocationRepository.findOne(leaveAllocation.getId());
-		leaveAllocation.setAll(l.isAll());
-		leaveAllocation.setCanHaveVacation(l.isCanHaveVacation());
-		leaveAllocation.setGranted(l.isGranted());
-		leaveAllocation.setTeachingstaff(l.isTeachingstaff());
-		leaveAllocation.setLeaveType(l.getLeaveType());
 		double noOfLeave =leaveAllocation.getNoOfLeave();
 		leaveAllocation.setNoOfLeave((noOfLeave-l.getNoOfLeave()));
-		List<Employee> employeeList = findEmployee(leaveAllocation);
 		LeaveAllocation result = null;
-		if (employeeList.isEmpty() == true) {
+		if (leaveAllocation.getEmployee() == null) {
 			throw new BadRequestAlertException("No Employee are selected!...", ENTITY_NAME, "idexists");
 		} else {
-			saveLeaveBalance(employeeList, leaveAllocation);
+			saveLeaveBalance(leaveAllocation.getEmployee(), leaveAllocation);
 			leaveAllocation.setNoOfLeave(noOfLeave);
 			result = leaveAllocationRepository.save(leaveAllocation);
 		}

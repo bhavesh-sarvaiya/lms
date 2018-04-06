@@ -16,30 +16,37 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <!-- <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="teachingstaff"><span jhiTranslate="lmsApp.leaveAllocation.teachingstaff">Teachingstaff</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="canHaveVacation"><span jhiTranslate="lmsApp.leaveAllocation.canHaveVacation">Can Have Vacation</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="granted"><span jhiTranslate="lmsApp.leaveAllocation.granted">Granted</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="granted"><span jhiTranslate="lmsApp.leaveAllocation.granted">Granted</span> <span class="fa fa-sort"></span></th> -->
             <th jhiSortBy="noOfLeave"><span jhiTranslate="lmsApp.leaveAllocation.noOfLeave">No Of Leave</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="allocationDate"><span jhiTranslate="lmsApp.leaveAllocation.allocationDate">Allocation Date</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="employee"><span jhiTranslate="lmsApp.leaveAllocation.employee">Employee</span> <span class="fa fa-sort"></span></th>
+          
             <th jhiSortBy="leaveType.code"><span jhiTranslate="lmsApp.leaveAllocation.leaveType">Leave Type</span> <span class="fa fa-sort"></span></th>
+              <th jhiSortBy="employee"><span>Employee</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let leaveAllocation of leaveAllocations ;trackBy: trackId">
-                <td><a [routerLink]="['../leave-allocation', leaveAllocation.id ]">{{leaveAllocation.id}}</a></td>
+                <!-- <td><a [routerLink]="['../leave-allocation', leaveAllocation.id ]">{{leaveAllocation.id}}</a></td>
                 <td>{{leaveAllocation.teachingstaff}}</td>
                 <td>{{leaveAllocation.canHaveVacation}}</td>
-                <td>{{leaveAllocation.granted}}</td>
+                <td>{{leaveAllocation.granted}}</td> -->
                 <td>{{leaveAllocation.noOfLeave}}</td>
                 <td>{{leaveAllocation.allocationDate | date:'mediumDate'}}</td>
-                <td>{{leaveAllocation.employee}}</td>
+               
                 <td>
                     <div *ngIf="leaveAllocation.leaveType">
                         <a [routerLink]="['../leave-type', leaveAllocation.leaveType?.id ]" >{{leaveAllocation.leaveType?.code}}</a>
                     </div>
+                </td>
+                 <td>
+                    <select class="form-control">
+                    <option
+                        *ngFor="let employeeOption of leaveAllocation.employees;">{{employeeOption}}</option>
+                </select>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
