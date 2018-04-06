@@ -4,14 +4,14 @@
         "leaveAllocation" : {
             "home": {
                 "title": "LeaveAllocations",
-                "createLabel": "à¤¨à¤¯à¤¾ Leave Allocation à¤¬à¤¨à¤¾à¤�à¤�",
-                "createOrEditLabel": "Leave Allocation à¤¬à¤¨à¤¾à¤�à¤� à¤¯à¤¾ à¤¸à¤‚à¤ªà¤¾à¤¦à¤¿à¤¤ à¤•à¤°à¥‡à¤‚"
+                "createLabel": "नया Leave Allocation बनाएँ",
+                "createOrEditLabel": "Leave Allocation बनाएँ या संपादित करें"
             },
-            "created": "à¤�à¤• à¤¨à¤¯à¤¾ Leave Allocation [identifier: {{ param }}] à¤¤à¥ˆà¤¯à¤¾à¤° à¤¹à¥ˆ",
-            "updated": "à¤�à¤• Leave Allocation [identifier: {{ param }}] à¤•à¤¾ à¤…à¤¦à¥�à¤¯à¤¤à¤¨ à¤¹à¥�à¤† à¤¹à¥ˆ",
-            "deleted": "Leave Allocation [identifier: {{ param }}] à¤¹à¤Ÿà¤¾ à¤¦à¤¿à¤¯à¤¾ à¤¹à¥ˆ",
+            "created": "एक नया Leave Allocation [identifier: {{ param }}] तैयार है",
+            "updated": "एक Leave Allocation [identifier: {{ param }}] का अद्यतन हुआ है",
+            "deleted": "Leave Allocation [identifier: {{ param }}] हटा दिया है",
             "delete": {
-                "question": "Leave Allocation [id: {{ id }}] à¤¹à¤Ÿà¤¾à¤¨à¥‡ à¤•à¥€ à¤ªà¥�à¤·à¥�à¤Ÿà¤¿ à¤•à¤°à¥‡à¤‚"
+                "question": "Leave Allocation [id: {{ id }}] हटाने की पुष्टि करें"
             },
             "detail": {
                 "title": "Leave Allocation"
@@ -21,8 +21,8 @@
             "granted": "Granted",
             "noOfLeave": "No Of Leave",
             "allocationDate": "Allocation Date",
-            "leaveType": "Leave Type",
-            "all": "All"
+            "employee": "Employee",
+            "leaveType": "Leave Type"
         }
     }
 }

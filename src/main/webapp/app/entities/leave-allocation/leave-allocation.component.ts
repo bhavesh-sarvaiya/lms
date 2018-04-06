@@ -7,7 +7,8 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { LeaveAllocation } from './leave-allocation.model';
 import { LeaveAllocationService } from './leave-allocation.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
-import { Employee, EmployeeService } from '../employee';
+import { EmployeeService, Employee } from '../employee';
+
 @Component({
     selector: 'jhi-leave-allocation',
     templateUrl: './leave-allocation.component.html'
@@ -16,8 +17,9 @@ export class LeaveAllocationComponent implements OnInit, OnDestroy {
 
 currentAccount: any;
     leaveAllocations: LeaveAllocation[];
-      employees: Employee[];
+    emp: Employee;
     error: any;
+    no: number;
     success: any;
     eventSubscriber: Subscription;
     routeData: any;
@@ -37,8 +39,8 @@ currentAccount: any;
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private employeeService: EmployeeService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private employeeService: EmployeeService
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
@@ -84,32 +86,21 @@ currentAccount: any;
         this.loadAll();
     }
     ngOnInit() {
+        this.no = 0;
         this.loadAll();
-        console.log(this.employeeService);
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
         this.registerChangeInLeaveAllocations();
     }
-    loadEmployee(leaveAllocation: LeaveAllocation) {
-        this.employeeService.query1(leaveAllocation.teachingstaff, leaveAllocation.canHaveVacation, leaveAllocation.granted)
-        .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-     }
+
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackBy(index: number, item: LeaveAllocation) {
-        console.log(item);
-       // this.loadEmployee(item);
-       /*this.employeeService.query1(item.teachingstaff, item.canHaveVacation, item.granted)
-        .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        console.log(this.employees);*/
+    trackId(index: number, item: LeaveAllocation) {
         return item.id;
     }
-    /*trackEmployeeById(index: number, item: Employee) {
-        return item.id;
-    }*/
     registerChangeInLeaveAllocations() {
         this.eventSubscriber = this.eventManager.subscribe('leaveAllocationListModification', (response) => this.loadAll());
     }
@@ -128,6 +119,24 @@ currentAccount: any;
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
         this.leaveAllocations = data;
+        let employee = '';
+        this.leaveAllocations.forEach((item, index) => {
+            employee = '';
+            for (const e of item.employee.split(',')) {
+                this.employeeService.find(parseInt(e, 10))
+                .subscribe((employeeResponse: HttpResponse<Employee>) => {
+                    this.emp = employeeResponse.body;
+                    employee += this.emp.empEnrollmentNo + ',';
+                    console.log(this.emp.id + ' ' + employee);
+                   // this.leaveAllocations[this.no].employee = employee;
+                   // this.no++;
+                });
+            }
+            console.log(index + employee);
+            item.employee = employee.substring(0, employee.length - 1);
+            console.log(item.employee);
+            this.leaveAllocations[index] = item;
+        });
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);

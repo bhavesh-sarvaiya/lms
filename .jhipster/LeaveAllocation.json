@@ -34,12 +34,16 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "employee",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180214143557",
-    "entityTableName": "leave_allocation",
     "dto": "no",
-    "pagination": "pagination",
     "service": "no",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "leave_allocation",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
 }

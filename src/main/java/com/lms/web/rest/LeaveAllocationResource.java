@@ -2,6 +2,8 @@ package com.lms.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +12,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -69,19 +72,19 @@ public class LeaveAllocationResource {
 			throw new BadRequestAlertException("A new leaveAllocation cannot already have an ID", ENTITY_NAME,
 					"idexists");
 		}
-		List<Employee> employeeList = findEmployee(leaveAllocation);
+		//List<Employee> employeeList = findEmployee(leaveAllocation);
 		LeaveAllocation result = null;
-		System.out.println("\n\nsize:" + employeeList.size() + "\n\n");
-
-		if (employeeList.isEmpty() == true) {
+		//System.out.println("\n\nsize:" + employeeList.size() + "\n\n");
+		/*if (employeeList.isEmpty()) {
 			throw new BadRequestAlertException("No Employee are selected!...", ENTITY_NAME, "emptyEmp");
 		} else {
 			saveLeaveBalance(employeeList, leaveAllocation);
-			result = leaveAllocationRepository.save(leaveAllocation);
-		}
+			
+		}*/
+		result = leaveAllocationRepository.save(leaveAllocation);
 		return ResponseEntity.created(new URI("/api/leave-allocations/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
-	}
+		}
 
 	private void saveLeaveBalance(List<Employee> employeeList, LeaveAllocation leaveAllocation) {
 		// Save LeaveBalance 

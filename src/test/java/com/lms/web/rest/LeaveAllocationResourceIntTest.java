@@ -3,9 +3,7 @@ package com.lms.web.rest;
 import com.lms.LmsApp;
 
 import com.lms.domain.LeaveAllocation;
-import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveAllocationRepository;
-import com.lms.repository.LeaveBalanceRepository;
 import com.lms.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -57,6 +55,9 @@ public class LeaveAllocationResourceIntTest {
     private static final LocalDate DEFAULT_ALLOCATION_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_ALLOCATION_DATE = LocalDate.now(ZoneId.systemDefault());
 
+    private static final String DEFAULT_EMPLOYEE = "AAAAAAAAAA";
+    private static final String UPDATED_EMPLOYEE = "BBBBBBBBBB";
+
     @Autowired
     private LeaveAllocationRepository leaveAllocationRepository;
  
@@ -105,7 +106,8 @@ public class LeaveAllocationResourceIntTest {
             .canHaveVacation(DEFAULT_CAN_HAVE_VACATION)
             .granted(DEFAULT_GRANTED)
             .noOfLeave(DEFAULT_NO_OF_LEAVE)
-            .allocationDate(DEFAULT_ALLOCATION_DATE);
+            .allocationDate(DEFAULT_ALLOCATION_DATE)
+            .employee(DEFAULT_EMPLOYEE);
         return leaveAllocation;
     }
 
@@ -134,6 +136,7 @@ public class LeaveAllocationResourceIntTest {
         assertThat(testLeaveAllocation.isGranted()).isEqualTo(DEFAULT_GRANTED);
         assertThat(testLeaveAllocation.getNoOfLeave()).isEqualTo(DEFAULT_NO_OF_LEAVE);
         assertThat(testLeaveAllocation.getAllocationDate()).isEqualTo(DEFAULT_ALLOCATION_DATE);
+        assertThat(testLeaveAllocation.getEmployee()).isEqualTo(DEFAULT_EMPLOYEE);
     }
 
     @Test
@@ -206,7 +209,8 @@ public class LeaveAllocationResourceIntTest {
             .andExpect(jsonPath("$.[*].canHaveVacation").value(hasItem(DEFAULT_CAN_HAVE_VACATION.booleanValue())))
             .andExpect(jsonPath("$.[*].granted").value(hasItem(DEFAULT_GRANTED.booleanValue())))
             .andExpect(jsonPath("$.[*].noOfLeave").value(hasItem(DEFAULT_NO_OF_LEAVE.doubleValue())))
-            .andExpect(jsonPath("$.[*].allocationDate").value(hasItem(DEFAULT_ALLOCATION_DATE.toString())));
+            .andExpect(jsonPath("$.[*].allocationDate").value(hasItem(DEFAULT_ALLOCATION_DATE.toString())))
+            .andExpect(jsonPath("$.[*].employee").value(hasItem(DEFAULT_EMPLOYEE.toString())));
     }
 
     @Test
@@ -224,7 +228,8 @@ public class LeaveAllocationResourceIntTest {
             .andExpect(jsonPath("$.canHaveVacation").value(DEFAULT_CAN_HAVE_VACATION.booleanValue()))
             .andExpect(jsonPath("$.granted").value(DEFAULT_GRANTED.booleanValue()))
             .andExpect(jsonPath("$.noOfLeave").value(DEFAULT_NO_OF_LEAVE.doubleValue()))
-            .andExpect(jsonPath("$.allocationDate").value(DEFAULT_ALLOCATION_DATE.toString()));
+            .andExpect(jsonPath("$.allocationDate").value(DEFAULT_ALLOCATION_DATE.toString()))
+            .andExpect(jsonPath("$.employee").value(DEFAULT_EMPLOYEE.toString()));
     }
 
     @Test
@@ -251,7 +256,8 @@ public class LeaveAllocationResourceIntTest {
             .canHaveVacation(UPDATED_CAN_HAVE_VACATION)
             .granted(UPDATED_GRANTED)
             .noOfLeave(UPDATED_NO_OF_LEAVE)
-            .allocationDate(UPDATED_ALLOCATION_DATE);
+            .allocationDate(UPDATED_ALLOCATION_DATE)
+            .employee(UPDATED_EMPLOYEE);
 
         restLeaveAllocationMockMvc.perform(put("/api/leave-allocations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -267,6 +273,7 @@ public class LeaveAllocationResourceIntTest {
         assertThat(testLeaveAllocation.isGranted()).isEqualTo(UPDATED_GRANTED);
         assertThat(testLeaveAllocation.getNoOfLeave()).isEqualTo(UPDATED_NO_OF_LEAVE);
         assertThat(testLeaveAllocation.getAllocationDate()).isEqualTo(UPDATED_ALLOCATION_DATE);
+        assertThat(testLeaveAllocation.getEmployee()).isEqualTo(UPDATED_EMPLOYEE);
     }
 
     @Test

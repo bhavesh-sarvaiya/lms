@@ -24,6 +24,10 @@
         <dd>
             <span>{{leaveAllocation.allocationDate | date:'mediumDate'}}</span>
         </dd>
+        <dt><span jhiTranslate="lmsApp.leaveAllocation.employee">Employee</span></dt>
+        <dd>
+            <span>{{leaveAllocation.employee}}</span>
+        </dd>
         <dt><span jhiTranslate="lmsApp.leaveAllocation.leaveType">Leave Type</span></dt>
         <dd>
             <div *ngIf="leaveAllocation.leaveType">

@@ -9,8 +9,8 @@ export class LeaveAllocation implements BaseEntity {
         public granted?: boolean,
         public noOfLeave?: number,
         public allocationDate?: any,
+        public employee?: string,
         public leaveType?: BaseEntity,
-        public employee?: BaseEntity,
     ) {
         this.teachingstaff = false;
         this.canHaveVacation = false;

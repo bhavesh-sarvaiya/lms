@@ -42,10 +42,13 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="employee" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="leave_type_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-              <column name="jhi_all" type="bit"/>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>

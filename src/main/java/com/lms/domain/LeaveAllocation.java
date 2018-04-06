@@ -27,8 +27,7 @@ public class LeaveAllocation implements Serializable {
     @Column(name = "jhi_all")
     private Boolean all;
 
-   
-	@Column(name = "can_have_vacation")
+    @Column(name = "can_have_vacation")
     private Boolean canHaveVacation;
 
     @Column(name = "granted")
@@ -41,6 +40,9 @@ public class LeaveAllocation implements Serializable {
     @NotNull
     @Column(name = "allocation_date", nullable = false)
     private LocalDate allocationDate;
+
+    @Column(name = "employee")
+    private String employee;
 
     @ManyToOne
     private LeaveType leaveType;
@@ -131,6 +133,19 @@ public class LeaveAllocation implements Serializable {
         this.allocationDate = allocationDate;
     }
 
+    public String getEmployee() {
+        return employee;
+    }
+
+    public LeaveAllocation employee(String employee) {
+        this.employee = employee;
+        return this;
+    }
+
+    public void setEmployee(String employee) {
+        this.employee = employee;
+    }
+
     public LeaveType getLeaveType() {
         return leaveType;
     }
@@ -175,6 +190,7 @@ public class LeaveAllocation implements Serializable {
             ", granted='" + isGranted() + "'" +
             ", noOfLeave=" + getNoOfLeave() +
             ", allocationDate='" + getAllocationDate() + "'" +
+            ", employee='" + getEmployee() + "'" +
             "}";
     }
 }

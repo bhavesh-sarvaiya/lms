@@ -15,7 +15,8 @@ import { Employee, EmployeeService } from '../employee';
 
 @Component({
     selector: 'jhi-leave-allocation-dialog',
-    templateUrl: './leave-allocation-dialog.component.html'
+    templateUrl: './leave-allocation-dialog.component.html',
+    styleUrls: ['./leave-allocation-dialog.component.html']
 })
 export class LeaveAllocationDialogComponent implements OnInit {
 
@@ -43,19 +44,19 @@ export class LeaveAllocationDialogComponent implements OnInit {
     }
     initLoadAllEmp(event?: any) {
         this.isSaving = false;
-        if (event === undefined || event.target.checked === true) {
+       /* if (event === undefined || event.target.checked === true) {
         this.leaveAllocation.teachingstaff = false;
         this.leaveAllocation.canHaveVacation = false;
         this.leaveAllocation.granted = false;
         this.leaveAllocation.all = true;
-        console.log(this.employeeService);
+        console.log(this.employeeService);*/
         this.employeeService.query().subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        } else {
+        /*} else {
             this.loadEmployee(event);
-        }
+        }*/
     }
     loadEmployee(event) {
-        this.isSaving = false;
+       /* this.isSaving = false;
         this.leaveAllocation.all = false;
         if (event.target.name === 'teachingstaff') {
         this.leaveAllocation.teachingstaff = event.target.checked;
@@ -64,8 +65,8 @@ export class LeaveAllocationDialogComponent implements OnInit {
         } else if (event.target.name === 'granted') {
         this.leaveAllocation.granted = event.target.checked;
         } else {
-        }
-        this.employeeService.query1(this.leaveAllocation.teachingstaff, this.leaveAllocation.canHaveVacation, this.leaveAllocation.granted)
+        }*/
+        this.employeeService.query()
             .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
     clear() {
@@ -73,9 +74,15 @@ export class LeaveAllocationDialogComponent implements OnInit {
     }
     save() {
         this.isSaving = true;
-        if (this.leaveAllocation.all === undefined) {
+        /* if (this.leaveAllocation.all === undefined) {
         this.leaveAllocation.all = false;
+        }*/
+        let temp = '';
+        for (const entry of this.leaveAllocation.employee) {
+           temp = temp + entry + ',';
         }
+        console.log(temp);
+        this.leaveAllocation.employee = temp.substring(0, temp.length - 1);
         if (this.leaveAllocation.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.leaveAllocationService.update(this.leaveAllocation));
