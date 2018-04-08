@@ -10,6 +10,7 @@ import { Employee } from './employee.model';
 import { EmployeePopupService } from './employee-popup.service';
 import { EmployeeService } from './employee.service';
 import { Department, DepartmentService } from '../department';
+import { User, UserService } from '../../shared';
 
 @Component({
     selector: 'jhi-employee-dialog',
@@ -21,6 +22,8 @@ export class EmployeeDialogComponent implements OnInit {
     isSaving: boolean;
 
     departments: Department[];
+
+    users: User[];
     dobDp: any;
     joinDateDp: any;
     retiredDateDp: any;
@@ -30,6 +33,7 @@ export class EmployeeDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private employeeService: EmployeeService,
         private departmentService: DepartmentService,
+        private userService: UserService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -38,6 +42,8 @@ export class EmployeeDialogComponent implements OnInit {
         this.isSaving = false;
         this.departmentService.query()
             .subscribe((res: HttpResponse<Department[]>) => { this.departments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.userService.query()
+            .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -75,6 +81,10 @@ export class EmployeeDialogComponent implements OnInit {
     }
 
     trackDepartmentById(index: number, item: Department) {
+        return item.id;
+    }
+
+    trackUserById(index: number, item: User) {
         return item.id;
     }
 }

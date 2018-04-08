@@ -10,8 +10,7 @@ import { ITEMS_PER_PAGE, Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-employee',
-    templateUrl: './employee.component.html',
-    styles: []
+    templateUrl: './employee.component.html'
 })
 export class EmployeeComponent implements OnInit, OnDestroy {
 
@@ -29,7 +28,6 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
-    public loading = false;
 
     constructor(
         private employeeService: EmployeeService,
@@ -50,14 +48,11 @@ currentAccount: any;
     }
 
     loadAll() {
-     //   this.loading = true;
         this.employeeService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()}).subscribe(
-                (res: HttpResponse<Employee[]>) => {
-                     this.onSuccess(res.body, res.headers);
-                    },
+                (res: HttpResponse<Employee[]>) => this.onSuccess(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
         );
     }

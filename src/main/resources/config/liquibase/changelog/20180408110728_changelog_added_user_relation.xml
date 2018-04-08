@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="bhavesh (generated)" id="1523185668430-1">
+        <addColumn tableName="employee">
+            <column name="user_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="bhavesh (generated)" id="1523185668430-2">
+        <addUniqueConstraint columnNames="user_id" constraintName="UC_EMPLOYEEUSER_ID_COL" tableName="employee"/>
+    </changeSet>
+    <changeSet author="bhavesh (generated)" id="1523185668430-3">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="employee" constraintName="FKiv756awjw8mae3rmfo03d9wb3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+</databaseChangeLog>

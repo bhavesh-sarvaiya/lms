@@ -16,6 +16,8 @@
     <!-- <include file="config/liquibase/changelog/20180219074420_changelog_rename_column_in_leave_balance.xml" relativeToChangelogFile="false"/> -->
     <include file="config/liquibase/changelog/20180228083706_added_entity_LeaveApplication.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    
+    <include file="config/liquibase/changelog/20180408110728_changelog_added_user_relation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180212142933_added_entity_constraints_Employee.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180214143555_added_entity_constraints_LeaveBalance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180214143557_added_entity_constraints_LeaveAllocation.xml" relativeToChangelogFile="false"/>

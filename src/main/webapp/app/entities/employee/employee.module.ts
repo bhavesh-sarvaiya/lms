@@ -2,6 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { LmsSharedModule } from '../../shared';
+import { LmsAdminModule } from '../../admin/admin.module';
 import {
     EmployeeService,
     EmployeePopupService,
@@ -15,7 +16,6 @@ import {
     employeePopupRoute,
     EmployeeResolvePagingParams,
 } from './';
-import { LoadingModule } from 'ngx-loading';
 
 const ENTITY_STATES = [
     ...employeeRoute,
@@ -25,8 +25,8 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         LmsSharedModule,
-        RouterModule.forChild(ENTITY_STATES),
-        LoadingModule
+        LmsAdminModule,
+        RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [
         EmployeeComponent,

@@ -1,4 +1,4 @@
-import { BaseEntity } from './../../shared';
+import { BaseEntity, User } from './../../shared';
 
 export const enum Post {
     'LDC',
@@ -65,6 +65,7 @@ export class Employee implements BaseEntity {
         public lastName?: string,
         public empEnrollmentNo?: string,
         public department?: BaseEntity,
+        public user?: User,
     ) {
         this.teachingstaff = false;
         this.canHaveVacation = false;

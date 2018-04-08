@@ -6,6 +6,14 @@
             "relationshipName": "department",
             "otherEntityName": "department",
             "otherEntityField": "name"
+        },
+        {
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "login",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "employee"
         }
     ],
     "fields": [
