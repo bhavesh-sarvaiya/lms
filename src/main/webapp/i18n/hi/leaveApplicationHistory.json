@@ -1,0 +1,27 @@
+
+{
+    "lmsApp": {
+        "leaveApplicationHistory" : {
+            "home": {
+                "title": "LeaveApplicationHistories",
+                "createLabel": "नया Leave Application History बनाएँ",
+                "createOrEditLabel": "Leave Application History बनाएँ या संपादित करें"
+            },
+            "created": "एक नया Leave Application History [identifier: {{ param }}] तैयार है",
+            "updated": "एक Leave Application History [identifier: {{ param }}] का अद्यतन हुआ है",
+            "deleted": "Leave Application History [identifier: {{ param }}] हटा दिया है",
+            "delete": {
+                "question": "Leave Application History [id: {{ id }}] हटाने की पुष्टि करें"
+            },
+            "detail": {
+                "title": "Leave Application History"
+            },
+            "actionDate": "Action Date",
+            "status": "Status",
+            "actionInfo": "Action Info",
+            "employee": "Employee",
+            "actor": "Actor",
+            "leaveType": "Leave Type"
+        }
+    }
+}

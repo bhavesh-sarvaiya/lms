@@ -38,6 +38,10 @@ export class EmployeeService {
         return this.http.get<Employee>(`api/employee/email/${email}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
+    loadEmployeeByUser(id: any): Observable<EntityResponseType> {
+        return this.http.get<Employee>(`api/employee/id/${id}`, { observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
 
     query(req?: any): Observable<HttpResponse<Employee[]>> {
         const options = createRequestOption(req);

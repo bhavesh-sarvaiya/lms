@@ -16,6 +16,7 @@
                                     "leaveList":"List",
                                     "leaveRequest":"Apply"
                                 },
+                "leaveApplicationHistory": "Leave Application History",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

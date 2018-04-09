@@ -34,6 +34,7 @@ import com.lms.domain.Employee;
 import com.lms.domain.LeaveBalance;
 import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveBalanceRepository;
+import com.lms.repository.UserRepository;
 import com.lms.web.rest.errors.ExceptionTranslator;
 
 /**
@@ -53,6 +54,8 @@ public class LeaveBalanceResourceIntTest {
     
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -73,7 +76,7 @@ public class LeaveBalanceResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final LeaveBalanceResource leaveBalanceResource = new LeaveBalanceResource(leaveBalanceRepository,employeeRepository);
+        final LeaveBalanceResource leaveBalanceResource = new LeaveBalanceResource(leaveBalanceRepository,employeeRepository,userRepository);
         this.restLeaveBalanceMockMvc = MockMvcBuilders.standaloneSetup(leaveBalanceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

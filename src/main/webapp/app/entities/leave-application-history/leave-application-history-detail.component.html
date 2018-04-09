@@ -1,0 +1,52 @@
+
+<div *ngIf="leaveApplicationHistory">
+    <h2><span jhiTranslate="lmsApp.leaveApplicationHistory.detail.title">Leave Application History</span> {{leaveApplicationHistory.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="lmsApp.leaveApplicationHistory.actionDate">Action Date</span></dt>
+        <dd>
+            <span>{{leaveApplicationHistory.actionDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplicationHistory.status">Status</span></dt>
+        <dd>
+            <span>{{leaveApplicationHistory.status}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplicationHistory.actionInfo">Action Info</span></dt>
+        <dd>
+            <span>{{leaveApplicationHistory.actionInfo}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplicationHistory.employee">Employee</span></dt>
+        <dd>
+            <div *ngIf="leaveApplicationHistory.employee">
+                <a [routerLink]="['/employee', leaveApplicationHistory.employee?.id]">{{leaveApplicationHistory.employee?.firstName}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplicationHistory.actor">Actor</span></dt>
+        <dd>
+            <div *ngIf="leaveApplicationHistory.actor">
+                <a [routerLink]="['/employee', leaveApplicationHistory.actor?.id]">{{leaveApplicationHistory.actor?.firstName}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveApplicationHistory.leaveType">Leave Type</span></dt>
+        <dd>
+            <div *ngIf="leaveApplicationHistory.leaveType">
+                <a [routerLink]="['/leave-type', leaveApplicationHistory.leaveType?.id]">{{leaveApplicationHistory.leaveType?.code}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'leave-application-history/'+ leaveApplicationHistory.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

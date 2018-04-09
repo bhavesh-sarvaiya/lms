@@ -4,10 +4,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +31,11 @@ import ch.qos.logback.core.joran.conditional.ElseAction;
 import com.codahale.metrics.annotation.Timed;
 import com.lms.domain.Employee;
 import com.lms.domain.LeaveApplication;
+import com.lms.domain.LeaveApplicationHistory;
 import com.lms.domain.LeaveBalance;
 import com.lms.domain.enumeration.Post;
 import com.lms.repository.EmployeeRepository;
+import com.lms.repository.LeaveApplicationHistoryRepository;
 import com.lms.repository.LeaveApplicationRepository;
 import com.lms.repository.LeaveBalanceRepository;
 import com.lms.repository.UserRepository;
@@ -51,15 +57,17 @@ public class LeaveApplicationResource {
     private static final String ENTITY_NAME = "leaveApplication";
 
     private final LeaveApplicationRepository leaveApplicationRepository;
+    private final LeaveApplicationHistoryRepository leaveApplicationHistoryRepository;
     private final EmployeeRepository employeeRepository;
     private final UserRepository userRepository;
     private final LeaveBalanceRepository leaveBalanceRepository;
 
-    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository, UserRepository userRepository) {
+    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository, UserRepository userRepository,LeaveApplicationHistoryRepository leaveApplicationHistoryRepository) {
         this.leaveApplicationRepository = leaveApplicationRepository;
         this.employeeRepository=employeeRepository;
         this.leaveBalanceRepository = leaveBalanceRepository;
         this.userRepository = userRepository;
+        this.leaveApplicationHistoryRepository = leaveApplicationHistoryRepository;
     }
 
     /**
@@ -85,14 +93,10 @@ public class LeaveApplicationResource {
         leaveApplication.setEmployee(getLoggedUser());
         leaveApplication.setNoofday(intervalDays.doubleValue());
         Double leave = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),leaveApplication.getLeaveType());
-      //  LeaveBalance leaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(), leaveApplication.getLeaveType());
         if(leave == null)
         {
            throw new BadRequestAlertException("You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME, "leaveNotAssign");
        }
-        //System.out.println("day: " + leave);
-        //System.out.println("employee: "+ leaveApplication.getEmployee());
-       // System.out.println("Leave Type: "+ leaveApplication.getLeaveType());
        if(leaveApplication.getNoofday() > leave){
            throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "+leave+ " and you are requested more than that ", ENTITY_NAME, "notEligible");
        }
@@ -100,6 +104,16 @@ public class LeaveApplicationResource {
         leaveApplication.setStatus("APPLIED");
         leaveApplication.setFlowStatus("NEW");
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
+        LeaveApplicationHistory leaveApplicationHistory = new LeaveApplicationHistory();
+        leaveApplicationHistory.setActionDate(LocalDate.now());
+        leaveApplicationHistory.setStatus("NEW");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now();  
+        leaveApplicationHistory.setActionInfo("New leave request by " + result.getEmployee().getFirstName() + " at Time: " + dtf.format(now));
+        leaveApplicationHistory.setEmployee(result.getEmployee());
+        leaveApplicationHistory.setLeaveType(result.getLeaveType());
+        leaveApplicationHistory.setActor(result.getEmployee());
+        leaveApplicationHistoryRepository.save(leaveApplicationHistory);
         return ResponseEntity.created(new URI("/api/leave-applications/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

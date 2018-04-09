@@ -90,7 +90,7 @@ public class AccountResource {
     @GetMapping("/authenticate")
     @Timed
     public String isAuthenticated(HttpServletRequest request) {
-        log.debug("REST request to check if the current user is authenticated");
+        log.debug("Rest request to check if the current user is authenticated");
         return request.getRemoteUser();
     }
 
@@ -130,13 +130,11 @@ public class AccountResource {
         
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
             userDTO.getLangKey(), userDTO.getImageUrl());
-            if(!userLogin.equalsIgnoreCase("admin"))
-            {
-               // Employee employee = employeeRepository.findOneByEmpEnrollmentNo(userLogin);
-               // employee.setFirstName(userDTO.getFirstName());
-               // employee.setLastName(userDTO.getLastName());
-               // employeeRepository.save(employee);
-            }
+                Employee employee = employeeRepository.findOneByUser(user.get());
+                employee.setFirstName(userDTO.getFirstName());
+                employee.setLastName(userDTO.getLastName());
+                employeeRepository.save(employee);
+            
    }
 
     /**

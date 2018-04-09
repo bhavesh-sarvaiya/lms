@@ -1,0 +1,27 @@
+
+{
+    "lmsApp": {
+        "leaveApplicationHistory" : {
+            "home": {
+                "title": "Leave Application Histories",
+                "createLabel": "Create a new Leave Application History",
+                "createOrEditLabel": "Create or edit a Leave Application History"
+            },
+            "created": "A new Leave Application History is created with identifier {{ param }}",
+            "updated": "A Leave Application History is updated with identifier {{ param }}",
+            "deleted": "A Leave Application History is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Leave Application History {{ id }}?"
+            },
+            "detail": {
+                "title": "Leave Application History"
+            },
+            "actionDate": "Action Date",
+            "status": "Status",
+            "actionInfo": "Action Info",
+            "employee": "Employee",
+            "actor": "Actor",
+            "leaveType": "Leave Type"
+        }
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "employee",
+            "otherEntityName": "employee",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "firstName"
+        },
+        {
+            "relationshipName": "actor",
+            "otherEntityName": "employee",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "firstName"
+        },
+        {
+            "relationshipName": "leaveType",
+            "otherEntityName": "leaveType",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "code"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "actionDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "actionInfo",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180409145539",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "leave_application_history",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

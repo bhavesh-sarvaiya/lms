@@ -1,0 +1,6 @@
+entity LeaveApplicatonHistory {
+	actoinDate String
+	status String
+	actionInfo String
+}
+paginate LeaveApplicatonHistory with pagination

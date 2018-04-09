@@ -13,6 +13,7 @@
                 "leaveType": "Leave Type",
                 "leaveAllocation": "Leave Allocation",
                 "leaveApplication": "Leave Application",
+                "leaveApplicationHistory": "Leave Application History",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

@@ -174,6 +174,17 @@ public class EmployeeResource {
 		Employee employee = employeeRepository.findOne(id);
 		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(employee));
 	}
+	
+    @GetMapping("/employee/id/{id}")
+    @Timed
+    public ResponseEntity<Employee> getEmployeeByUser(@PathVariable Long id) {
+        log.debug("REST request to get  Employees by User");
+        Employee employee = employeeRepository.findOneByUser(userRepository.findOneById(id));
+        System.out.println("\nemployee: "+employee);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(employee));
+    }
+
+    
 	@GetMapping("/employee")
 	@Timed
 	public List<Employee> getAllEmployeeByGranted(@RequestParam boolean teachingstaff,@RequestParam boolean canHaveVacation,

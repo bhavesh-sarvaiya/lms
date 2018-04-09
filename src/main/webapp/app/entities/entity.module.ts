@@ -6,6 +6,7 @@ import { LmsLeaveBalanceModule } from './leave-balance/leave-balance.module';
 import { LmsLeaveTypeModule } from './leave-type/leave-type.module';
 import { LmsLeaveAllocationModule } from './leave-allocation/leave-allocation.module';
 import { LmsLeaveApplicationModule } from './leave-application/leave-application.module';
+import { LmsLeaveApplicationHistoryModule } from './leave-application-history/leave-application-history.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -16,6 +17,7 @@ import { LmsLeaveApplicationModule } from './leave-application/leave-application
         LmsLeaveTypeModule,
         LmsLeaveAllocationModule,
         LmsLeaveApplicationModule,
+        LmsLeaveApplicationHistoryModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

@@ -1,0 +1,25 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1523286403281-1">
+        <createTable tableName="leave_application_history">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="leave_application_historyPK"/>
+            </column>
+            <column name="action_date" type="TINYBLOB"/>
+            <column name="action_info" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="actor_id" type="BIGINT"/>
+            <column name="employee_id" type="BIGINT"/>
+            <column name="leave_type_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1523286403281-2">
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="leave_application_history" constraintName="FKertdfb2a1ty2vnxyx34vr9yac" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1523286403281-3">
+        <addForeignKeyConstraint baseColumnNames="actor_id" baseTableName="leave_application_history" constraintName="FKkt7i1bflvc6umha7qdvklttif" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1523286403281-4">
+        <addForeignKeyConstraint baseColumnNames="leave_type_id" baseTableName="leave_application_history" constraintName="FKmnrv7qikeeh6aeqo1bb3dj6bi" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="leave_type"/>
+    </changeSet>
+</databaseChangeLog>

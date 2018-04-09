@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 
 import { Principal, AccountService, JhiLanguageHelper } from '../../shared';
+import { Employee, EmployeeService } from '../../entities/employee';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
     selector: 'jhi-settings',
@@ -11,12 +13,14 @@ export class SettingsComponent implements OnInit {
     error: string;
     success: string;
     settingsAccount: any;
+    employee: Employee;
     languages: any[];
 
     constructor(
         private account: AccountService,
         private principal: Principal,
         private languageService: JhiLanguageService,
+        private employeeService: EmployeeService,
         private languageHelper: JhiLanguageHelper
     ) {
     }
@@ -24,12 +28,19 @@ export class SettingsComponent implements OnInit {
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.settingsAccount = this.copyAccount(account);
+            this.load(account.id);
         });
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
     }
-
+    load(id) {
+        this.employeeService.loadEmployeeByUser(id)
+            .subscribe((employeeResponse: HttpResponse<Employee>) => {
+                this.employee = employeeResponse.body;
+                this.settingsAccount = this.copyAccount1( this.settingsAccount, this.employee);
+            });
+    }
     save() {
         this.account.save(this.settingsAccount).subscribe(() => {
             this.error = null;
@@ -55,6 +66,17 @@ export class SettingsComponent implements OnInit {
             firstName: account.firstName,
             langKey: account.langKey,
             lastName: account.lastName,
+            login: account.login,
+            imageUrl: account.imageUrl
+        };
+    }
+    copyAccount1(account, employee) {
+        return {
+            activated: account.activated,
+            email: account.email,
+            firstName: employee.firstName,
+            langKey: account.langKey,
+            lastName: employee.lastName,
             login: account.login,
             imageUrl: account.imageUrl
         };

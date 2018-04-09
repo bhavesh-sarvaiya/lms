@@ -115,7 +115,6 @@ public class UserResource {
         	
             User newUser= userService.createUser(userDTO);
             mailService.sendCreationEmail(newUser);
-           // System.out.println("------------	"+newUser+"\n"+SecurityUtils.getCurrentUserLogin().get());
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
                 .body(newUser);
@@ -146,8 +145,6 @@ public class UserResource {
         Employee employee =employeeRepository.findOneByUser(userRepository.findOne(userDTO.getId()));
         employee.setFirstName(userDTO.getFirstName());
         employee.setLastName(userDTO.getLastName());
-        employee.setEmail(userDTO.getEmail());
-        employee.setEmpEnrollmentNo(userDTO.getLogin());
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
         employeeRepository.save(employee);
         return ResponseUtil.wrapOrNotFound(updatedUser,
@@ -164,7 +161,7 @@ public class UserResource {
     @Timed
     public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
         final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, baseUrl)(page, "/api/users");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
