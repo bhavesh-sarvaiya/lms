@@ -3,7 +3,7 @@ package com.lms.web.rest;
 import com.lms.LmsApp;
 
 import com.lms.domain.LeaveAllocation;
-import com.lms.repository.LeaveAllocationRepository;
+import com.lms.repository.*;
 import com.lms.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
