@@ -110,19 +110,11 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="email" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
             <column name="first_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
             <column name="last_name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="emp_enrollment_no" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 

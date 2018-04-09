@@ -143,7 +143,7 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new LoginAlreadyUsedException();
         }
-        Employee employee =employeeRepository.findOneByEmail(userRepository.findOne(userDTO.getId()).getEmail());
+        Employee employee =employeeRepository.findOneByUser(userRepository.findOne(userDTO.getId()));
         employee.setFirstName(userDTO.getFirstName());
         employee.setLastName(userDTO.getLastName());
         employee.setEmail(userDTO.getEmail());
@@ -164,7 +164,7 @@ public class UserResource {
     @Timed
     public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
         final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, baseUrl)(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -205,7 +205,7 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userRepository.findOneByLogin(login).ifPresent(user -> {
-        	employeeRepository.delete(employeeRepository.findOneByEmail(user.getEmail()));
+        	employeeRepository.delete(employeeRepository.findOneByUser(user));
         });
         userService.deleteUser(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();

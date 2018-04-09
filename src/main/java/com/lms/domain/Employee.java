@@ -118,21 +118,12 @@ public class Employee implements Serializable {
     private String otheNote;
 
     @NotNull
-    @Size(max = 255)
-    @Column(name = "email", length = 255, nullable = false)
-    private String email;
-
-    @NotNull
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
     @NotNull
     @Column(name = "last_name", nullable = false)
     private String lastName;
-
-    @NotNull
-    @Column(name = "emp_enrollment_no", nullable = false)
-    private String empEnrollmentNo;
 
     @ManyToOne
     private Department department;
@@ -436,19 +427,6 @@ public class Employee implements Serializable {
         this.otheNote = otheNote;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public Employee email(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -473,19 +451,6 @@ public class Employee implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmpEnrollmentNo() {
-        return empEnrollmentNo;
-    }
-
-    public Employee empEnrollmentNo(String empEnrollmentNo) {
-        this.empEnrollmentNo = empEnrollmentNo;
-        return this;
-    }
-
-    public void setEmpEnrollmentNo(String empEnrollmentNo) {
-        this.empEnrollmentNo = empEnrollmentNo;
     }
 
     public Department getDepartment() {
@@ -561,10 +526,8 @@ public class Employee implements Serializable {
             ", payband=" + getPayband() +
             ", granted='" + isGranted() + "'" +
             ", otheNote='" + getOtheNote() + "'" +
-            ", email='" + getEmail() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", empEnrollmentNo='" + getEmpEnrollmentNo() + "'" +
             "}";
     }
 }

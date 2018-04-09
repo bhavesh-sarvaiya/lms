@@ -63,11 +63,6 @@ public class AccountResourceIntTest {
     
     @Autowired
     private UserService userService;
-	
-    
-    @Autowired
-    private EmployeeRepository employeeRepository;
-	
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -93,17 +88,13 @@ public class AccountResourceIntTest {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(anyObject());
         AccountResource accountResource =
-<<<<<<< HEAD
             new AccountResource(userRepository, mockUserService, mockMailService, employeeRepository);
-=======
-            new AccountResource(userRepository, userService, mockMailService,employeeRepository);
 
->>>>>>> testing
         AccountResource accountUserMockResource =
             new AccountResource(userRepository, mockUserService, mockMailService,employeeRepository);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
-            .setControllerAdvice(exceptionTranslator)
+            .setControllerAdvice(exceptionTranslator);
             .build();
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource)
             .setControllerAdvice(exceptionTranslator)

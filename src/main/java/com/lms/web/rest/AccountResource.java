@@ -132,11 +132,10 @@ public class AccountResource {
             userDTO.getLangKey(), userDTO.getImageUrl());
             if(!userLogin.equalsIgnoreCase("admin"))
             {
-                Employee employee = employeeRepository.findOneByEmpEnrollmentNo(userLogin);
-                employee.setFirstName(userDTO.getFirstName());
-                employee.setLastName(userDTO.getLastName());
-                employee.setEmail(userDTO.getEmail());
-                employeeRepository.save(employee);
+               // Employee employee = employeeRepository.findOneByEmpEnrollmentNo(userLogin);
+               // employee.setFirstName(userDTO.getFirstName());
+               // employee.setLastName(userDTO.getLastName());
+               // employeeRepository.save(employee);
             }
    }
 

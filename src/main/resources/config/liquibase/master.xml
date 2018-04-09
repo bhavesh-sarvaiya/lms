@@ -10,11 +10,12 @@
     <include file="config/liquibase/changelog/20180214143555_added_entity_LeaveBalance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180214143556_added_entity_LeaveType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180214143557_added_entity_LeaveAllocation.xml" relativeToChangelogFile="false"/>
-        <include file="config/liquibase/changelog/20180405183744_changelog_add_employee_field_to_leave_allocation.xml" relativeToChangelogFile="false"/>
+        <!-- <include file="config/liquibase/changelog/20180405183744_changelog_add_employee_field_to_leave_allocation.xml" relativeToChangelogFile="false"/> -->
     <!-- <include file="config/liquibase/changelog/rename_column_all_to_jhi_all_in_leave_allocation.xml" relativeToChangelogFile="false"/> -->
     <!-- <include file="config/liquibase/changelog/20180219072938_changelog_change_no_of_leave_datatype.xml" relativeToChangelogFile="false"/> -->
     <!-- <include file="config/liquibase/changelog/20180219074420_changelog_rename_column_in_leave_balance.xml" relativeToChangelogFile="false"/> -->
     <include file="config/liquibase/changelog/20180228083706_added_entity_LeaveApplication.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180409084528_changelog_remove_emp_field.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     
     <include file="config/liquibase/changelog/20180408110728_changelog_added_user_relation.xml" relativeToChangelogFile="false"/>

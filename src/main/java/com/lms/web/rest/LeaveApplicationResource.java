@@ -32,6 +32,7 @@ import com.lms.domain.enumeration.Post;
 import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveApplicationRepository;
 import com.lms.repository.LeaveBalanceRepository;
+import com.lms.repository.UserRepository;
 import com.lms.security.SecurityUtils;
 import com.lms.web.rest.errors.BadRequestAlertException;
 import com.lms.web.rest.util.HeaderUtil;
@@ -51,12 +52,14 @@ public class LeaveApplicationResource {
 
     private final LeaveApplicationRepository leaveApplicationRepository;
     private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
     private final LeaveBalanceRepository leaveBalanceRepository;
 
-    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository) {
+    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository, UserRepository userRepository) {
         this.leaveApplicationRepository = leaveApplicationRepository;
         this.employeeRepository=employeeRepository;
         this.leaveBalanceRepository = leaveBalanceRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -103,7 +106,7 @@ public class LeaveApplicationResource {
     }
     private Employee getLoggedUser()
     {
-        return employeeRepository.findOneByEmpEnrollmentNo(SecurityUtils.getCurrentUserLogin().get());
+        return employeeRepository.findOne(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getId());
     }
     /**
      * PUT  /leave-applications : Updates an existing leaveApplication.

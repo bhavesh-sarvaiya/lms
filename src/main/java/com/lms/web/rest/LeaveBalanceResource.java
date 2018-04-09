@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lms.domain.LeaveBalance;
 import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveBalanceRepository;
+import com.lms.repository.UserRepository;
 import com.lms.security.SecurityUtils;
 import com.lms.web.rest.errors.BadRequestAlertException;
 import com.lms.web.rest.util.HeaderUtil;
@@ -33,14 +34,15 @@ import java.util.Optional;
 public class LeaveBalanceResource {
 
     private final Logger log = LoggerFactory.getLogger(LeaveBalanceResource.class);
-
+    private final UserRepository userRepository;
     private static final String ENTITY_NAME = "leaveBalance";
     private final EmployeeRepository employeeRepository;
     private final LeaveBalanceRepository leaveBalanceRepository;
 
-    public LeaveBalanceResource(LeaveBalanceRepository leaveBalanceRepository,EmployeeRepository employeeRepository) {
+    public LeaveBalanceResource(LeaveBalanceRepository leaveBalanceRepository,EmployeeRepository employeeRepository,UserRepository userRepository) {
         this.leaveBalanceRepository = leaveBalanceRepository;
         this.employeeRepository=employeeRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -103,7 +105,7 @@ public class LeaveBalanceResource {
         else
         {
         	Optional<String> user=SecurityUtils.getCurrentUserLogin();
-        	page = leaveBalanceRepository.findAllByEmployee(employeeRepository.findOneByEmpEnrollmentNo(user.get()),pageable);
+        	page = leaveBalanceRepository.findAllByEmployee(employeeRepository.findOne(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getId()), pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/leave-balances");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

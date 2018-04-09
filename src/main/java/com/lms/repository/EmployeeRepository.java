@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.lms.domain.Department;
 import com.lms.domain.Employee;
+import com.lms.domain.User;
 import com.lms.domain.enumeration.Post;
 
 
@@ -19,14 +20,13 @@ import com.lms.domain.enumeration.Post;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-	Employee findOneByEmail(String email);
+	
 	List<Employee> findAllByTeachingstaffAndCanHaveVacationAndGranted(boolean teachingstaff,boolean canHaveVacation,boolean granted);
-	Employee findOneByEmpEnrollmentNo(String enrollmentNo);
-	//List<Employee> findAllByDepartment
 	List<Employee> findAllByDepartment(Department department);
 	List<Employee> findAllByPostInAndDepartment(List<Post> list,Department department);
 	List<Employee> findAllByPostIn(List<Post> list);
 	List<Employee> findAllByPost(Post post);
+	Employee findOneByUser(User user);
 
 
 

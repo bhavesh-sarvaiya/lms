@@ -42,7 +42,7 @@
             "firstName": "First Name",
             "lastName": "Last Name",
             "empEnrollmentNo": "Enrollment No",
-            "department": "Department"
+            "department": "Department",
             "user": "User"
         }
     }

@@ -1,13 +1,21 @@
 package com.lms.web.rest;
 
-import com.lms.LmsApp;
+import static com.lms.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.lms.domain.Employee;
-import com.lms.repository.EmployeeRepository;
-import com.lms.repository.UserRepository;
-import com.lms.service.MailService;
-import com.lms.service.UserService;
-import com.lms.web.rest.errors.ExceptionTranslator;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,21 +31,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.List;
-
-import static com.lms.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.lms.domain.enumeration.Post;
+import com.lms.LmsApp;
+import com.lms.domain.Employee;
+import com.lms.domain.enumeration.BloodGroup;
 import com.lms.domain.enumeration.GenderEnum;
 import com.lms.domain.enumeration.MaritalStatus;
-import com.lms.domain.enumeration.BloodGroup;
+import com.lms.domain.enumeration.Post;
+import com.lms.repository.EmployeeRepository;
+import com.lms.repository.UserRepository;
+import com.lms.service.MailService;
+import com.lms.service.UserService;
+import com.lms.web.rest.errors.ExceptionTranslator;
 /**
  * Test class for the EmployeeResource REST controller.
  *
@@ -190,10 +194,8 @@ public class EmployeeResourceIntTest {
             .payband(DEFAULT_PAYBAND)
             .granted(DEFAULT_GRANTED)
             .otheNote(DEFAULT_OTHE_NOTE)
-            .email(DEFAULT_EMAIL)
             .firstName(DEFAULT_FIRST_NAME)
-            .lastName(DEFAULT_LAST_NAME)
-            .empEnrollmentNo(DEFAULT_EMP_ENROLLMENT_NO);
+            .lastName(DEFAULT_LAST_NAME);
         return employee;
     }
 

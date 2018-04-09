@@ -15,7 +15,7 @@
                                 for="field_empEnrollmentNo">Enrollment No</label> 
                                 <input
 								type="text" class="form-control" name="empEnrollmentNo"
-								id="field_empEnrollmentNo" [(ngModel)]="employee.empEnrollmentNo"
+								id="field_empEnrollmentNo" [(ngModel)]="employee.user.login"
 								required readonly />
 						
 						<!-- </div> -->
@@ -172,7 +172,7 @@
 						<label class="form-control-label"
 							 for="field_email">Email</label>
 						<input type="text" class="form-control" name="email"
-							id="field_email" [(ngModel)]="employee.email" required readonly
+							id="field_email" [(ngModel)]="employee.user.email" required readonly
 							maxlength="255" />
 						
 					<!-- </div> -->

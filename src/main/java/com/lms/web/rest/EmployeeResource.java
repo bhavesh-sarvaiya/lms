@@ -90,10 +90,8 @@ public class EmployeeResource {
 		Set<String> roles = new HashSet<>();
 		roles.add("ROLE_USER");
 		UserDTO userDTO = new UserDTO();
-		userDTO.setLogin("" + employee.getEmpEnrollmentNo());
-		userDTO.setEmail(employee.getEmail());
-		userDTO.setFirstName(employee.getFirstName());
-		userDTO.setLastName(employee.getLastName());
+		userDTO.setLogin(employee.getUser().getLogin());
+		userDTO.setEmail(employee.getUser().getEmail());
 		userDTO.setAuthorities(roles);
 		userDTO.setCreatedBy(SecurityUtils.getCurrentUserLogin().get());
 		Employee result = null;
@@ -102,8 +100,9 @@ public class EmployeeResource {
 		} else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
 			throw new EmailAlreadyUsedException();
 		} else {
-			result = employeeRepository.save(employee);
 			User newUser = userService.createUser(userDTO);
+			employee.setUser(newUser);
+			result = employeeRepository.save(employee);
 			mailService.sendCreationEmail(newUser);
 			// System.out.println(newUser);
 		}
@@ -131,12 +130,11 @@ public class EmployeeResource {
 		if (employee.getId() == null) {
 			return createEmployee(employee);
 		}
-		System.out.println("email"+employeeRepository.findOne(employee.getId()).getEmail());
-		User user = userRepository.findOneByEmail(employeeRepository.findOne(employee.getId()).getEmail());
-		user.setEmail(employee.getEmail());
-		user.setFirstName(employee.getFirstName());
-		user.setLastName(employee.getLastName());
-		user.setLogin(employee.getEmpEnrollmentNo());
+		User user = userRepository.findOneById(employee.getUser().getId());
+		user.setEmail(employee.getUser().getEmail());
+		//user.setFirstName(employee.getFirstName());
+		//user.setLastName(employee.getLastName());
+		user.setLogin(employee.getUser().getLogin());
 		Employee result = employeeRepository.save(employee);
 		userRepository.save(user);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, employee.getId().toString()))
@@ -185,15 +183,6 @@ public class EmployeeResource {
 		return employeeRepository.findAllByTeachingstaffAndCanHaveVacationAndGranted(teachingstaff, canHaveVacation, granted);
 		
 	}
-
-	@GetMapping("/employee/email/{email}")
-	@Timed
-	public ResponseEntity<Employee> getAllEmployeeByEmail(@PathVariable String email) {
-		log.debug("REST request to get  Employees by Enrollment");
-		Employee employee = employeeRepository.findOneByEmpEnrollmentNo(email);
-		System.out.println("\nemployee: "+employee);
-		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(employee));
-	}
 	/**
 	 * DELETE /employees/:id : delete the "id" employee.
 	 *
@@ -205,7 +194,8 @@ public class EmployeeResource {
 	@Timed
 	public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
 		log.debug("REST request to delete Employee : {}", id);
-		userService.deleteUser("" + employeeRepository.findOne(id).getEmpEnrollmentNo());
+		userRepository.delete(employeeRepository.findOne(id).getUser());
+		log.debug("Deleted User: Empoyee: {}", id);
 		employeeRepository.delete(id);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
 	}
