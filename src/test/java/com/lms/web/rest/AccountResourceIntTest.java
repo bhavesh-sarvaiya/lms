@@ -4,6 +4,7 @@ import com.lms.config.Constants;
 import com.lms.LmsApp;
 import com.lms.domain.Authority;
 import com.lms.domain.User;
+import com.lms.repository.AuthorityRepository;
 import com.lms.repository.*;
 import com.lms.security.AuthoritiesConstants;
 import com.lms.service.MailService;
@@ -62,6 +63,11 @@ public class AccountResourceIntTest {
     
     @Autowired
     private UserService userService;
+	
+    
+    @Autowired
+    private EmployeeRepository employeeRepository;
+	
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -87,7 +93,12 @@ public class AccountResourceIntTest {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(anyObject());
         AccountResource accountResource =
+<<<<<<< HEAD
             new AccountResource(userRepository, mockUserService, mockMailService, employeeRepository);
+=======
+            new AccountResource(userRepository, userService, mockMailService,employeeRepository);
+
+>>>>>>> testing
         AccountResource accountUserMockResource =
             new AccountResource(userRepository, mockUserService, mockMailService,employeeRepository);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
