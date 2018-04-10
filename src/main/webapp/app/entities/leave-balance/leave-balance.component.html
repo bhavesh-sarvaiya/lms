@@ -29,7 +29,7 @@
                <!--  <td><a [routerLink]="['../leave-balance', leaveBalance.id ]">{{leaveBalance.id}}</a></td> -->
                 <td>
                     <div *ngIf="leaveBalance.employee">
-                         <a [routerLink]="['../employee', leaveBalance.employee?.id ]" >{{leaveBalance.employee?.empEnrollmentNo}}</a>
+                         <a [routerLink]="['../employee', leaveBalance.employee?.id ]" >{{leaveBalance.employee.user.login}}</a>
                     </div>
                 </td> 
              

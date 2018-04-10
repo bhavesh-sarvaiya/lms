@@ -2,8 +2,10 @@ package com.lms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lms.domain.LeaveApplicationHistory;
-
+import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveApplicationHistoryRepository;
+import com.lms.repository.UserRepository;
+import com.lms.security.SecurityUtils;
 import com.lms.web.rest.errors.BadRequestAlertException;
 import com.lms.web.rest.util.HeaderUtil;
 import com.lms.web.rest.util.PaginationUtil;
@@ -35,9 +37,13 @@ public class LeaveApplicationHistoryResource {
     private static final String ENTITY_NAME = "leaveApplicationHistory";
 
     private final LeaveApplicationHistoryRepository leaveApplicationHistoryRepository;
+    private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
 
-    public LeaveApplicationHistoryResource(LeaveApplicationHistoryRepository leaveApplicationHistoryRepository) {
+    public LeaveApplicationHistoryResource(LeaveApplicationHistoryRepository leaveApplicationHistoryRepository,EmployeeRepository employeeRepository,UserRepository userRepository) {
         this.leaveApplicationHistoryRepository = leaveApplicationHistoryRepository;
+        this.employeeRepository = employeeRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -92,7 +98,16 @@ public class LeaveApplicationHistoryResource {
     @Timed
     public ResponseEntity<List<LeaveApplicationHistory>> getAllLeaveApplicationHistories(Pageable pageable) {
         log.debug("REST request to get a page of LeaveApplicationHistories");
-        Page<LeaveApplicationHistory> page = leaveApplicationHistoryRepository.findAll(pageable);
+        Page<LeaveApplicationHistory> page = null;
+        String user = SecurityUtils.getCurrentUserLogin().get();
+        if(user.equalsIgnoreCase("admin"))
+        {
+        	page = leaveApplicationHistoryRepository.findAll(pageable);
+        }
+        else
+        {
+        	page = leaveApplicationHistoryRepository.findAllByEmployee(employeeRepository.findOneByUser(userRepository.findOneByLogin(user).get()),pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/leave-application-histories");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

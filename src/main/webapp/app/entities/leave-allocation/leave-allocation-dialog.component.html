@@ -23,7 +23,7 @@
 						id="field_leaveType" name="employee" #employee
 						[(ngModel)]="leaveAllocation.employee">
 						<option
-							*ngFor="let employeeOption of employees;" [ngValue]="employeeOption.id" >{{employeeOption.empEnrollmentNo}}</option>
+							*ngFor="let employeeOption of employees;" [ngValue]="employeeOption.id" >{{employeeOption.user.login}}</option>
 					</select>
 				</div>
 			

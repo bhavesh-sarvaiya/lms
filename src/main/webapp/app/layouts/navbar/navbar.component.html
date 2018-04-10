@@ -80,6 +80,12 @@
                             <span jhiTranslate="global.menu.entities.leaveAllocation">Leave Allocation</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="leave-application-history" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.leaveApplicationHistory">Leave Application History</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
            
@@ -109,12 +115,7 @@
                             <span jhiTranslate="global.menu.entities.leaveApplication">Leave Application</span>
                         </a>
                     </li> -->
-                    <li>
-                        <a class="dropdown-item" routerLink="leave-application-history" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.leaveApplicationHistory">Leave Application History</span>
-                        </a>
-                    </li>
+                    
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here 
                 </ul>
             </li> -->

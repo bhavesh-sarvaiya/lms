@@ -135,7 +135,7 @@ currentAccount: any;
             for (const e of item.employee.split(',')) {
                 for (const e1 of this.employees) {
                     if ( e === e1.id + '' ) {
-                            employee += e1.empEnrollmentNo + ',';
+                            employee += e1.user.login + ',';
                         }
                 }
             }

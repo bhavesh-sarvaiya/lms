@@ -90,6 +90,8 @@ public class LeaveApplicationResource {
         {
             throw new BadRequestAlertException("Please Input valid date", ENTITY_NAME, "invalid.date");
         }
+        System.out.println(SecurityUtils.getCurrentUserLogin().get());
+        System.out.println(getLoggedUser());
         leaveApplication.setEmployee(getLoggedUser());
         leaveApplication.setNoofday(intervalDays.doubleValue());
         Double leave = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),leaveApplication.getLeaveType());
@@ -120,7 +122,7 @@ public class LeaveApplicationResource {
     }
     private Employee getLoggedUser()
     {
-        return employeeRepository.findOne(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getId());
+        return employeeRepository.findOneByUser(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get());
     }
     /**
      * PUT  /leave-applications : Updates an existing leaveApplication.
@@ -195,27 +197,12 @@ public class LeaveApplicationResource {
             }
             leaveApplication.setStatus("APPLIED");
         }
-        //leaveApplication.setStatus("APPLIED");
-        System.out.println("status: "+leaveApplication.getStatus());
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveApplication.getId().toString()))
             .body(result);
     }
 
-   /*@PutMapping("/leave-applications")
-    @Timed
-    public ResponseEntity<LeaveApplication> updateLeaveApplicationStatus(@RequestParam String status) throws URISyntaxException {
-        log.debug("REST request to update LeaveApplication  Status: {}", status);
-        if (leaveApplication.getId() == null) {
-            return createLeaveApplication(leaveApplication); 
-        }
-        LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveApplication.getId().toString()))
-            .body(result);
-    }
-*/
     /**
      * GET  /leave-applications : get all the leaveApplications.
      *
@@ -225,9 +212,7 @@ public class LeaveApplicationResource {
     @Timed
     public List<LeaveApplication> getAllLeaveApplications(@RequestParam String status) {
         log.debug("REST request to get all LeaveApplications");
-        List<LeaveApplication> list = new ArrayList<LeaveApplication>();
-        //System.out.println(""SecurityUtils.getCurrentUserLogin().get());
-
+        List<LeaveApplication> list = new ArrayList<>();
         if(status.equalsIgnoreCase("all")) {
             list=leaveApplicationRepository.findAll();// all for admin
         }
@@ -235,23 +220,20 @@ public class LeaveApplicationResource {
         {
             Employee employee = getLoggedUser();
             String post = employee.getPost().toString();
-            log.info(post + " Login");
-            System.out.println("status: "+status);
+            log.info(post , "{} Login");
             if(post.equalsIgnoreCase("FACULTY") || post.equalsIgnoreCase("UDC") || post.equalsIgnoreCase("LDC"))
             {
                 if(status.equals("APPLIED"))
                     list = leaveApplicationRepository.findAllByEmployee(employee);
             }
             else{
-                List<String> flowStatusList = new ArrayList<String>();
+                List<String> flowStatusList = new ArrayList<>();
                 List<Employee> empList;
-                List<Post> postList=new ArrayList<Post>();
+                List<Post> postList=new ArrayList<>();
                 postList.add(employee.getPost());
                 String flowStatus="";
                 switch (post)
                 {   
-                   
-
                     case "CHANCELLOR":
                         postList.add(Post.VICECHANCELLOR);
                         flowStatusList.add("NEW->HOD->REGISTRAR->VICECHANCELLOR->CHANCELLOR");
@@ -302,7 +284,6 @@ public class LeaveApplicationResource {
                 List<LeaveApplication> leaveAppList = null;
                 if(status.equalsIgnoreCase("Forward"))
                 {
-                    System.out.println("Forward status");
                     list = leaveApplicationRepository.findAllByFlowStatusLike(flowStatus);
                 }
                 else{
