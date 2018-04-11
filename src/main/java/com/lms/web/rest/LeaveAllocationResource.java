@@ -72,18 +72,14 @@ public class LeaveAllocationResource {
 			throw new BadRequestAlertException("A new leaveAllocation cannot already have an ID", ENTITY_NAME,
 					"idexists");
 		}
-
-		//List<Employee> employeeList = findEmployee(leaveAllocation);
 		LeaveAllocation result = null;
-		//System.out.println("\n\nsize:" + employeeList.size() + "\n\n");
-		System.out.println("\n:"+leaveAllocation.getEmployee());
-		if (leaveAllocation.getEmployee() == null) {
-			throw new BadRequestAlertException("No Employee are selected!...", ENTITY_NAME, "emptyEmp");
+		if (leaveAllocation.getEmployee() == null || leaveAllocation.getEmployee().equals("")) {
+			throw new BadRequestAlertException("No Employee are selected!..", ENTITY_NAME, "emptyEmp");
 		} else {
 			saveLeaveBalance(leaveAllocation.getEmployee(), leaveAllocation);
-			
+			result = leaveAllocationRepository.save(leaveAllocation);
 		}
-		result = leaveAllocationRepository.save(leaveAllocation);
+		
 		return ResponseEntity.created(new URI("/api/leave-allocations/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 		}
@@ -91,15 +87,16 @@ public class LeaveAllocationResource {
 	private void saveLeaveBalance(String emp, LeaveAllocation leaveAllocation) {
 		// Save LeaveBalance 
 		LeaveBalance leaveBalance;
-		log.debug("method: saveLeaveBalance: Starting");
+		log.info("method saveLeaveBalance is Starting for:{}",emp);
 		String[] employeeList = emp.split(",");
 		for(String e : employeeList){
+
 			Employee employee = employeeRepository.getOne(Long.parseLong(e));
 			if(employee != null) {
 					leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveAllocation.getLeaveType(),
 							employee);
 					if (leaveBalance == null) {
-						log.debug("leaveBalance: null, Creating new LeaveBalance");
+						log.info("Creating new LeaveBalance leaveBalance: {}",leaveBalance);
 						leaveBalance = new LeaveBalance();
 						leaveBalance.setNoOfLeave(leaveAllocation.getNoOfLeave());
 						leaveBalance.setEmployee(employee);
@@ -114,7 +111,7 @@ public class LeaveAllocationResource {
 			log.debug("REST request to save LeaveBalance : {}", leaveBalance);
 			leaveBalanceRepository.save(leaveBalance);
 		}
-		log.debug("method: saveLeaveBalance: Completed");
+		log.info("method: saveLeaveBalance: {}","Completed");
 	}
 
 	/**
@@ -164,7 +161,7 @@ public class LeaveAllocationResource {
 	@GetMapping("/leave-allocations")
 	@Timed
 	public ResponseEntity<List<LeaveAllocation>> getAllLeaveAllocations(Pageable pageable) {
-		log.debug("REST request to get a page of LeaveAllocations");
+		log.debug("REST request to get a page of LeaveAllocations: {}","page of LeaveAllocations");
 		Page<LeaveAllocation> page = leaveAllocationRepository.findAll(pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/leave-allocations");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

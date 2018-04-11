@@ -32,12 +32,12 @@
                 <!-- <td><a [routerLink]="['../leave-application-history', leaveApplicationHistory.id ]">{{leaveApplicationHistory.id}}</a></td> -->
                 <td>
                     <div *ngIf="leaveApplicationHistory.employee">
-                        <a [routerLink]="['../employee', leaveApplicationHistory.employee?.id ]" >{{leaveApplicationHistory.employee?.firstName}}</a>
+                        <a [routerLink]="['../employee', leaveApplicationHistory.employee?.id ]" >{{leaveApplicationHistory.employee.user.login}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="leaveApplicationHistory.actor">
-                        <a [routerLink]="['../employee', leaveApplicationHistory.actor?.id ]" >{{leaveApplicationHistory.actor?.firstName}}</a>
+                        <a [routerLink]="['../employee', leaveApplicationHistory.actor?.id ]" >{{leaveApplicationHistory.actor.user.login}}</a>
                     </div>
                 </td>
                 <td>

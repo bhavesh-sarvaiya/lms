@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.qos.logback.core.joran.conditional.ElseAction;
-
 import com.codahale.metrics.annotation.Timed;
 import com.lms.domain.Employee;
 import com.lms.domain.LeaveApplication;
@@ -53,9 +51,12 @@ import io.github.jhipster.web.util.ResponseUtil;
 public class LeaveApplicationResource {
 
     private final Logger log = LoggerFactory.getLogger(LeaveApplicationResource.class);
-
+    
     private static final String ENTITY_NAME = "leaveApplication";
-
+    
+    private static final String APPLIED = "APPLIED";
+    private static final String REJECTED = "REJECTED";
+    private static final String APPROVED = "APPROVED";
     private final LeaveApplicationRepository leaveApplicationRepository;
     private final LeaveApplicationHistoryRepository leaveApplicationHistoryRepository;
     private final EmployeeRepository employeeRepository;
@@ -85,41 +86,70 @@ public class LeaveApplicationResource {
             throw new BadRequestAlertException("A new leaveApplication cannot already have an ID", ENTITY_NAME, "idexists");
         }
        
-        Long intervalDays = ChronoUnit.DAYS.between(leaveApplication.getFromDate(), leaveApplication.getToDate());
+        Long intervalDays = ChronoUnit.DAYS.between(leaveApplication.getFromDate(), leaveApplication.getToDate()) + 1;
         if(intervalDays < 1 )
         {
             throw new BadRequestAlertException("Please Input valid date", ENTITY_NAME, "invalid.date");
         }
-        System.out.println(SecurityUtils.getCurrentUserLogin().get());
-        System.out.println(getLoggedUser());
-        leaveApplication.setEmployee(getLoggedUser());
-        leaveApplication.setNoofday(intervalDays.doubleValue());
+       
         Double leave = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),leaveApplication.getLeaveType());
         if(leave == null)
         {
            throw new BadRequestAlertException("You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME, "leaveNotAssign");
-       }
-       if(leaveApplication.getNoofday() > leave){
-           throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "+leave+ " and you are requested more than that ", ENTITY_NAME, "notEligible");
-       }
+        }
+        
+        List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
        
-        leaveApplication.setStatus("APPLIED");
+        if(!leaveApplicationList.isEmpty())
+        {
+        	Double totalAppliedLeave = 0.0;
+        	for (LeaveApplication l : leaveApplicationList)
+        		totalAppliedLeave += l.getNoofday();
+        	
+            if((totalAppliedLeave + leaveApplication.getNoofday()) > leave) {
+            	throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only and you are requested more than that ", ENTITY_NAME, "notEligible");
+            }
+        	
+        }
+        if(leaveApplication.getNoofday() > leave){
+           throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "+leave+ " and you are requested more than that ", ENTITY_NAME, "notEligible");
+        }
+       
+        leaveApplication.setStatus(APPLIED);
         leaveApplication.setFlowStatus("NEW");
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
-        LeaveApplicationHistory leaveApplicationHistory = new LeaveApplicationHistory();
-        leaveApplicationHistory.setActionDate(LocalDate.now());
-        leaveApplicationHistory.setStatus("NEW");
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-        LocalDateTime now = LocalDateTime.now();  
-        leaveApplicationHistory.setActionInfo("New leave request by " + result.getEmployee().getFirstName() + " at Time: " + dtf.format(now));
-        leaveApplicationHistory.setEmployee(result.getEmployee());
-        leaveApplicationHistory.setLeaveType(result.getLeaveType());
-        leaveApplicationHistory.setActor(result.getEmployee());
-        leaveApplicationHistoryRepository.save(leaveApplicationHistory);
+        
+        saveLeaveAppHistory(result,"");
         return ResponseEntity.created(new URI("/api/leave-applications/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+
+	private void saveLeaveAppHistory(LeaveApplication result, String forward) {
+		LeaveApplicationHistory leaveApplicationHistory = new LeaveApplicationHistory();
+        leaveApplicationHistory.setActionDate(LocalDate.now());
+        leaveApplicationHistory.setStatus(result.getStatus());
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now(); 
+        String actor = getLoggedUser().getUser().getLogin();
+        String dateTime = dtf.format(now);
+        if(result.getStatus().equalsIgnoreCase(APPLIED)) {
+        	 leaveApplicationHistory.setActionInfo("New leave request by " + actor+ " at " + dateTime );
+        }
+        else if(result.getStatus().equalsIgnoreCase(APPROVED)) {
+        	 leaveApplicationHistory.setActionInfo("Leave approved by " + actor + " at " + dateTime );
+        }
+        else if(result.getStatus().equalsIgnoreCase("FORWARD")) {
+       	 leaveApplicationHistory.setActionInfo("Leave forwarded by " + actor + " at " + dateTime + " to " + forward);
+       }
+        else  if(result.getStatus().equalsIgnoreCase(REJECTED)){
+        	 leaveApplicationHistory.setActionInfo("Leave Reject by " + actor  + " at " + dateTime);
+        }
+        leaveApplicationHistory.setEmployee(result.getEmployee());
+        leaveApplicationHistory.setLeaveType(result.getLeaveType());
+        leaveApplicationHistory.setActor(getLoggedUser());
+        leaveApplicationHistoryRepository.save(leaveApplicationHistory);
+	}
     private Employee getLoggedUser()
     {
         return employeeRepository.findOneByUser(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get());
@@ -141,21 +171,21 @@ public class LeaveApplicationResource {
             return createLeaveApplication(leaveApplication); 
         }
         String status=leaveApplication.getStatus();
-        if(status.equals("APPROVED") || status.equals("REJECTED"))
+        if(status.equals(APPROVED) || status.equals(REJECTED))
         {
-            if(leaveApplication.getStatus().equalsIgnoreCase("APPROVED"))
+            if(leaveApplication.getStatus().equalsIgnoreCase(APPROVED))
             {
                 LeaveBalance leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveApplication.getLeaveType(),leaveApplication.getEmployee());
                 if(leaveApplication.getNoofday() > leaveBalance.getNoOfLeave() )
                 {
-                    leaveApplication.setStatus("APPLIED");
+                    leaveApplication.setStatus(APPLIED);
                     throw new BadRequestAlertException("The Person who is requested for this application is not eligible for this leave(he/she has no enough leave balance) ", ENTITY_NAME, "notEligibleWhenApprove");
                 }
                 leaveBalance.setNoOfLeave(leaveBalance.getNoOfLeave()-leaveApplication.getNoofday());
                 leaveBalanceRepository.save(leaveBalance);
             }
             leaveApplication.setApprovedBy(getLoggedUser());
-           // System.out.println("balance: "+);
+            saveLeaveAppHistory(leaveApplication,"");
             
         }
         else if(status.equals("FORWARD") ){
@@ -194,8 +224,11 @@ public class LeaveApplicationResource {
                     else
                         leaveApplication.setFlowStatus(flowStatus+"->CHANCELLOR");
                     break;
+                default : log.info("something wrong....");
             }
-            leaveApplication.setStatus("APPLIED");
+            String[] flow= leaveApplication.getFlowStatus().split("->");
+            saveLeaveAppHistory(leaveApplication,flow[flow.length-1]);
+            leaveApplication.setStatus(APPLIED);
         }
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
         return ResponseEntity.ok()
@@ -211,7 +244,7 @@ public class LeaveApplicationResource {
     @GetMapping("/leave-applications")
     @Timed
     public List<LeaveApplication> getAllLeaveApplications(@RequestParam String status) {
-        log.debug("REST request to get all LeaveApplications");
+        log.info("REST request to get all LeaveApplications: {}", "all LeaveApplications");
         List<LeaveApplication> list = new ArrayList<>();
         if(status.equalsIgnoreCase("all")) {
             list=leaveApplicationRepository.findAll();// all for admin
@@ -223,7 +256,7 @@ public class LeaveApplicationResource {
             log.info(post , "{} Login");
             if(post.equalsIgnoreCase("FACULTY") || post.equalsIgnoreCase("UDC") || post.equalsIgnoreCase("LDC"))
             {
-                if(status.equals("APPLIED"))
+                if(status.equals(APPLIED))
                     list = leaveApplicationRepository.findAllByEmployee(employee);
             }
             else{
@@ -290,14 +323,13 @@ public class LeaveApplicationResource {
                  leaveAppList = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusOrFlowStatusIn(empList,"NEW",flowStatusList);
                 
                 for(LeaveApplication l : leaveAppList ){
-                    System.out.println("\nleave: "+l);
                     if(l!=null)
                     {   
-                        if(status.equals("PENDDING") && l.getStatus().equals("APPLIED") && !employee.equals(l.getEmployee()))
+                        if(status.equals("PENDDING") && l.getStatus().equals(APPLIED) && !employee.equals(l.getEmployee()))
                             list.add(l);  
-                        else if(status.equals("APPROVED") && (l.getStatus().equals("APPROVED") || l.getStatus().equals("REJECTED")) && l.getApprovedBy().equals(employee))
+                        else if(status.equals(APPROVED) && (l.getStatus().equals(APPROVED) || l.getStatus().equals(REJECTED)) && l.getApprovedBy().equals(employee))
                             list.add(l);
-                        else if(status.equals("APPLIED") && employee.equals(l.getEmployee()))
+                        else if(status.equals(APPLIED) && employee.equals(l.getEmployee()))
                             list.add(l);
                     }
                 }

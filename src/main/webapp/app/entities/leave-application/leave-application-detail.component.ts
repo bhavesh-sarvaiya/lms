@@ -68,7 +68,7 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.currentAccount = account;
             if (this.currentAccount.login !== 'admin') {
-            this.loadEmployee(this.currentAccount.login);
+            this.loadEmployee(this.currentAccount.id);
             console.log(this.currentAccount);
         }
         });
@@ -77,8 +77,8 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
         });
         this.registerChangeInLeaveApplications();
     }
-    loadEmployee(email) {
-        this.employeeService.findByEmail(email)
+    loadEmployee(id) {
+        this.employeeService.loadEmployeeByUser(id)
             .subscribe((employeeResponse: HttpResponse<Employee>) => {
                 this.employee = employeeResponse.body;
                 console.log('logged user: ' + JSON.stringify(this.employee));

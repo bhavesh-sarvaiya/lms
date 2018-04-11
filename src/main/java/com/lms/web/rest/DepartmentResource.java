@@ -86,7 +86,7 @@ public class DepartmentResource {
     @GetMapping("/departments")
     @Timed
     public List<Department> getAllDepartments() {
-        log.debug("REST request to get all Departments");
+        log.debug("REST request to get all Departments:{}","All Departments");
         return departmentRepository.findAll();
         }
 

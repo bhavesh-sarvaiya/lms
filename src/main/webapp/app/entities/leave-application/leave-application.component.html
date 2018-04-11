@@ -10,7 +10,7 @@
         </button>
     </h2>
 
-     <ul *ngIf="currentAccount && employee &&currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.post != 'LDC' && employee.post != 'UDC'" class="nav nav-tabs">
+     <ul *ngIf="currentAccount && employee && currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.post != 'LDC' && employee.post != 'UDC'" class="nav nav-tabs">
      
         <li class="nav-item" >
           <a class="nav-link " (click)="ngOnInit('PENDDING')">Pandding</a>
@@ -55,7 +55,7 @@
                 <!-- <td><a [routerLink]="['../leave-application', leaveApplication.id ]">{{leaveApplication.id}}</a></td> -->
                  <td>
                     <div *ngIf="leaveApplication.employee">
-                        <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee?.empEnrollmentNo}}</a>
+                        <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee.user.login}}</a>
                     </div>
                 </td>
                 <td>{{leaveApplication.reason}}</td>
@@ -86,7 +86,7 @@
                             <span class="fa fa-eye"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button *ngIf="currentAccount.login != 'admin' && leaveApplication.employee.empEnrollmentNo == currentAccount.login && leaveApplication.status != 'REJECTED' && leaveApplication.status != 'APPROVED'" type="submit"
+                        <button *ngIf="currentAccount.login != 'admin' && leaveApplication.employee.user.login == currentAccount.login && leaveApplication.status != 'REJECTED' && leaveApplication.status != 'APPROVED'" type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/edit'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
@@ -94,7 +94,7 @@
                             <span class="fa fa-pencil"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button *ngIf=" currentAccount.login != 'admin' && leaveApplication.employee.empEnrollmentNo == currentAccount.login && leaveApplication.status != 'REJECTED' && leaveApplication.status != 'APPROVED'"  type="submit"
+                        <button *ngIf=" currentAccount.login != 'admin' && leaveApplication.employee.user.login == currentAccount.login && leaveApplication.status != 'REJECTED' && leaveApplication.status != 'APPROVED'"  type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'leave-application/'+ leaveApplication.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"

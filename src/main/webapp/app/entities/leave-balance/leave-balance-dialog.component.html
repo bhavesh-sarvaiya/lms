@@ -39,7 +39,7 @@
             <label class="form-control-label" jhiTranslate="lmsApp.leaveBalance.employee" for="field_employee">Employee</label>
             <select class="form-control" id="field_employee" name="employee" [(ngModel)]="leaveBalance.employee"  required>
                 <option *ngIf="!editForm.value.employee" [ngValue]="null" selected></option>
-                <option [ngValue]="employeeOption.id === leaveBalance.employee?.id ? leaveBalance.employee : employeeOption" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.empEnrollmentNo}}</option>
+                <option [ngValue]="employeeOption.id === leaveBalance.employee?.id ? leaveBalance.employee : employeeOption" *ngFor="let employeeOption of employees; trackBy: trackEmployeeById">{{employeeOption.user.login}}</option>
             </select>
         </div>
         <div [hidden]="!(editForm.controls.employee?.dirty && editForm.controls.employee?.invalid)">

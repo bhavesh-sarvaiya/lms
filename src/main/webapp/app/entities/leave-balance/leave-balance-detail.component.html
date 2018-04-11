@@ -17,7 +17,7 @@
         <dt><span jhiTranslate="lmsApp.leaveBalance.employee">Employee</span></dt>
         <dd>
             <div *ngIf="leaveBalance.employee">
-                <a [routerLink]="['/employee', leaveBalance.employee?.id]">{{leaveBalance.employee?.empEnrollmentNo}}</a>
+                <a [routerLink]="['/employee', leaveBalance.employee?.id]">{{leaveBalance.employee.user.login}}</a>
             </div>
         </dd>
     </dl>

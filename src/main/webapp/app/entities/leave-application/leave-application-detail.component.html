@@ -103,7 +103,7 @@
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
     </button></div>
-    <div  class="row" *ngIf="employee && currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee.email != leaveApplication.employee.email && leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED' && (flowStatus == 'NEW' || flowStatus == employee.post) ">
+    <div  class="row" *ngIf="employee && currentAccount.login != 'admin' && employee.post != 'FACULTY' && employee != leaveApplication.employee && leaveApplication.status != 'APPROVED' && leaveApplication.status != 'REJECTED' && (flowStatus == 'NEW' || flowStatus == employee.post) ">
             <div class="col-md-3"> 
                 <button (click)="save('APPROVED')" class="btn btn-success">
                         <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.approved">Approved</span>

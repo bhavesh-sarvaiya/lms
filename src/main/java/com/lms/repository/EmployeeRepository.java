@@ -20,8 +20,6 @@ import com.lms.domain.enumeration.Post;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-	
-	List<Employee> findAllByTeachingstaffAndCanHaveVacationAndGranted(boolean teachingstaff,boolean canHaveVacation,boolean granted);
 	List<Employee> findAllByDepartment(Department department);
 	List<Employee> findAllByPostInAndDepartment(List<Post> list,Department department);
 	List<Employee> findAllByPostIn(List<Post> list);

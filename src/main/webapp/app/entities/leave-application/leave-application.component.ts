@@ -27,8 +27,8 @@ leaveApplications: LeaveApplication[];
         private employeeService: EmployeeService
     ) {
     }
-    loadEmployee(email) {
-        this.employeeService.findByEmail(email)
+    loadEmployee(id) {
+        this.employeeService.loadEmployeeByUser(id)
             .subscribe((employeeResponse: HttpResponse<Employee>) => {
                 this.employee = employeeResponse.body;
             });
@@ -52,7 +52,7 @@ leaveApplications: LeaveApplication[];
     ngOnInit(status?) {
             this.principal.identity().then((account) => {
                 this.currentAccount = account;
-                this.loadEmployee(this.currentAccount.login);
+                this.loadEmployee(this.currentAccount.id);
                 this.loadAll(status);
             });
         this.registerChangeInLeaveApplications();

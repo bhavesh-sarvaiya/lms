@@ -96,16 +96,14 @@ public class LeaveBalanceResource {
     @GetMapping("/leave-balances")
     @Timed
     public ResponseEntity<List<LeaveBalance>> getAllLeaveBalances(Pageable pageable) {
-        log.debug("REST request to get a page of LeaveBalances");
+        log.info("REST request to get a page of LeaveBalances");
         Page<LeaveBalance> page=null;
-        if(SecurityUtils.getCurrentUserLogin().get().equals("admin"))
-        {
+        String user=SecurityUtils.getCurrentUserLogin().get();
+        if(user.equals("admin")) {
         	page = leaveBalanceRepository.findAll(pageable);
         }
-        else
-        {
-        	Optional<String> user=SecurityUtils.getCurrentUserLogin();
-        	page = leaveBalanceRepository.findAllByEmployee(employeeRepository.findOne(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get().getId()), pageable);
+        else {
+        	page = leaveBalanceRepository.findAllByEmployee(employeeRepository.findOneByUser(userRepository.findOneByLogin(user).get()), pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/leave-balances");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

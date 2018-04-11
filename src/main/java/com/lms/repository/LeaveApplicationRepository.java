@@ -5,6 +5,8 @@ import java.util.List;
 import com.lms.domain.Department;
 import com.lms.domain.Employee;
 import com.lms.domain.LeaveApplication;
+import com.lms.domain.LeaveType;
+
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
@@ -26,4 +28,5 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 	List<LeaveApplication> findAllByEmployeeInAndFlowStatusOrFlowStatusIn(List<Employee> employeeList,String flowStatus,List<String> flowStatusList);
 	@Query("select l from LeaveApplication l where l.flowStatus LIKE ?1%")
 	List<LeaveApplication> findAllByFlowStatusLike(String floStatus);
+	List<LeaveApplication> findAllByEmployeeAndLeaveTypeAndStatus(Employee employee,LeaveType leaveType, String status);
 }

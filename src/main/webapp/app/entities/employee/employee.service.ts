@@ -34,10 +34,6 @@ export class EmployeeService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    findByEmail(email: string): Observable<EntityResponseType> {
-        return this.http.get<Employee>(`api/employee/email/${email}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
     loadEmployeeByUser(id: any): Observable<EntityResponseType> {
         return this.http.get<Employee>(`api/employee/id/${id}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));

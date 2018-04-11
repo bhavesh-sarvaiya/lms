@@ -39,33 +39,10 @@ export class LeaveAllocationDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.initLoadAllEmp();
+        this.loadEmployee();
         this.leaveTypeService.query().subscribe((res: HttpResponse<LeaveType[]>) => { this.leavetypes = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
-    initLoadAllEmp(event?: any) {
-        this.isSaving = false;
-       /* if (event === undefined || event.target.checked === true) {
-        this.leaveAllocation.teachingstaff = false;
-        this.leaveAllocation.canHaveVacation = false;
-        this.leaveAllocation.granted = false;
-        this.leaveAllocation.all = true;
-        console.log(this.employeeService);*/
-        this.employeeService.query().subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        /*} else {
-            this.loadEmployee(event);
-        }*/
-    }
     loadEmployee() {
-       /* this.isSaving = false;
-        this.leaveAllocation.all = false;
-        if (event.target.name === 'teachingstaff') {
-        this.leaveAllocation.teachingstaff = event.target.checked;
-        } else if (event.target.name === 'canHaveVacation') {
-        this.leaveAllocation.canHaveVacation = event.target.checked;
-        } else if (event.target.name === 'granted') {
-        this.leaveAllocation.granted = event.target.checked;
-        } else {
-        }*/
         this.employeeService.query()
             .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -74,9 +51,6 @@ export class LeaveAllocationDialogComponent implements OnInit {
     }
     save() {
         this.isSaving = true;
-        /* if (this.leaveAllocation.all === undefined) {
-        this.leaveAllocation.all = false;
-        }*/
         if (this.leaveAllocation.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.leaveAllocationService.update(this.leaveAllocation));

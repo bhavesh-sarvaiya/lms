@@ -17,4 +17,6 @@ public interface LeaveApplicationHistoryRepository extends JpaRepository<LeaveAp
 
 	Page<LeaveApplicationHistory> findAllByEmployee(Employee employee, Pageable pageable);
 
+	Page<LeaveApplicationHistory> findAllByEmployeeOrActor(Employee employee, Employee employee2, Pageable pageable);
+
 }

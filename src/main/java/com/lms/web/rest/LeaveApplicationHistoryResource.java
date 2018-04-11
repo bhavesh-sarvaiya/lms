@@ -1,6 +1,7 @@
 package com.lms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lms.domain.Employee;
 import com.lms.domain.LeaveApplicationHistory;
 import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveApplicationHistoryRepository;
@@ -97,7 +98,7 @@ public class LeaveApplicationHistoryResource {
     @GetMapping("/leave-application-histories")
     @Timed
     public ResponseEntity<List<LeaveApplicationHistory>> getAllLeaveApplicationHistories(Pageable pageable) {
-        log.debug("REST request to get a page of LeaveApplicationHistories");
+        log.info("REST request to get a page of LeaveApplicationHistories");
         Page<LeaveApplicationHistory> page = null;
         String user = SecurityUtils.getCurrentUserLogin().get();
         if(user.equalsIgnoreCase("admin"))
@@ -106,7 +107,8 @@ public class LeaveApplicationHistoryResource {
         }
         else
         {
-        	page = leaveApplicationHistoryRepository.findAllByEmployee(employeeRepository.findOneByUser(userRepository.findOneByLogin(user).get()),pageable);
+        	Employee employee = employeeRepository.findOneByUser(userRepository.findOneByLogin(user).get());
+        	page = leaveApplicationHistoryRepository.findAllByEmployeeOrActor(employee,employee,pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/leave-application-histories");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

@@ -241,10 +241,8 @@ public class EmployeeResourceIntTest {
         assertThat(testEmployee.getPayband()).isEqualTo(DEFAULT_PAYBAND);
         assertThat(testEmployee.isGranted()).isEqualTo(DEFAULT_GRANTED);
         assertThat(testEmployee.getOtheNote()).isEqualTo(DEFAULT_OTHE_NOTE);
-        assertThat(testEmployee.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testEmployee.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testEmployee.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
-        assertThat(testEmployee.getEmpEnrollmentNo()).isEqualTo(DEFAULT_EMP_ENROLLMENT_NO);
     }
 
     @Test
@@ -592,24 +590,6 @@ public class EmployeeResourceIntTest {
 
     @Test
     @Transactional
-    public void checkEmailIsRequired() throws Exception {
-        int databaseSizeBeforeTest = employeeRepository.findAll().size();
-        // set the field null
-        employee.setEmail(null);
-
-        // Create the Employee, which fails.
-
-        restEmployeeMockMvc.perform(post("/api/employees")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(employee)))
-            .andExpect(status().isBadRequest());
-
-        List<Employee> employeeList = employeeRepository.findAll();
-        assertThat(employeeList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkFirstNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = employeeRepository.findAll().size();
         // set the field null
@@ -632,24 +612,6 @@ public class EmployeeResourceIntTest {
         int databaseSizeBeforeTest = employeeRepository.findAll().size();
         // set the field null
         employee.setLastName(null);
-
-        // Create the Employee, which fails.
-
-        restEmployeeMockMvc.perform(post("/api/employees")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(employee)))
-            .andExpect(status().isBadRequest());
-
-        List<Employee> employeeList = employeeRepository.findAll();
-        assertThat(employeeList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkEmpEnrollmentNoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = employeeRepository.findAll().size();
-        // set the field null
-        employee.setEmpEnrollmentNo(null);
 
         // Create the Employee, which fails.
 
@@ -695,10 +657,8 @@ public class EmployeeResourceIntTest {
             .andExpect(jsonPath("$.[*].payband").value(hasItem(DEFAULT_PAYBAND.doubleValue())))
             .andExpect(jsonPath("$.[*].granted").value(hasItem(DEFAULT_GRANTED.booleanValue())))
             .andExpect(jsonPath("$.[*].otheNote").value(hasItem(DEFAULT_OTHE_NOTE.toString())))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME.toString())))
-            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())))
-            .andExpect(jsonPath("$.[*].empEnrollmentNo").value(hasItem(DEFAULT_EMP_ENROLLMENT_NO.toString())));
+            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())));
     }
 
     @Test
@@ -734,10 +694,8 @@ public class EmployeeResourceIntTest {
             .andExpect(jsonPath("$.payband").value(DEFAULT_PAYBAND.doubleValue()))
             .andExpect(jsonPath("$.granted").value(DEFAULT_GRANTED.booleanValue()))
             .andExpect(jsonPath("$.otheNote").value(DEFAULT_OTHE_NOTE.toString()))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME.toString()))
-            .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME.toString()))
-            .andExpect(jsonPath("$.empEnrollmentNo").value(DEFAULT_EMP_ENROLLMENT_NO.toString()));
+            .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME.toString()));
     }
 
     @Test
@@ -782,10 +740,8 @@ public class EmployeeResourceIntTest {
             .payband(UPDATED_PAYBAND)
             .granted(UPDATED_GRANTED)
             .otheNote(UPDATED_OTHE_NOTE)
-            .email(UPDATED_EMAIL)
             .firstName(UPDATED_FIRST_NAME)
-            .lastName(UPDATED_LAST_NAME)
-            .empEnrollmentNo(UPDATED_EMP_ENROLLMENT_NO);
+            .lastName(UPDATED_LAST_NAME);
 
         restEmployeeMockMvc.perform(put("/api/employees")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -818,10 +774,8 @@ public class EmployeeResourceIntTest {
         assertThat(testEmployee.getPayband()).isEqualTo(UPDATED_PAYBAND);
         assertThat(testEmployee.isGranted()).isEqualTo(UPDATED_GRANTED);
         assertThat(testEmployee.getOtheNote()).isEqualTo(UPDATED_OTHE_NOTE);
-        assertThat(testEmployee.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testEmployee.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testEmployee.getLastName()).isEqualTo(UPDATED_LAST_NAME);
-        assertThat(testEmployee.getEmpEnrollmentNo()).isEqualTo(UPDATED_EMP_ENROLLMENT_NO);
     }
 
     @Test

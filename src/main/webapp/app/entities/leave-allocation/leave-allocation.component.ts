@@ -52,7 +52,6 @@ currentAccount: any;
     }
 
     loadAll() {
-
         this.leaveAllocationService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
@@ -126,11 +125,9 @@ currentAccount: any;
         this.links = this.parseLinks.parse(headers.get('link'));
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
-        // this.page = pagingParams.page;
         this.leaveAllocations = data;
         let employee = '';
         this.leaveAllocations.forEach((item, index) => {
-             console.log('setting');
             employee = '';
             for (const e of item.employee.split(',')) {
                 for (const e1 of this.employees) {

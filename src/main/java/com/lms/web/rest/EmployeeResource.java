@@ -104,9 +104,7 @@ public class EmployeeResource {
 			employee.setUser(newUser);
 			result = employeeRepository.save(employee);
 			mailService.sendCreationEmail(newUser);
-			// System.out.println(newUser);
 		}
-		// System.out.println("\n\n--------"+userDTO);
 		return ResponseEntity.created(new URI("/api/employees/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
 	}
@@ -132,8 +130,6 @@ public class EmployeeResource {
 		}
 		User user = userRepository.findOneById(employee.getUser().getId());
 		user.setEmail(employee.getUser().getEmail());
-		//user.setFirstName(employee.getFirstName());
-		//user.setLastName(employee.getLastName());
 		user.setLogin(employee.getUser().getLogin());
 		Employee result = employeeRepository.save(employee);
 		userRepository.save(user);
@@ -152,8 +148,7 @@ public class EmployeeResource {
 	@GetMapping("/employees")
 	@Timed
 	public ResponseEntity<List<Employee>> getAllEmployees(Pageable pageable) {
-		log.debug("REST request to get a page of Employees");
-		System.out.println("\nAll Employee\n");
+		log.debug("REST request to get a page of Employees:{}","page of Employees");
 		Page<Employee> page = employeeRepository.findAll(pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/employees");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -178,22 +173,11 @@ public class EmployeeResource {
     @GetMapping("/employee/id/{id}")
     @Timed
     public ResponseEntity<Employee> getEmployeeByUser(@PathVariable Long id) {
-        log.debug("REST request to get  Employees by User");
+        log.debug("REST request to get  Employees by User id: {}",id);
         Employee employee = employeeRepository.findOneByUser(userRepository.findOneById(id));
-        System.out.println("\nemployee: "+employee);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(employee));
     }
-
     
-	@GetMapping("/employee")
-	@Timed
-	public List<Employee> getAllEmployeeByGranted(@RequestParam boolean teachingstaff,@RequestParam boolean canHaveVacation,
-			@RequestParam boolean granted) {
-		System.out.println("\nAll Employee by granted\n teaching: "+teachingstaff+" vacation: "+canHaveVacation+" granted: "+granted);
-		log.debug("REST request to get a page of Employees by Teachingstaff And CanHaveVacation And Granted ");
-		return employeeRepository.findAllByTeachingstaffAndCanHaveVacationAndGranted(teachingstaff, canHaveVacation, granted);
-		
-	}
 	/**
 	 * DELETE /employees/:id : delete the "id" employee.
 	 *

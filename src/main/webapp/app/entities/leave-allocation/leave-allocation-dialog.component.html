@@ -25,67 +25,7 @@
 						<option
 							*ngFor="let employeeOption of employees;" [ngValue]="employeeOption.id" >{{employeeOption.user.login}}</option>
 					</select>
-				</div>
-			
-	<!-- <div class="col-md-4">
-		<div class="card" [hidden]="leaveAllocation.id">
-			<div class="card-header">Employee Type</div>
-			<div class="card-body">
-					<div class="form-group" >
-									<div class="row">
-										<div class="col-md-3">
-										<input type="checkbox" ng-model="checked"
-											(click)="initLoadAllEmp($event)" class="form-control" name="all"
-											id="field_all" [(ngModel)]="leaveAllocation.all" />
-										</div>
-										<div class="col-md-9" >
-											<label class="form-control-label"
-												jhiTranslate="lmsApp.leaveAllocation.all" for="field_all">All</label>
-										</div>
-											</div>
-									<div class="row">
-										<div class="col-md-3">
-											<input type="checkbox" (click)="loadEmployee($event)"
-												class="form-control" name="teachingstaff" id="field_teachingstaff"
-												[(ngModel)]="leaveAllocation.teachingstaff" />
-										</div>
-										<div class="col-md-9">
-											<label class="form-control-label"
-												jhiTranslate="lmsApp.leaveAllocation.teachingstaff"
-												for="field_teachingstaff">Teachingstaff</label>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-3">
-											<input type="checkbox" (click)="loadEmployee($event)"
-												class="form-control" name="canHaveVacation"
-												id="field_canHaveVacation"
-												[(ngModel)]="leaveAllocation.canHaveVacation" />
-										</div>
-										<div class="col-md-9">
-											<label class="form-control-label"
-												jhiTranslate="lmsApp.leaveAllocation.canHaveVacation"
-												for="field_canHaveVacation">Can Have Vacation</label>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-3">
-											<input type="checkbox" (click)="loadEmployee($event)"
-												class="form-control" name="granted" id="field_granted"
-												[(ngModel)]="leaveAllocation.granted" />
-										</div>
-										<div class="col-md-9">
-											<label class="form-control-label"
-												jhiTranslate="lmsApp.leaveAllocation.granted" for="field_granted">Granted</label>
-										</div>
-										
-									</div>
-							</div>
-							</div>
-						</div>
-			</div> -->
-					
-						
+				</div>				
 		</div>
 		
 		<div class="form-group">

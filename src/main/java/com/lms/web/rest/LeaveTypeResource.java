@@ -51,7 +51,6 @@ public class LeaveTypeResource {
         if (leaveType.getId() != null) {
             throw new BadRequestAlertException("A new leaveType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        System.out.println("\n\n"+leaveType+"\n\n");
         LeaveType result = leaveTypeRepository.save(leaveType);
         return ResponseEntity.created(new URI("/api/leave-types/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
