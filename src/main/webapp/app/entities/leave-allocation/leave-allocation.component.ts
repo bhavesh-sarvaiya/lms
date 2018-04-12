@@ -8,6 +8,7 @@ import { LeaveAllocation } from './leave-allocation.model';
 import { LeaveAllocationService } from './leave-allocation.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
 import { EmployeeService, Employee } from '../employee';
+import * as $ from 'jquery';
 
 @Component({
     selector: 'jhi-leave-allocation',
@@ -94,6 +95,10 @@ currentAccount: any;
         this.loadAll();
     }
     ngOnInit() {
+        // $(document).ready(function(){
+        //     // $('[data-toggle="tooltip"]').tooltip();
+        //     console.log('okay');
+        // });
         this.loadEmployee();
         this.principal.identity().then((account) => {
             this.currentAccount = account;

@@ -30,6 +30,8 @@
     <include file="config/liquibase/changelog/20180228083706_added_entity_constraints_LeaveApplication.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180409145539_added_entity_constraints_LeaveApplicationHistory.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
-<!-- <include file="config/liquibase/changelog/20180409132749_changelog_removed_field_from_users(fnam,lname).xml" relativeToChangelogFile="false"/>
- -->	
+    <!-- <include file="config/liquibase/changelog/20180409181325_changelog_drop_user_field.xml" relativeToChangelogFile="false"/> -->
+    <include file="config/liquibase/changelog/20180412013452_changelog_add_or_remove_field.xml" relativeToChangelogFile="false"/>
+ 
+
 </databaseChangeLog>

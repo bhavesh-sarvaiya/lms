@@ -70,6 +70,12 @@ public class LeaveApplicationResourceIntTest {
      @Autowired 
     private LeaveBalanceRepository leaveBalanceRepository;
 
+    @Autowired 
+    private UserRepository userRepository;
+
+    @Autowired 
+    private LeaveApplicationHistoryRepository leaveApplicationHistoryRepository;
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -89,7 +95,7 @@ public class LeaveApplicationResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final LeaveApplicationResource leaveApplicationResource = new LeaveApplicationResource(leaveApplicationRepository,employeeRepository,leaveBalanceRepository);
+        final LeaveApplicationResource leaveApplicationResource = new LeaveApplicationResource(leaveApplicationRepository,employeeRepository,leaveBalanceRepository,userRepository,leaveApplicationHistoryRepository);
         this.restLeaveApplicationMockMvc = MockMvcBuilders.standaloneSetup(leaveApplicationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
