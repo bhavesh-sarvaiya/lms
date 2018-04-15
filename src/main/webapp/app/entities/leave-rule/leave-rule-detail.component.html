@@ -1,0 +1,38 @@
+
+<div *ngIf="leaveRule">
+    <h2><span jhiTranslate="lmsApp.leaveRule.detail.title">Leave Rule</span> {{leaveRule.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="lmsApp.leaveRule.leaveFor">Leave For</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.LeaveFor.' + leaveRule.leaveFor}}">{{leaveRule.leaveFor}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRule.allocationTimePeriod">Allocation Time Period</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.Period.' + leaveRule.allocationTimePeriod}}">{{leaveRule.allocationTimePeriod}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRule.commulative">Commulative</span></dt>
+        <dd>
+            <span>{{leaveRule.commulative}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRule.commulativeLimit">Commulative Limit</span></dt>
+        <dd>
+            <span>{{leaveRule.commulativeLimit}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'leave-rule/'+ leaveRule.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,10 @@
+{
+    "lmsApp": {
+        "LeaveFor" : {
+            "null": "",
+            "BOTH": "BOTH",
+            "MALE": "MALE",
+            "FEMALE": "FEMALE"
+        }
+    }
+}

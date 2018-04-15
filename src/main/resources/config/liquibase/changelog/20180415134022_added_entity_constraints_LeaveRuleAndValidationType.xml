@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity LeaveRuleAndValidationType.
+    -->
+    <changeSet id="20180415134022-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="leave_rule_id"
+                                 baseTableName="leave_rule_and_validation_type"
+                                 constraintName="fk_leave_rule_and_validation_type_leave_rule_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="leave_rule"/>
+
+    </changeSet>
+</databaseChangeLog>

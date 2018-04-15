@@ -1,0 +1,60 @@
+
+<div *ngIf="leaveRuleAndValidationType">
+    <h2><span jhiTranslate="lmsApp.leaveRuleAndValidationType.detail.title">Leave Rule And Validation Type</span> {{leaveRuleAndValidationType.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndValidationType.employeeType">Employee Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.EmpType2.' + leaveRuleAndValidationType.employeeType}}">{{leaveRuleAndValidationType.employeeType}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndValidationType.validationType">Validation Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.ValidationType.' + leaveRuleAndValidationType.validationType}}">{{leaveRuleAndValidationType.validationType}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndValidationType.level1">Level 1</span></dt>
+        <dd>
+            <span>{{leaveRuleAndValidationType.level1}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndValidationType.level2">Level 2</span></dt>
+        <dd>
+            <span>{{leaveRuleAndValidationType.level2}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndValidationType.level3">Level 3</span></dt>
+        <dd>
+            <span>{{leaveRuleAndValidationType.level3}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndValidationType.level4">Level 4</span></dt>
+        <dd>
+            <span>{{leaveRuleAndValidationType.level4}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndValidationType.level5">Level 5</span></dt>
+        <dd>
+            <span>{{leaveRuleAndValidationType.level5}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndValidationType.level6">Level 6</span></dt>
+        <dd>
+            <span>{{leaveRuleAndValidationType.level6}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndValidationType.leaveRule">Leave Rule</span></dt>
+        <dd>
+            <div *ngIf="leaveRuleAndValidationType.leaveRule">
+                <a [routerLink]="['/leave-rule', leaveRuleAndValidationType.leaveRule?.id]">{{leaveRuleAndValidationType.leaveRule?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'leave-rule-and-validation-type/'+ leaveRuleAndValidationType.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

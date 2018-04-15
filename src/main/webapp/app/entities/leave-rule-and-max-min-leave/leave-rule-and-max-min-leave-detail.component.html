@@ -1,0 +1,40 @@
+
+<div *ngIf="leaveRuleAndMaxMinLeave">
+    <h2><span jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.detail.title">Leave Rule And Max Min Leave</span> {{leaveRuleAndMaxMinLeave.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.employeeType">Employee Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.EmpType2.' + leaveRuleAndMaxMinLeave.employeeType}}">{{leaveRuleAndMaxMinLeave.employeeType}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.maxLeaveLimit">Max Leave Limit</span></dt>
+        <dd>
+            <span>{{leaveRuleAndMaxMinLeave.maxLeaveLimit}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.minLeaveLimit">Min Leave Limit</span></dt>
+        <dd>
+            <span>{{leaveRuleAndMaxMinLeave.minLeaveLimit}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.leaveRule">Leave Rule</span></dt>
+        <dd>
+            <div *ngIf="leaveRuleAndMaxMinLeave.leaveRule">
+                <a [routerLink]="['/leave-rule', leaveRuleAndMaxMinLeave.leaveRule?.id]">{{leaveRuleAndMaxMinLeave.leaveRule?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'leave-rule-and-max-min-leave/'+ leaveRuleAndMaxMinLeave.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

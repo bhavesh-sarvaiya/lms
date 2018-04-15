@@ -1,0 +1,9 @@
+{
+    "lmsApp": {
+        "EmpType1" : {
+            "null": "",
+            "ALL": "ALL",
+            "EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER": "EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER"
+        }
+    }
+}

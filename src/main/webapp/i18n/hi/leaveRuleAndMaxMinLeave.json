@@ -1,0 +1,25 @@
+
+{
+    "lmsApp": {
+        "leaveRuleAndMaxMinLeave" : {
+            "home": {
+                "title": "LeaveRuleAndMaxMinLeaves",
+                "createLabel": "नया Leave Rule And Max Min Leave बनाएँ",
+                "createOrEditLabel": "Leave Rule And Max Min Leave बनाएँ या संपादित करें"
+            },
+            "created": "एक नया Leave Rule And Max Min Leave [identifier: {{ param }}] तैयार है",
+            "updated": "एक Leave Rule And Max Min Leave [identifier: {{ param }}] का अद्यतन हुआ है",
+            "deleted": "Leave Rule And Max Min Leave [identifier: {{ param }}] हटा दिया है",
+            "delete": {
+                "question": "Leave Rule And Max Min Leave [id: {{ id }}] हटाने की पुष्टि करें"
+            },
+            "detail": {
+                "title": "Leave Rule And Max Min Leave"
+            },
+            "employeeType": "Employee Type",
+            "maxLeaveLimit": "Max Leave Limit",
+            "minLeaveLimit": "Min Leave Limit",
+            "leaveRule": "Leave Rule"
+        }
+    }
+}

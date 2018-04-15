@@ -1,0 +1,37 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "leaveRule",
+            "otherEntityName": "leaveRule",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "employeeType",
+            "fieldType": "EmpType1",
+            "fieldValues": "ALL, EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER ",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "noOfday",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180415132510",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "leave_rule_and_no_of_day",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

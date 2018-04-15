@@ -1,0 +1,24 @@
+
+{
+    "lmsApp": {
+        "leaveRuleAndNoOfDay" : {
+            "home": {
+                "title": "Leave Rule And No Of Days",
+                "createLabel": "Create a new Leave Rule And No Of Day",
+                "createOrEditLabel": "Create or edit a Leave Rule And No Of Day"
+            },
+            "created": "A new Leave Rule And No Of Day is created with identifier {{ param }}",
+            "updated": "A Leave Rule And No Of Day is updated with identifier {{ param }}",
+            "deleted": "A Leave Rule And No Of Day is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Leave Rule And No Of Day {{ id }}?"
+            },
+            "detail": {
+                "title": "Leave Rule And No Of Day"
+            },
+            "employeeType": "Employee Type",
+            "noOfday": "No Ofday",
+            "leaveRule": "Leave Rule"
+        }
+    }
+}

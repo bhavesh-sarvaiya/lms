@@ -1,0 +1,27 @@
+
+{
+    "lmsApp": {
+        "leaveRule" : {
+            "home": {
+                "title": "Leave Rules",
+                "createLabel": "Create a new Leave Rule",
+                "createOrEditLabel": "Create or edit a Leave Rule"
+            },
+            "created": "A new Leave Rule is created with identifier {{ param }}",
+            "updated": "A Leave Rule is updated with identifier {{ param }}",
+            "deleted": "A Leave Rule is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Leave Rule {{ id }}?"
+            },
+            "detail": {
+                "title": "Leave Rule"
+            },
+            "leaveFor": "Leave For",
+            "allocationTimePeriod": "Allocation Time Period",
+            "commulative": "Commulative",
+            "commulativeLimit": "Commulative Limit",
+            "leaveType": "Leave Type",
+            "leaveTypeJoin": "Leave Type Join"
+        }
+    }
+}
