@@ -17,10 +17,6 @@
                                     "leaveRequest":"Apply"
                                 },
                 "leaveApplicationHistory": "Leave Application History",
-                "leaveRule": "Leave Rule",
-                "leaveRuleAndNoOfDay": "Leave Rule And No Of Day",
-                "leaveRuleAndMaxMinLeave": "Leave Rule And Max Min Leave",
-                "leaveRuleAndValidationType": "Leave Rule And Validation Type",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
