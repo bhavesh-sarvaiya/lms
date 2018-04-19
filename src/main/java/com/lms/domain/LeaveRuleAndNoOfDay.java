@@ -110,6 +110,7 @@ public class LeaveRuleAndNoOfDay implements Serializable {
             "id=" + getId() +
             ", employeeType='" + getEmployeeType() + "'" +
             ", noOfDay=" + getNoOfDay() +
+            ", leaveRule=" + getLeaveRule() +
             "}";
     }
 }

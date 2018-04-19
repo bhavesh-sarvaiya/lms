@@ -12,7 +12,7 @@
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="leaveRule.id" readonly />
         </div> 
-        <div class="form-group">
+       <div class="form-group">
                 <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndNoOfDay.employeeType" for="field_employeeType">Employee Type</label>
                 <select class="form-control" name="employeeType" [(ngModel)]="leaveRuleAndNoOfDay.employeeType" id="field_employeeType"  required>
                     <option value="ALL">{{'lmsApp.EmpType1.ALL' | translate}}</option>
@@ -39,6 +39,17 @@
                             This field should be a number.
                         </small>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label">No Of Day for EDUCATIONAL_WITH_NON_VACATIONER</label>
+                    <input type="number" class="form-control" name="noOfDay2" id="field_noOfDay2"
+                        [(ngModel)]="leaveRuleAndNoOfDay.noOfDay2" />
+                    <!-- <div [hidden]="!(editForm.controls.noOfDay?.dirty && editForm.controls.noOfDay?.invalid)">
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.noOfDay?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div> -->
                 </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRule.leaveFor" for="field_leaveFor">Leave For</label>

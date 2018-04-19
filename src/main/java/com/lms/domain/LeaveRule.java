@@ -181,6 +181,7 @@ public class LeaveRule implements Serializable {
             ", commulative='" + isCommulative() + "'" +
             ", commulativeLimit=" + getCommulativeLimit() +
             ", allocationTimePeriod='" + getAllocationTimePeriod() + "'" +
+            ", leaveType='" + getLeave() + "'" +
             "}";
     }
 }

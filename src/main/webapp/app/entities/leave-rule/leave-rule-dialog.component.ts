@@ -10,7 +10,7 @@ import { LeaveRule } from './leave-rule.model';
 import { LeaveRulePopupService } from './leave-rule-popup.service';
 import { LeaveRuleService } from './leave-rule.service';
 import { LeaveType, LeaveTypeService } from '../leave-type';
-import { LeaveRuleAndNoOfDay } from '../leave-rule-and-no-of-day';
+import { LeaveRuleAndNoOfDay, LeaveRuleAndNoOfDayService, EmpType1} from '../leave-rule-and-no-of-day';
 
 @Component({
     selector: 'jhi-leave-rule-dialog',
@@ -20,6 +20,7 @@ export class LeaveRuleDialogComponent implements OnInit {
 
     leaveRule: LeaveRule;
     leaveRuleAndNoOfDay: LeaveRuleAndNoOfDay;
+    noOfDay: number;
     isSaving: boolean;
 
     leavetypes: LeaveType[];
@@ -31,12 +32,16 @@ export class LeaveRuleDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private leaveRuleService: LeaveRuleService,
         private leaveTypeService: LeaveTypeService,
+        private leaveRuleAndNoOfDayService: LeaveRuleAndNoOfDayService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        if (this.leaveRuleAndNoOfDay === undefined) {
+            this.leaveRuleAndNoOfDay = new LeaveRuleAndNoOfDay();
+        }
         this.leaveTypeService.query()
             .subscribe((res: HttpResponse<LeaveType[]>) => { this.leavetypes = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.leaveTypeService
@@ -66,9 +71,36 @@ export class LeaveRuleDialogComponent implements OnInit {
         } else {
             this.subscribeToSaveResponse(
                 this.leaveRuleService.create(this.leaveRule));
+            }
+    }
+    saveLeaveRuleAndNoOfDay() {
+        this.isSaving = true;
+        if (this.leaveRuleAndNoOfDay.id !== undefined) {
+            this.subscribeToSaveResponse1(
+                this.leaveRuleAndNoOfDayService.update(this.leaveRuleAndNoOfDay));
+        } else {
+            this.leaveRuleAndNoOfDay.leaveRule = this.leaveRule;
+            console.log('this.leaveRuleAndNoOfDay');
+            console.log(this.leaveRuleAndNoOfDay);
+            this.subscribeToSaveResponse1(
+                this.leaveRuleAndNoOfDayService.create(this.leaveRuleAndNoOfDay));
         }
     }
 
+    private subscribeToSaveResponse1(result: Observable<HttpResponse<LeaveRuleAndNoOfDay>>) {
+        result.subscribe((res: HttpResponse<LeaveRuleAndNoOfDay>) =>
+            this.onSaveSuccess1(res.body), (res: HttpErrorResponse) => this.onSaveError1());
+    }
+
+    private onSaveSuccess1(result: LeaveRuleAndNoOfDay) {
+        this.eventManager.broadcast({ name: 'leaveRuleAndNoOfDayListModification', content: 'OK'});
+        this.isSaving = false;
+        this.activeModal.dismiss(result);
+    }
+
+    private onSaveError1() {
+        this.isSaving = false;
+    }
     private subscribeToSaveResponse(result: Observable<HttpResponse<LeaveRule>>) {
         result.subscribe((res: HttpResponse<LeaveRule>) =>
             this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
@@ -78,6 +110,13 @@ export class LeaveRuleDialogComponent implements OnInit {
         this.eventManager.broadcast({ name: 'leaveRuleListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
+        if (this.leaveRuleAndNoOfDay.employeeType + '' !== 'ALL') {
+          this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL WITH VACATIONER'];
+          this.saveLeaveRuleAndNoOfDay();
+          this.leaveRuleAndNoOfDay.noOfDay = this.leaveRuleAndNoOfDay.noOfDay2;
+          this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL WITH NON VACATIONER'];
+        }
+        this.saveLeaveRuleAndNoOfDay();
     }
 
     private onSaveError() {

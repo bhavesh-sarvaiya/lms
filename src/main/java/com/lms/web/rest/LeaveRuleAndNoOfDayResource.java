@@ -1,9 +1,11 @@
 package com.lms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lms.domain.LeaveRule;
 import com.lms.domain.LeaveRuleAndNoOfDay;
-
+import com.lms.domain.LeaveType;
 import com.lms.repository.LeaveRuleAndNoOfDayRepository;
+import com.lms.repository.LeaveRuleRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
 import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -31,9 +33,11 @@ public class LeaveRuleAndNoOfDayResource {
     private static final String ENTITY_NAME = "leaveRuleAndNoOfDay";
 
     private final LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository;
+    private final LeaveRuleRepository leaveRuleRepository;
 
-    public LeaveRuleAndNoOfDayResource(LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository) {
+    public LeaveRuleAndNoOfDayResource(LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository,LeaveRuleRepository leaveRuleRepository) {
         this.leaveRuleAndNoOfDayRepository = leaveRuleAndNoOfDayRepository;
+        this.leaveRuleRepository = leaveRuleRepository;
     }
 
     /**
@@ -50,6 +54,9 @@ public class LeaveRuleAndNoOfDayResource {
         if (leaveRuleAndNoOfDay.getId() != null) {
             throw new BadRequestAlertException("A new leaveRuleAndNoOfDay cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        LeaveType leaveType = leaveRuleAndNoOfDay.getLeaveRule().getLeave();
+        LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveType);
+        leaveRuleAndNoOfDay.setLeaveRule(leaveRule);
         LeaveRuleAndNoOfDay result = leaveRuleAndNoOfDayRepository.save(leaveRuleAndNoOfDay);
         return ResponseEntity.created(new URI("/api/leave-rule-and-no-of-days/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
