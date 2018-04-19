@@ -1,0 +1,81 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myLeaveRuleAndMaxMinLeaveLabel" jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.home.createOrEditLabel">Create or edit a Leave Rule And Max Min Leave</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!leaveRuleAndMaxMinLeave.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="leaveRuleAndMaxMinLeave.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.employeeType" for="field_employeeType">Employee Type</label>
+            <select class="form-control" name="employeeType" [(ngModel)]="leaveRuleAndMaxMinLeave.employeeType" id="field_employeeType"  required>
+                <option value="ALL">{{'lmsApp.EmpType2.ALL' | translate}}</option>
+                <option value="MANAGEMENT_AND_EDUCATIONAL">{{'lmsApp.EmpType2.MANAGEMENT_AND_EDUCATIONAL' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.employeeType?.dirty && editForm.controls.employeeType?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.employeeType?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.maxLeaveLimit" for="field_maxLeaveLimit">Max Leave Limit</label>
+            <input type="number" class="form-control" name="maxLeaveLimit" id="field_maxLeaveLimit"
+                [(ngModel)]="leaveRuleAndMaxMinLeave.maxLeaveLimit" required/>
+            <div [hidden]="!(editForm.controls.maxLeaveLimit?.dirty && editForm.controls.maxLeaveLimit?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.maxLeaveLimit?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.maxLeaveLimit?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.minLeaveLimit" for="field_minLeaveLimit">Min Leave Limit</label>
+            <input type="number" class="form-control" name="minLeaveLimit" id="field_minLeaveLimit"
+                [(ngModel)]="leaveRuleAndMaxMinLeave.minLeaveLimit" required/>
+            <div [hidden]="!(editForm.controls.minLeaveLimit?.dirty && editForm.controls.minLeaveLimit?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.minLeaveLimit?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.minLeaveLimit?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.leaveRule" for="field_leaveRule">Leave Rule</label>
+            <select class="form-control" id="field_leaveRule" name="leaveRule" [(ngModel)]="leaveRuleAndMaxMinLeave.leaveRule"  required>
+                <option *ngIf="!editForm.value.leaveRule" [ngValue]="null" selected></option>
+                <option [ngValue]="leaveRuleOption.id === leaveRuleAndMaxMinLeave.leaveRule?.id ? leaveRuleAndMaxMinLeave.leaveRule : leaveRuleOption" *ngFor="let leaveRuleOption of leaverules; trackBy: trackLeaveRuleById">{{leaveRuleOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.leaveRule?.dirty && editForm.controls.leaveRule?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.leaveRule?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

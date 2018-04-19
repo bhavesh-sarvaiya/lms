@@ -6,6 +6,7 @@ export class LeaveType implements BaseEntity {
         public name?: string,
         public code?: string,
         public description?: string,
+        public leaveRules?: BaseEntity[],
     ) {
     }
 }

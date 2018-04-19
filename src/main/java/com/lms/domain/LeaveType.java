@@ -1,10 +1,13 @@
 package com.lms.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -30,6 +33,10 @@ public class LeaveType implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToMany(mappedBy = "leaveTypes")
+    @JsonIgnore
+    private Set<LeaveRule> leaveRules = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -77,6 +84,31 @@ public class LeaveType implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<LeaveRule> getLeaveRules() {
+        return leaveRules;
+    }
+
+    public LeaveType leaveRules(Set<LeaveRule> leaveRules) {
+        this.leaveRules = leaveRules;
+        return this;
+    }
+
+    public LeaveType addLeaveRule(LeaveRule leaveRule) {
+        this.leaveRules.add(leaveRule);
+        leaveRule.getLeaveTypes().add(this);
+        return this;
+    }
+
+    public LeaveType removeLeaveRule(LeaveRule leaveRule) {
+        this.leaveRules.remove(leaveRule);
+        leaveRule.getLeaveTypes().remove(this);
+        return this;
+    }
+
+    public void setLeaveRules(Set<LeaveRule> leaveRules) {
+        this.leaveRules = leaveRules;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -18,7 +18,8 @@
             },
             "name": "Name",
             "code": "Code",
-            "description": "Description"
+            "description": "Description",
+            "leaveRule": "Leave Rule"
         }
     }
 }

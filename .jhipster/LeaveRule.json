@@ -1,0 +1,56 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "leaveType",
+            "otherEntityName": "leaveType",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "code",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "leaveRule"
+        },
+        {
+            "relationshipName": "leave",
+            "otherEntityName": "leaveType",
+            "relationshipType": "one-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "code",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "leaveR"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "leaveFor",
+            "fieldType": "LeaveFor",
+            "fieldValues": "BOTH, MALE, FEMALE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "commulative",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "commulativeLimit",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "allocationTimePeriod",
+            "fieldType": "Period",
+            "fieldValues": "YEALRY, QUARTERLY",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180418052348",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "leave_rule",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

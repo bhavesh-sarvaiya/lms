@@ -1,6 +1,14 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "leaveRule",
+            "otherEntityName": "leaveRule",
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "leaveType"
+        }
+    ],
     "fields": [
         {
             "fieldName": "name",
@@ -22,9 +30,9 @@
         }
     ],
     "changelogDate": "20180214143556",
-    "entityTableName": "leave_type",
     "dto": "no",
-    "pagination": "no",
     "service": "no",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "leave_type",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
 }

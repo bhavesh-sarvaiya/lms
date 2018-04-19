@@ -1,0 +1,65 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "leaveRule",
+            "otherEntityName": "leaveRule",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "employeeType",
+            "fieldType": "EmpType2",
+            "fieldValues": "ALL, MANAGEMENT_AND_EDUCATIONAL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "validationType",
+            "fieldType": "ValidationType",
+            "fieldValues": "LEVEL1, LEVEL2, LEVEL3, LEVEL4, LEVEL5, LEVEL6 ",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "level1",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "level2",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "level3",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "level4",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "level5",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "level6",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20180418060346",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "leave_rule_and_validation_type",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

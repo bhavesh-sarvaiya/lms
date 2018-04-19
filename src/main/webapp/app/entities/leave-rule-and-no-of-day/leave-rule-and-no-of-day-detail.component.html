@@ -1,0 +1,36 @@
+
+<div *ngIf="leaveRuleAndNoOfDay">
+    <h2><span jhiTranslate="lmsApp.leaveRuleAndNoOfDay.detail.title">Leave Rule And No Of Day</span> {{leaveRuleAndNoOfDay.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndNoOfDay.employeeType">Employee Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'lmsApp.EmpType1.' + leaveRuleAndNoOfDay.employeeType}}">{{leaveRuleAndNoOfDay.employeeType}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndNoOfDay.noOfDay">No Of Day</span></dt>
+        <dd>
+            <span>{{leaveRuleAndNoOfDay.noOfDay}}</span>
+        </dd>
+        <dt><span jhiTranslate="lmsApp.leaveRuleAndNoOfDay.leaveRule">Leave Rule</span></dt>
+        <dd>
+            <div *ngIf="leaveRuleAndNoOfDay.leaveRule">
+                <a [routerLink]="['/leave-rule', leaveRuleAndNoOfDay.leaveRule?.id]">{{leaveRuleAndNoOfDay.leaveRule?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'leave-rule-and-no-of-day/'+ leaveRuleAndNoOfDay.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

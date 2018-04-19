@@ -1,0 +1,27 @@
+
+{
+    "lmsApp": {
+        "leaveRule" : {
+            "home": {
+                "title": "LeaveRules",
+                "createLabel": "नया Leave Rule बनाएँ",
+                "createOrEditLabel": "Leave Rule बनाएँ या संपादित करें"
+            },
+            "created": "एक नया Leave Rule [identifier: {{ param }}] तैयार है",
+            "updated": "एक Leave Rule [identifier: {{ param }}] का अद्यतन हुआ है",
+            "deleted": "Leave Rule [identifier: {{ param }}] हटा दिया है",
+            "delete": {
+                "question": "Leave Rule [id: {{ id }}] हटाने की पुष्टि करें"
+            },
+            "detail": {
+                "title": "Leave Rule"
+            },
+            "leaveFor": "Leave For",
+            "commulative": "Commulative",
+            "commulativeLimit": "Commulative Limit",
+            "allocationTimePeriod": "Allocation Time Period",
+            "leaveType": "Leave Type",
+            "leave": "Leave"
+        }
+    }
+}

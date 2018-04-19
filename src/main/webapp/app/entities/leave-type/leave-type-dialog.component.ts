@@ -4,11 +4,12 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { LeaveType } from './leave-type.model';
 import { LeaveTypePopupService } from './leave-type-popup.service';
 import { LeaveTypeService } from './leave-type.service';
+import { LeaveRule, LeaveRuleService } from '../leave-rule';
 
 @Component({
     selector: 'jhi-leave-type-dialog',
@@ -19,15 +20,21 @@ export class LeaveTypeDialogComponent implements OnInit {
     leaveType: LeaveType;
     isSaving: boolean;
 
+    leaverules: LeaveRule[];
+
     constructor(
         public activeModal: NgbActiveModal,
+        private jhiAlertService: JhiAlertService,
         private leaveTypeService: LeaveTypeService,
+        private leaveRuleService: LeaveRuleService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.leaveRuleService.query()
+            .subscribe((res: HttpResponse<LeaveRule[]>) => { this.leaverules = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -58,6 +65,25 @@ export class LeaveTypeDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackLeaveRuleById(index: number, item: LeaveRule) {
+        return item.id;
+    }
+
+    getSelected(selectedVals: Array<any>, option: any) {
+        if (selectedVals) {
+            for (let i = 0; i < selectedVals.length; i++) {
+                if (option.id === selectedVals[i].id) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
     }
 }
 

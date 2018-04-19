@@ -18,7 +18,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Future;
 
 /**
  * REST controller for managing LeaveType.

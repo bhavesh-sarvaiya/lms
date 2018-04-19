@@ -1,0 +1,25 @@
+
+{
+    "lmsApp": {
+        "leaveRuleAndMaxMinLeave" : {
+            "home": {
+                "title": "Leave Rule And Max Min Leaves",
+                "createLabel": "Create a new Leave Rule And Max Min Leave",
+                "createOrEditLabel": "Create or edit a Leave Rule And Max Min Leave"
+            },
+            "created": "A new Leave Rule And Max Min Leave is created with identifier {{ param }}",
+            "updated": "A Leave Rule And Max Min Leave is updated with identifier {{ param }}",
+            "deleted": "A Leave Rule And Max Min Leave is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Leave Rule And Max Min Leave {{ id }}?"
+            },
+            "detail": {
+                "title": "Leave Rule And Max Min Leave"
+            },
+            "employeeType": "Employee Type",
+            "maxLeaveLimit": "Max Leave Limit",
+            "minLeaveLimit": "Min Leave Limit",
+            "leaveRule": "Leave Rule"
+        }
+    }
+}

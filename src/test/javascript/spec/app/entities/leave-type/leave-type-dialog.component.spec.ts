@@ -9,6 +9,7 @@ import { LmsTestModule } from '../../../test.module';
 import { LeaveTypeDialogComponent } from '../../../../../../main/webapp/app/entities/leave-type/leave-type-dialog.component';
 import { LeaveTypeService } from '../../../../../../main/webapp/app/entities/leave-type/leave-type.service';
 import { LeaveType } from '../../../../../../main/webapp/app/entities/leave-type/leave-type.model';
+import { LeaveRuleService } from '../../../../../../main/webapp/app/entities/leave-rule';
 
 describe('Component Tests', () => {
 
@@ -24,6 +25,7 @@ describe('Component Tests', () => {
                 imports: [LmsTestModule],
                 declarations: [LeaveTypeDialogComponent],
                 providers: [
+                    LeaveRuleService,
                     LeaveTypeService
                 ]
             })
