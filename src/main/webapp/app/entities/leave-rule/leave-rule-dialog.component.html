@@ -15,7 +15,7 @@
        <div class="form-group">
                 <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndNoOfDay.employeeType" for="field_employeeType">Employee Type</label>
                 <select class="form-control" name="employeeType" [(ngModel)]="leaveRuleAndNoOfDay.employeeType" id="field_employeeType"  required>
-                    <option value="ALL">{{'lmsApp.EmpType1.ALL' | translate}}</option>
+                    <option value="ALL" selected=true>{{'lmsApp.EmpType1.ALL' | translate}}</option>
                     <option value="EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER">{{'lmsApp.EmpType1.EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER' | translate}}</option>
                 </select>
                 <div [hidden]="!(editForm.controls.employeeType?.dirty && editForm.controls.employeeType?.invalid)">
@@ -40,7 +40,7 @@
                         </small>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="leaveRuleAndNoOfDay.employeeType == 'EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER'">
                     <label class="form-control-label">No Of Day for EDUCATIONAL_WITH_NON_VACATIONER</label>
                     <input type="number" class="form-control" name="noOfDay2" id="field_noOfDay2"
                         [(ngModel)]="leaveRuleAndNoOfDay.noOfDay2" />
@@ -94,7 +94,7 @@
                         </small>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="leaveRuleAndMaxMinLeave.employeeType == 'MANAGEMENT_AND_EDUCATIONAL'">
                     <label class="form-control-label" >Max Leave Limit for Educational</label>
                     <input type="number" class="form-control" name="maxLeaveLimit1"
                         [(ngModel)]="leaveRuleAndMaxMinLeave.maxLeaveLimit1" />
@@ -109,7 +109,7 @@
                         </small>
                     </div> -->
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="leaveRuleAndMaxMinLeave.employeeType == 'MANAGEMENT_AND_EDUCATIONAL'">
                     <label class="form-control-label">Min Leave Limit for Educational</label>
                     <input type="number" class="form-control" name="minLeaveLimit1"
                         [(ngModel)]="leaveRuleAndMaxMinLeave.minLeaveLimit1" />
@@ -143,7 +143,7 @@
             <input type="checkbox" class="form-control" name="commulative" id="field_commulative"
                 [(ngModel)]="leaveRule.commulative" />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRule.commulative">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRule.commulativeLimit" for="field_commulativeLimit">Commulative Limit</label>
             <input type="number" class="form-control" name="commulativeLimit" id="field_commulativeLimit"
                 [(ngModel)]="leaveRule.commulativeLimit" />
@@ -228,27 +228,27 @@
                 </small>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType == 'LEVEL2' || leaveRuleAndValidationType.validationType == 'LEVEL3' || leaveRuleAndValidationType.validationType == 'LEVEL4' || leaveRuleAndValidationType.validationType == 'LEVEL5' || leaveRuleAndValidationType.validationType == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level2" for="field_level2">Level 2</label>
             <input type="number" class="form-control" name="level2" id="field_level2"
                 [(ngModel)]="leaveRuleAndValidationType.level2" />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType == 'LEVEL3' || leaveRuleAndValidationType.validationType == 'LEVEL4' || leaveRuleAndValidationType.validationType == 'LEVEL5' || leaveRuleAndValidationType.validationType == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level3" for="field_level3">Level 3</label>
             <input type="number" class="form-control" name="level3" id="field_level3"
                 [(ngModel)]="leaveRuleAndValidationType.level3" />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType == 'LEVEL4' || leaveRuleAndValidationType.validationType == 'LEVEL5' || leaveRuleAndValidationType.validationType == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level4" for="field_level4">Level 4</label>
             <input type="number" class="form-control" name="level4" id="field_level4"
                 [(ngModel)]="leaveRuleAndValidationType.level4" />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType == 'LEVEL5' || leaveRuleAndValidationType.validationType == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level5" for="field_level5">Level 5</label>
             <input type="number" class="form-control" name="level5" id="field_level5"
                 [(ngModel)]="leaveRuleAndValidationType.level5" />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level6" for="field_level6">Level 6</label>
             <input type="number" class="form-control" name="level6" id="field_level6"
                 [(ngModel)]="leaveRuleAndValidationType.level6" />
@@ -301,27 +301,27 @@
                 </small>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType1 == 'LEVEL2' || leaveRuleAndValidationType.validationType1 == 'LEVEL3' || leaveRuleAndValidationType.validationType1 == 'LEVEL4' || leaveRuleAndValidationType.validationType1 == 'LEVEL5' || leaveRuleAndValidationType.validationType1 == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level2" for="field_level2">Level 2</label>
             <input type="number" class="form-control" name="level21" id="field_level2"
                 [(ngModel)]="leaveRuleAndValidationType.level21" />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType1 == 'LEVEL3' || leaveRuleAndValidationType.validationType1 == 'LEVEL4' || leaveRuleAndValidationType.validationType1 == 'LEVEL5' || leaveRuleAndValidationType.validationType1 == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level3" for="field_level3">Level 3</label>
             <input type="number" class="form-control" name="level31" id="field_level3"
                 [(ngModel)]="leaveRuleAndValidationType.level31" />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType1 == 'LEVEL4' || leaveRuleAndValidationType.validationType1 == 'LEVEL5' || leaveRuleAndValidationType.validationType1 == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level4" for="field_level4">Level 4</label>
             <input type="number" class="form-control" name="level41" id="field_level4"
                 [(ngModel)]="leaveRuleAndValidationType.level41" />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType1 == 'LEVEL5' || leaveRuleAndValidationType.validationType1 == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level5" for="field_level5">Level 5</label>
             <input type="number" class="form-control" name="level51" id="field_level5"
                 [(ngModel)]="leaveRuleAndValidationType.level51" />
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="leaveRuleAndValidationType.validationType1 == 'LEVEL6' ">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndValidationType.level6" for="field_level6">Level 6</label>
             <input type="number" class="form-control" name="level61" id="field_level6"
                 [(ngModel)]="leaveRuleAndValidationType.level61" />
