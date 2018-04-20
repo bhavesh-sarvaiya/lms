@@ -1,8 +1,10 @@
 import { BaseEntity } from './../../shared';
 
-export const enum EmpType2 {
+export const enum EmpType3 {
     'ALL',
-    ' MANAGEMENT_AND_EDUCATIONAL'
+    ' MANAGEMENT_AND_EDUCATIONAL',
+    'MANAGEMENT',
+    'EDUCATIONAL'
 }
 
 export const enum ValidationType {
@@ -17,7 +19,7 @@ export const enum ValidationType {
 export class LeaveRuleAndValidationType implements BaseEntity {
     constructor(
         public id?: number,
-        public employeeType?: EmpType2,
+        public employeeType?: EmpType3,
         public validationType?: ValidationType,
         public level1?: number,
         public level2?: number,
@@ -25,6 +27,13 @@ export class LeaveRuleAndValidationType implements BaseEntity {
         public level4?: number,
         public level5?: number,
         public level6?: number,
+        public validationType1?: ValidationType,
+        public level11?: number,
+        public level21?: number,
+        public level31?: number,
+        public level41?: number,
+        public level51?: number,
+        public level61?: number,
         public leaveRule?: BaseEntity,
     ) {
     }

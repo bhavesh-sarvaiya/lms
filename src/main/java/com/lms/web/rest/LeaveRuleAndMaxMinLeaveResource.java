@@ -1,9 +1,11 @@
 package com.lms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lms.domain.LeaveRule;
 import com.lms.domain.LeaveRuleAndMaxMinLeave;
-
+import com.lms.domain.LeaveType;
 import com.lms.repository.LeaveRuleAndMaxMinLeaveRepository;
+import com.lms.repository.LeaveRuleRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
 import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -31,9 +33,11 @@ public class LeaveRuleAndMaxMinLeaveResource {
     private static final String ENTITY_NAME = "leaveRuleAndMaxMinLeave";
 
     private final LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository;
+    private final LeaveRuleRepository leaveRuleRepository;
 
-    public LeaveRuleAndMaxMinLeaveResource(LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository) {
+    public LeaveRuleAndMaxMinLeaveResource(LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository,LeaveRuleRepository leaveRuleRepository) {
         this.leaveRuleAndMaxMinLeaveRepository = leaveRuleAndMaxMinLeaveRepository;
+        this.leaveRuleRepository = leaveRuleRepository;
     }
 
     /**
@@ -50,6 +54,9 @@ public class LeaveRuleAndMaxMinLeaveResource {
         if (leaveRuleAndMaxMinLeave.getId() != null) {
             throw new BadRequestAlertException("A new leaveRuleAndMaxMinLeave cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        LeaveType leaveType = leaveRuleAndMaxMinLeave.getLeaveRule().getLeave();
+        LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveType);
+        leaveRuleAndMaxMinLeave.setLeaveRule(leaveRule);
         LeaveRuleAndMaxMinLeave result = leaveRuleAndMaxMinLeaveRepository.save(leaveRuleAndMaxMinLeave);
         return ResponseEntity.created(new URI("/api/leave-rule-and-max-min-leaves/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

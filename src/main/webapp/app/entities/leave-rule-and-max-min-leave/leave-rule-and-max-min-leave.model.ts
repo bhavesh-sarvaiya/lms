@@ -2,7 +2,9 @@ import { BaseEntity } from './../../shared';
 
 export const enum EmpType2 {
     'ALL',
-    ' MANAGEMENT_AND_EDUCATIONAL'
+    ' MANAGEMENT_AND_EDUCATIONAL',
+    'MANAGEMENT',
+    'EDUCATIONAL'
 }
 
 export class LeaveRuleAndMaxMinLeave implements BaseEntity {
@@ -11,6 +13,8 @@ export class LeaveRuleAndMaxMinLeave implements BaseEntity {
         public employeeType?: EmpType2,
         public maxLeaveLimit?: number,
         public minLeaveLimit?: number,
+        public maxLeaveLimit1?: number,
+        public minLeaveLimit1?: number,
         public leaveRule?: BaseEntity,
     ) {
     }

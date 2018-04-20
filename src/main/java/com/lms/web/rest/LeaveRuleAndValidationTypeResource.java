@@ -1,9 +1,11 @@
 package com.lms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lms.domain.LeaveRule;
 import com.lms.domain.LeaveRuleAndValidationType;
-
+import com.lms.domain.LeaveType;
 import com.lms.repository.LeaveRuleAndValidationTypeRepository;
+import com.lms.repository.LeaveRuleRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
 import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -31,9 +33,11 @@ public class LeaveRuleAndValidationTypeResource {
     private static final String ENTITY_NAME = "leaveRuleAndValidationType";
 
     private final LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository;
+    private final LeaveRuleRepository leaveRuleRepository;
 
-    public LeaveRuleAndValidationTypeResource(LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository) {
+    public LeaveRuleAndValidationTypeResource(LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository,LeaveRuleRepository leaveRuleRepository) {
         this.leaveRuleAndValidationTypeRepository = leaveRuleAndValidationTypeRepository;
+        this.leaveRuleRepository = leaveRuleRepository;
     }
 
     /**
@@ -50,6 +54,9 @@ public class LeaveRuleAndValidationTypeResource {
         if (leaveRuleAndValidationType.getId() != null) {
             throw new BadRequestAlertException("A new leaveRuleAndValidationType cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        LeaveType leaveType = leaveRuleAndValidationType.getLeaveRule().getLeave();
+        LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveType);
+        leaveRuleAndValidationType.setLeaveRule(leaveRule);
         LeaveRuleAndValidationType result = leaveRuleAndValidationTypeRepository.save(leaveRuleAndValidationType);
         return ResponseEntity.created(new URI("/api/leave-rule-and-validation-types/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
