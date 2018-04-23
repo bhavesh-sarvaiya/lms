@@ -20,8 +20,8 @@
             "commulative": "Commulative",
             "commulativeLimit": "Commulative Limit",
             "allocationTimePeriod": "Allocation Time Period",
-            "leaveType": "Leave Type",
-            "leave": "Leave"
+            "leaveType": "Which leave type can join?",
+            "leave": "Select Leave Type"
         }
     }
 }

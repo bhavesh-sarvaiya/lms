@@ -2,8 +2,8 @@
     "lmsApp": {
         "EmpType2" : {
             "null": "",
-            "ALL": "ALL",
-            "MANAGEMENT_AND_EDUCATIONAL": "MANAGEMENT_AND_EDUCATIONAL"
+            "ALL": "All",
+            "MANAGEMENT_AND_EDUCATIONAL": "Educational, Management"
         }
     }
 }

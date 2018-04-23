@@ -22,6 +22,9 @@ export class LeaveRuleDialogComponent implements OnInit {
 
     leaveRule: LeaveRule;
     leaveRuleAndNoOfDay: LeaveRuleAndNoOfDay;
+    leaveRuleAndNoOfDays: LeaveRuleAndNoOfDay[];
+    leaveRuleAndMaxMinLeaves: LeaveRuleAndMaxMinLeave[];
+    leaveRuleAndValidationTypes: LeaveRuleAndValidationType[];
     leaveRuleAndMaxMinLeave: LeaveRuleAndMaxMinLeave;
     leaveRuleAndValidationType: LeaveRuleAndValidationType;
     noOfDay: number;
@@ -43,16 +46,70 @@ export class LeaveRuleDialogComponent implements OnInit {
     ) {
     }
 
+    loadAllLeaveRuleAndNoOfDays(id) {
+        this.leaveRuleAndNoOfDayService.query(id).subscribe(
+            (res: HttpResponse<LeaveRuleAndNoOfDay[]>) => {
+                this.leaveRuleAndNoOfDays = res.body;
+                this.leaveRuleAndNoOfDay = this.leaveRuleAndNoOfDays[0];
+                if (this.leaveRuleAndNoOfDays.length > 1) {
+                    this.leaveRuleAndNoOfDay.noOfDay2 =  this.leaveRuleAndNoOfDays[1].noOfDay;
+                    this.leaveRuleAndNoOfDay.employeeType = EmpType1.EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER;
+                }
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+    }
+    loadAllLeaveRuleAndMaxMinLeave(leaveRule) {
+        this.leaveRuleAndMaxMinLeaveService.query(leaveRule).subscribe(
+            (res: HttpResponse<LeaveRuleAndMaxMinLeave[]>) => {
+                this.leaveRuleAndMaxMinLeaves = res.body;
+                this.leaveRuleAndMaxMinLeave = this.leaveRuleAndMaxMinLeaves[0];
+                if (this.leaveRuleAndMaxMinLeaves.length > 1) {
+                    this.leaveRuleAndMaxMinLeave.maxLeaveLimit1 = this.leaveRuleAndMaxMinLeaves[1].maxLeaveLimit;
+                    this.leaveRuleAndMaxMinLeave.minLeaveLimit1 = this.leaveRuleAndMaxMinLeaves[1].minLeaveLimit;
+                    this.leaveRuleAndMaxMinLeave.employeeType = EmpType2.MANAGEMENT_AND_EDUCATIONAL;
+                }
+                this.leaveRuleAndMaxMinLeaves = res.body;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+    }
+    loadAllLeaveRuleAndValidationType(leaveRule) {
+        this.leaveRuleAndValidationTypeService.query(leaveRule).subscribe(
+            (res: HttpResponse<LeaveRuleAndValidationType[]>) => {
+                this.leaveRuleAndValidationTypes = res.body;
+                this.leaveRuleAndValidationType = this.leaveRuleAndValidationTypes[0];
+                this.leaveRuleAndValidationType.validationType1 = this.leaveRuleAndValidationTypes[1].validationType;
+                this.leaveRuleAndValidationType.level11 = this.leaveRuleAndValidationTypes[1].level1;
+                this.leaveRuleAndValidationType.level21 = this.leaveRuleAndValidationTypes[1].level2;
+                this.leaveRuleAndValidationType.level31 = this.leaveRuleAndValidationTypes[1].level3;
+                this.leaveRuleAndValidationType.level41 = this.leaveRuleAndValidationTypes[1].level4;
+                this.leaveRuleAndValidationType.level51 = this.leaveRuleAndValidationTypes[1].level5;
+                this.leaveRuleAndValidationType.level61 = this.leaveRuleAndValidationTypes[1].level6;
+
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+    }
     ngOnInit() {
         this.isSaving = false;
         if (this.leaveRuleAndNoOfDay === undefined) {
             this.leaveRuleAndNoOfDay = new LeaveRuleAndNoOfDay();
+            if (this.leaveRule.id !== undefined) {
+                this.loadAllLeaveRuleAndNoOfDays(this.leaveRule);
+            }
         }
         if (this.leaveRuleAndMaxMinLeave === undefined) {
             this.leaveRuleAndMaxMinLeave = new LeaveRuleAndMaxMinLeave();
+            if (this.leaveRule.id !== undefined) {
+            this.loadAllLeaveRuleAndMaxMinLeave(this.leaveRule);
+            }
         }
         if (this.leaveRuleAndValidationType === undefined) {
             this.leaveRuleAndValidationType = new LeaveRuleAndValidationType();
+            if (this.leaveRule.id !== undefined) {
+                this.loadAllLeaveRuleAndValidationType(this.leaveRule);
+            }
         }
         this.leaveTypeService.query()
             .subscribe((res: HttpResponse<LeaveType[]>) => { this.leavetypes = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
@@ -91,10 +148,10 @@ export class LeaveRuleDialogComponent implements OnInit {
         this.isSaving = false;
         this.activeModal.dismiss(result);
         if (this.leaveRuleAndNoOfDay.employeeType + '' !== 'ALL') {
-          this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL WITH VACATIONER'];
+          this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL_WITH_VACATIONER'];
           this.saveLeaveRuleAndNoOfDay();
           this.leaveRuleAndNoOfDay.noOfDay = this.leaveRuleAndNoOfDay.noOfDay2;
-          this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL WITH NON VACATIONER'];
+          this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL_WITH_NON_VACATIONER'];
         }
         this.saveLeaveRuleAndNoOfDay();
         if (this.leaveRuleAndMaxMinLeave.employeeType + '' !== 'ALL') {

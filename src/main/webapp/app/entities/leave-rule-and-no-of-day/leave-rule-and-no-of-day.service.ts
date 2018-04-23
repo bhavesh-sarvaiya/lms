@@ -32,8 +32,8 @@ export class LeaveRuleAndNoOfDayService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    query(req?: any): Observable<HttpResponse<LeaveRuleAndNoOfDay[]>> {
-        const options = createRequestOption(req);
+    query(id?: any): Observable<HttpResponse<LeaveRuleAndNoOfDay[]>> {
+        const options = createRequestOption(id);
         return this.http.get<LeaveRuleAndNoOfDay[]>(this.resourceUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<LeaveRuleAndNoOfDay[]>) => this.convertArrayResponse(res));
     }

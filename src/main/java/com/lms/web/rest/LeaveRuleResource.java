@@ -2,13 +2,19 @@ package com.lms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lms.domain.LeaveRule;
-
+import com.lms.domain.LeaveRuleAndMaxMinLeave;
+import com.lms.domain.LeaveRuleAndNoOfDay;
+import com.lms.domain.LeaveRuleAndValidationType;
+import com.lms.repository.LeaveRuleAndMaxMinLeaveRepository;
+import com.lms.repository.LeaveRuleAndNoOfDayRepository;
+import com.lms.repository.LeaveRuleAndValidationTypeRepository;
 import com.lms.repository.LeaveRuleRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
 import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,9 +37,15 @@ public class LeaveRuleResource {
     private static final String ENTITY_NAME = "leaveRule";
 
     private final LeaveRuleRepository leaveRuleRepository;
+    private final LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository;
+    private final LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository;
+    private final LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository;
 
-    public LeaveRuleResource(LeaveRuleRepository leaveRuleRepository) {
+    public LeaveRuleResource(LeaveRuleRepository leaveRuleRepository,LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveResource,LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayResource,LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeResource) {
         this.leaveRuleRepository = leaveRuleRepository;
+        this.leaveRuleAndMaxMinLeaveRepository = leaveRuleAndMaxMinLeaveResource;
+        this.leaveRuleAndNoOfDayRepository = leaveRuleAndNoOfDayResource;
+        this.leaveRuleAndValidationTypeRepository = leaveRuleAndValidationTypeResource;
     }
 
     /**
@@ -114,7 +126,29 @@ public class LeaveRuleResource {
     @Timed
     public ResponseEntity<Void> deleteLeaveRule(@PathVariable Long id) {
         log.debug("REST request to delete LeaveRule : {}", id);
+        try{
+        LeaveRule leaveRule = leaveRuleRepository.findOne(id);
+
+        List<LeaveRuleAndNoOfDay> leaveRuleAndNoOfDays = leaveRuleAndNoOfDayRepository.findAllByLeaveRule(leaveRule);
+       for (LeaveRuleAndNoOfDay entity : leaveRuleAndNoOfDays) {
+           leaveRuleAndNoOfDayRepository.delete(entity);
+       }
+        List<LeaveRuleAndMaxMinLeave> leaveRuleAndMaxMinLeaves = leaveRuleAndMaxMinLeaveRepository.findAllByLeaveRule(leaveRule);
+        for (LeaveRuleAndMaxMinLeave entity : leaveRuleAndMaxMinLeaves) {
+            leaveRuleAndMaxMinLeaveRepository.delete(entity);
+        }
+        List<LeaveRuleAndValidationType> leaveRuleAndValidationTypes = leaveRuleAndValidationTypeRepository.findAllByLeaveRule(leaveRule);
+        for (LeaveRuleAndValidationType entity : leaveRuleAndValidationTypes) {
+            leaveRuleAndValidationTypeRepository.delete(entity);
+        }
+        
         leaveRuleRepository.delete(id);
+    }
+    catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME,
+                "constrainViolation");
+    }
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

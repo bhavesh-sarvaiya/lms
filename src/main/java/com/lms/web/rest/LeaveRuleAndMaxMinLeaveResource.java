@@ -92,9 +92,9 @@ public class LeaveRuleAndMaxMinLeaveResource {
      */
     @GetMapping("/leave-rule-and-max-min-leaves")
     @Timed
-    public List<LeaveRuleAndMaxMinLeave> getAllLeaveRuleAndMaxMinLeaves() {
+    public List<LeaveRuleAndMaxMinLeave> getAllLeaveRuleAndMaxMinLeaves(@RequestParam LeaveRule id) {
         log.debug("REST request to get all LeaveRuleAndMaxMinLeaves");
-        return leaveRuleAndMaxMinLeaveRepository.findAll();
+        return leaveRuleAndMaxMinLeaveRepository.findAllByLeaveRule(id);
         }
 
     /**

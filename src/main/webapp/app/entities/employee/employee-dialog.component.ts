@@ -44,7 +44,10 @@ export class EmployeeDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<Department[]>) => { this.departments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.userService.query()
             .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+    if (this.employee.user === undefined) {
+        this.employee.user = new User();
     }
+        }
 
     clear() {
         this.activeModal.dismiss('cancel');

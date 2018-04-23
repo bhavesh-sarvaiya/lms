@@ -92,9 +92,9 @@ public class LeaveRuleAndNoOfDayResource {
      */
     @GetMapping("/leave-rule-and-no-of-days")
     @Timed
-    public List<LeaveRuleAndNoOfDay> getAllLeaveRuleAndNoOfDays() {
+    public List<LeaveRuleAndNoOfDay> getAllLeaveRuleAndNoOfDays(@RequestParam LeaveRule id) {
         log.debug("REST request to get all LeaveRuleAndNoOfDays");
-        return leaveRuleAndNoOfDayRepository.findAll();
+        return leaveRuleAndNoOfDayRepository.findAllByLeaveRule(id);
         }
 
     /**

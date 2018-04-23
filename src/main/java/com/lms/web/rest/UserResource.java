@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -142,11 +143,11 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new LoginAlreadyUsedException();
         }
-        Employee employee =employeeRepository.findOneByUser(userRepository.findOne(userDTO.getId()));
-        employee.setFirstName(userDTO.getFirstName());
-        employee.setLastName(userDTO.getLastName());
+       // Employee employee =employeeRepository.findOneByUser(userRepository.findOne(userDTO.getId()));
+      //  employee.setFirstName(userDTO.getFirstName());
+       // employee.setLastName(userDTO.getLastName());
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
-        employeeRepository.save(employee);
+       // employeeRepository.save(employee);
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert("userManagement.updated", userDTO.getLogin()));
     }
@@ -201,10 +202,18 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
-        userRepository.findOneByLogin(login).ifPresent(user -> {
-        	employeeRepository.delete(employeeRepository.findOneByUser(user));
-        });
-        userService.deleteUser(login);
+
+        try {
+            userRepository.findOneByLogin(login).ifPresent(user -> {
+                employeeRepository.delete(employeeRepository.findOneByUser(user));
+                userService.deleteUser(login);
+            });
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            throw new BadRequestAlertException("A new employee cannot already have an ID", "userManagement",
+                    "constrainViolation");
+        }
+       
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
     }
 }

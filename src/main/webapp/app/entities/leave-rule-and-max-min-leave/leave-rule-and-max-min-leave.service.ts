@@ -32,8 +32,8 @@ export class LeaveRuleAndMaxMinLeaveService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    query(req?: any): Observable<HttpResponse<LeaveRuleAndMaxMinLeave[]>> {
-        const options = createRequestOption(req);
+    query(id?: any): Observable<HttpResponse<LeaveRuleAndMaxMinLeave[]>> {
+        const options = createRequestOption(id);
         return this.http.get<LeaveRuleAndMaxMinLeave[]>(this.resourceUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<LeaveRuleAndMaxMinLeave[]>) => this.convertArrayResponse(res));
     }

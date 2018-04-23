@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -188,10 +189,18 @@ public class EmployeeResource {
 	@DeleteMapping("/employees/{id}")
 	@Timed
 	public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+		try{
 		log.debug("REST request to delete Employee : {}", id);
-		userRepository.delete(employeeRepository.findOne(id).getUser());
+		
 		log.debug("Deleted User: Empoyee: {}", id);
+		User user = employeeRepository.findOne(id).getUser();
 		employeeRepository.delete(id);
+		userRepository.delete(user);
+		}
+		catch(DataIntegrityViolationException e){
+			e.printStackTrace();
+			throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME, "constrainViolation");
+		}
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
 	}
 }

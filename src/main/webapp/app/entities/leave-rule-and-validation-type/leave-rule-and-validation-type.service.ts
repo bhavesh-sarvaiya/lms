@@ -32,8 +32,8 @@ export class LeaveRuleAndValidationTypeService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    query(req?: any): Observable<HttpResponse<LeaveRuleAndValidationType[]>> {
-        const options = createRequestOption(req);
+    query(id?: any): Observable<HttpResponse<LeaveRuleAndValidationType[]>> {
+        const options = createRequestOption(id);
         return this.http.get<LeaveRuleAndValidationType[]>(this.resourceUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<LeaveRuleAndValidationType[]>) => this.convertArrayResponse(res));
     }

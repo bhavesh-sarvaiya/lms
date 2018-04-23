@@ -9,6 +9,7 @@ import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -114,7 +115,13 @@ public class DepartmentResource {
     @Timed
     public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
         log.debug("REST request to delete Department : {}", id);
-        departmentRepository.delete(id);
+        try {
+            departmentRepository.delete(id);
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME,
+                    "constrainViolation");
+        }
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

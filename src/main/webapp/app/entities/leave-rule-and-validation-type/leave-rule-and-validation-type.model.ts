@@ -2,7 +2,7 @@ import { BaseEntity } from './../../shared';
 
 export const enum EmpType3 {
     'ALL',
-    ' MANAGEMENT_AND_EDUCATIONAL',
+    'MANAGEMENT_AND_EDUCATIONAL',
     'MANAGEMENT',
     'EDUCATIONAL'
 }

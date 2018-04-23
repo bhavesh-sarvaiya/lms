@@ -92,9 +92,9 @@ public class LeaveRuleAndValidationTypeResource {
      */
     @GetMapping("/leave-rule-and-validation-types")
     @Timed
-    public List<LeaveRuleAndValidationType> getAllLeaveRuleAndValidationTypes() {
+    public List<LeaveRuleAndValidationType> getAllLeaveRuleAndValidationTypes(@RequestParam LeaveRule id) {
         log.debug("REST request to get all LeaveRuleAndValidationTypes");
-        return leaveRuleAndValidationTypeRepository.findAll();
+        return leaveRuleAndValidationTypeRepository.findAllByLeaveRule(id);
         }
 
     /**
