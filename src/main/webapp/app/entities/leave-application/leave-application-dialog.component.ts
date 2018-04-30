@@ -57,28 +57,28 @@ export class LeaveApplicationDialogComponent implements OnInit {
     }
 
     dayDiff() {
-       // console.log(this.leaveApplication.toDate);
-       // console.log(this.fromDateDp);
         const date1 = new Date(this.fromDate1);
         const date2 = new Date(this.toDate1);
-        const diffDays = date2.getDate() - date1.getDate();
-        console.log('date' + this.fromDate1);
+        const diff = date2.getTime() - date1.getTime();
+        const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+        this.leaveApplication.noofday = diffDays + 1;
+        console.log(this.leaveApplication.noofday);
     }
 
     fromDate(event) {
-    // this.fromDate1 = event.target.velue;
-     // console.log('date' + event);
-     /* if (this.toDate1 !== '') {
+    this.fromDate1 = event.target.value;
+      console.log(this.fromDate1);
+      if (this.toDate1 !== undefined && this.fromDate1 !== '') {
         this.dayDiff();
-      }*/
+      }
     }
 
     toDate(event?: any) {
-      // this.toDate1 = event.target.velue;
-      // console.log('date' + event);
-     /* if (this.fromDate1 !== '') {
+      this.toDate1 = event.target.value;
+      console.log( this.toDate1);
+     if (this.fromDate1 !== undefined && this.toDate1 !== '') {
         this.dayDiff();
-      }*/
+      }
     }
     save() {
         this.isSaving = true;

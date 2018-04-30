@@ -4,7 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +30,18 @@ import com.lms.domain.Employee;
 import com.lms.domain.LeaveApplication;
 import com.lms.domain.LeaveApplicationHistory;
 import com.lms.domain.LeaveBalance;
+import com.lms.domain.LeaveRule;
+import com.lms.domain.LeaveRuleAndMaxMinLeave;
+import com.lms.domain.enumeration.EmpType2;
 import com.lms.domain.enumeration.Post;
 import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveApplicationHistoryRepository;
 import com.lms.repository.LeaveApplicationRepository;
 import com.lms.repository.LeaveBalanceRepository;
+import com.lms.repository.LeaveRuleAndMaxMinLeaveRepository;
+import com.lms.repository.LeaveRuleAndNoOfDayRepository;
+import com.lms.repository.LeaveRuleAndValidationTypeRepository;
+import com.lms.repository.LeaveRuleRepository;
 import com.lms.repository.UserRepository;
 import com.lms.security.SecurityUtils;
 import com.lms.web.rest.errors.BadRequestAlertException;
@@ -60,15 +66,23 @@ public class LeaveApplicationResource {
     private final LeaveApplicationRepository leaveApplicationRepository;
     private final LeaveApplicationHistoryRepository leaveApplicationHistoryRepository;
     private final EmployeeRepository employeeRepository;
+    private final LeaveRuleRepository leaveRuleRepository;
+    private final LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository;
+    private final LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository;
+    private final LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository;
     private final UserRepository userRepository;
     private final LeaveBalanceRepository leaveBalanceRepository;
 
-    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository, UserRepository userRepository,LeaveApplicationHistoryRepository leaveApplicationHistoryRepository) {
+    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository, UserRepository userRepository,LeaveApplicationHistoryRepository leaveApplicationHistoryRepository,LeaveRuleRepository leaveRuleRepository,LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository,LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository,LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository) {
         this.leaveApplicationRepository = leaveApplicationRepository;
         this.employeeRepository=employeeRepository;
         this.leaveBalanceRepository = leaveBalanceRepository;
         this.userRepository = userRepository;
         this.leaveApplicationHistoryRepository = leaveApplicationHistoryRepository;
+        this.leaveRuleAndMaxMinLeaveRepository = leaveRuleAndMaxMinLeaveRepository;
+        this.leaveRuleAndNoOfDayRepository = leaveRuleAndNoOfDayRepository;
+        this.leaveRuleAndValidationTypeRepository = leaveRuleAndValidationTypeRepository;
+        this.leaveRuleRepository = leaveRuleRepository;
     }
 
     /**
@@ -85,19 +99,20 @@ public class LeaveApplicationResource {
         if (leaveApplication.getId() != null) {
             throw new BadRequestAlertException("A new leaveApplication cannot already have an ID", ENTITY_NAME, "idexists");
         }
-       
+       Employee employee = getLoggedUser();
         Long intervalDays = ChronoUnit.DAYS.between(leaveApplication.getFromDate(), leaveApplication.getToDate()) + 1;
         if(intervalDays < 1 )
         {
             throw new BadRequestAlertException("Please Input valid date", ENTITY_NAME, "invalid.date");
         }
-       
+       leaveApplication.setEmployee(employee);
         Double leave = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),leaveApplication.getLeaveType());
         if(leave == null)
         {
            throw new BadRequestAlertException("You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME, "leaveNotAssign");
         }
         
+
         List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
        
         if(!leaveApplicationList.isEmpty())
@@ -115,6 +130,30 @@ public class LeaveApplicationResource {
            throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "+leave+ " and you are requested more than that ", ENTITY_NAME, "notEligible");
         }
        
+        LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveApplication.getLeaveType());
+        //check gender
+        String gender = leaveRule.getLeaveFor().name();
+        System.out.println("\n\n$$$$$$$$$ "+gender);
+        if(gender != "BOTH");
+        {
+         if(!employee.getGender().toString().equalsIgnoreCase(gender)){
+            throw new BadRequestAlertException("This leave only for "+gender, ENTITY_NAME, "invalid.gender");
+         }
+        }
+
+        List<LeaveRuleAndMaxMinLeave> leaveRuleAndMaxMinLeaves= leaveRuleAndMaxMinLeaveRepository.findAllByLeaveRule(leaveRule);
+
+        if(leaveRuleAndMaxMinLeaves.size() > 1){
+            if(!employee.isTeachingstaff() && employee.isGranted()){
+                Double maxDay = leaveRuleAndMaxMinLeaveRepository.findMaxLeaveLimitByLeaveRuleAndEmployeeType(leaveRule, EmpType2.MANAGEMENT);
+                System.out.println("max day day: "+ maxDay);
+                throw new BadRequestAlertException("This leave only for "+gender, ENTITY_NAME, "invalid.gender");
+
+
+            }
+            
+        }
+
         leaveApplication.setStatus(APPLIED);
         leaveApplication.setFlowStatus("NEW");
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);

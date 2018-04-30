@@ -51,7 +51,7 @@ export class LeaveApplicationService {
 
     private convertArrayResponse(res: HttpResponse<LeaveApplication[]>): HttpResponse<LeaveApplication[]> {
         const jsonResponse: LeaveApplication[] = res.body;
-        const body: LeaveApplication[] = [];
+         const body: LeaveApplication[] = [];
         for (let i = 0; i < jsonResponse.length; i++) {
             body.push(this.convertItemFromServer(jsonResponse[i]));
         }
@@ -75,10 +75,14 @@ export class LeaveApplicationService {
      */
     private convert(leaveApplication: LeaveApplication): LeaveApplication {
         const copy: LeaveApplication = Object.assign({}, leaveApplication);
+        let fromdate = leaveApplication.fromDate + ''.split('-');
+        fromdate = {'year' : fromdate[0], 'month' : fromdate[1], 'day' : fromdate[2]};
         copy.fromDate = this.dateUtils
-            .convertLocalDateToServer(leaveApplication.fromDate);
+            .convertLocalDateToServer(fromdate);
+            let todate = leaveApplication.toDate + ''.split('-');
+            todate = {'year' : todate[0], 'month' : todate[1], 'day' : todate[2]};
         copy.toDate = this.dateUtils
-            .convertLocalDateToServer(leaveApplication.toDate);
+            .convertLocalDateToServer(todate);
         return copy;
     }
 }

@@ -31,11 +31,8 @@
             <div class="form-group">
                     <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.fromDate" for="field_fromDate">From Date</label>
                     <div class="input-group">
-                        <input id="field_fromDate" type="text" (input)="fromDate($event)" class="form-control" name="fromDate" ngbDatepicker  #fromDateDp="ngbDatepicker" [(ngModel)]="leaveApplication.fromDate"
+                        <input id="field_fromDate" type="date" format="yyyy-mm-dd" (change)="fromDate($event)" class="form-control" name="fromDate"  [(ngModel)]="leaveApplication.fromDate"
                         required/>
-                        <span class="input-group-append">
-                            <button type="button" class="btn btn-secondary"  (click)="fromDateDp.toggle()"><i class="fa fa-calendar"></i></button>
-                        </span>
                     </div>
                     <div [hidden]="!(editForm.controls.fromDate?.dirty && editForm.controls.fromDate?.invalid)">
                         <small class="form-text text-danger"
@@ -47,11 +44,8 @@
                 <div class="form-group">
                         <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.toDate" for="field_toDate">To Date</label>
                         <div class="input-group">
-                            <input id="field_toDate" type="text" (change)="toDate($event)" class="form-control" name="toDate" ngbDatepicker  #toDateDp="ngbDatepicker" [(ngModel)]="leaveApplication.toDate"
+                            <input id="field_toDate" type="date" (change)="toDate($event)" class="form-control" name="toDate"  [(ngModel)]="leaveApplication.toDate"
                             required/>
-                            <span class="input-group-append">
-                                <button type="button" class="btn btn-secondary" (click)="toDateDp.toggle()"><i class="fa fa-calendar"></i></button>
-                            </span>
                         </div>
                         <div [hidden]="!(editForm.controls.toDate?.dirty && editForm.controls.toDate?.invalid)">
                             <small class="form-text text-danger"
@@ -84,10 +78,9 @@
             </div>
         </div>
        
-       
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.noofday" for="field_noofday">Noofday</label>
-            <input type="text" class="form-control" name="noofday" (change)="toDate($event)" id="field_noofday" value="{{leaveApplication.fromDate | date:'mediumDate'}}" disabled
+            <input type="text" class="form-control" name="noofday" id="field_noofday" value="{{leaveApplication.noofday}}" disabled
                 [(ngModel)]="leaveApplication.noofday" />
         </div>
     </div>
