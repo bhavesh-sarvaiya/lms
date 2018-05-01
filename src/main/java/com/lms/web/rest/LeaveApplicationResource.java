@@ -100,7 +100,7 @@ public class LeaveApplicationResource {
             throw new BadRequestAlertException("A new leaveApplication cannot already have an ID", ENTITY_NAME, "idexists");
         }
        Employee employee = getLoggedUser();
-        Long intervalDays = ChronoUnit.DAYS.between(leaveApplication.getFromDate(), leaveApplication.getToDate()) + 1;
+        Double intervalDays = leaveApplication.getNoofday();
         if(intervalDays < 1 )
         {
             throw new BadRequestAlertException("Please Input valid date", ENTITY_NAME, "invalid.date");
@@ -133,8 +133,7 @@ public class LeaveApplicationResource {
         LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveApplication.getLeaveType());
         //check gender
         String gender = leaveRule.getLeaveFor().name();
-        System.out.println("\n\n$$$$$$$$$ "+gender);
-        if(gender != "BOTH");
+        if(!gender.equalsIgnoreCase("BOTH"))
         {
          if(!employee.getGender().toString().equalsIgnoreCase(gender)){
             throw new BadRequestAlertException("This leave only for "+gender, ENTITY_NAME, "invalid.gender");
@@ -146,14 +145,26 @@ public class LeaveApplicationResource {
         if(leaveRuleAndMaxMinLeaves.size() > 1){
             if(!employee.isTeachingstaff() && employee.isGranted()){
                 Double maxDay = leaveRuleAndMaxMinLeaveRepository.findMaxLeaveLimitByLeaveRuleAndEmployeeType(leaveRule, EmpType2.MANAGEMENT);
-                System.out.println("max day day: "+ maxDay);
-                throw new BadRequestAlertException("This leave only for "+gender, ENTITY_NAME, "invalid.gender");
+                Double minDay = leaveRuleAndMaxMinLeaveRepository.findMinLeaveLimitByLeaveRuleAndEmployeeType(leaveRule, EmpType2.EDUCATIONAL);
+                if(intervalDays > maxDay) {
+                    throw new BadRequestAlertException("You reached max leave limit", ENTITY_NAME, "maxLeaveLimit");
+                }
+                else if(intervalDays < minDay) {
+                    throw new BadRequestAlertException("You can't take leave below some limit", ENTITY_NAME, "minLeaveLimit");
+                }
 
-
+            }
+            else {
+                if(intervalDays > leaveRuleAndMaxMinLeaves.get(0).getMaxLeaveLimit()) {
+                    throw new BadRequestAlertException("You reached max leave limit", ENTITY_NAME, "maxLeaveLimit");
+                }
+                else if(intervalDays < leaveRuleAndMaxMinLeaves.get(0).getMinLeaveLimit()) {
+                    throw new BadRequestAlertException("You can't take leave below some limit", ENTITY_NAME, "minLeaveLimit");
+                }
             }
             
         }
-
+       
         leaveApplication.setStatus(APPLIED);
         leaveApplication.setFlowStatus("NEW");
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
