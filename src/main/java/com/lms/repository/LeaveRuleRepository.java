@@ -23,4 +23,7 @@ public interface LeaveRuleRepository extends JpaRepository<LeaveRule, Long> {
     
     LeaveRule findOneByLeave(LeaveType leaveType);
 
+    @Query("select l from LeaveRule l left join fetch l.leaveTypes where l.leave =:leaveType")
+    LeaveRule findOneWithEagerRelationships(@Param("leaveType")LeaveType leaveType);
+
 }

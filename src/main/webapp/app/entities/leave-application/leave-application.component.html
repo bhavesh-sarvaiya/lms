@@ -54,9 +54,12 @@
             <tr *ngFor="let leaveApplication of leaveApplications ;trackBy: trackId">
                 <!-- <td><a [routerLink]="['../leave-application', leaveApplication.id ]">{{leaveApplication.id}}</a></td> -->
                  <td>
-                    <div *ngIf="leaveApplication.employee">
-                        <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee.user.login}}</a>
+                    <div *ngIf="leaveApplication.employee.id == employee.id">
+                        <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >Me</a>
                     </div>
+                    <div *ngIf="leaveApplication.employee.id != employee.id">
+                            <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee.user.login}}</a>
+                        </div>
                 </td>
                 <td>{{leaveApplication.reason}}</td>
                 <td>{{leaveApplication.fromDate | date:'mediumDate'}}</td>

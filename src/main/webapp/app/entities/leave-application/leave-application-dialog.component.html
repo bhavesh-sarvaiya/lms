@@ -29,31 +29,39 @@
                         </div>
             
             <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.fromDate" for="field_fromDate">From Date</label>
-                    <div class="input-group">
-                        <input id="field_fromDate" type="date" format="yyyy-mm-dd" (change)="fromDate($event)" class="form-control" name="fromDate"  [(ngModel)]="leaveApplication.fromDate"
-                        required/>
-                    </div>
-                    <div [hidden]="!(editForm.controls.fromDate?.dirty && editForm.controls.fromDate?.invalid)">
-                        <small class="form-text text-danger"
-                           [hidden]="!editForm.controls.fromDate?.errors?.required" jhiTranslate="entity.validation.required">
-                           This field is required.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                        <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.toDate" for="field_toDate">To Date</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.fromDate" for="field_fromDate">From Date</label>
                         <div class="input-group">
-                            <input id="field_toDate" type="date" (change)="toDate($event)" class="form-control" name="toDate"  [(ngModel)]="leaveApplication.toDate"
-                            required/>
+                            <input id="field_fromDate" type="date" format="yyyy-mm-dd" (change)="fromDate($event)" class="form-control" name="fromDate"
+                                [(ngModel)]="leaveApplication.fromDate" required/>
                         </div>
-                        <div [hidden]="!(editForm.controls.toDate?.dirty && editForm.controls.toDate?.invalid)">
-                            <small class="form-text text-danger"
-                               [hidden]="!editForm.controls.toDate?.errors?.required" jhiTranslate="entity.validation.required">
-                               This field is required.
+                        <div [hidden]="!(editForm.controls.fromDate?.dirty && editForm.controls.fromDate?.invalid)">
+                            <small class="form-text text-danger" [hidden]="!editForm.controls.fromDate?.errors?.required" jhiTranslate="entity.validation.required">
+                                This field is required.
                             </small>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.toDate" for="field_toDate">To Date</label>
+                        <div class="input-group">
+                            <input id="field_toDate" type="date" (change)="toDate($event)" class="form-control" name="toDate" [(ngModel)]="leaveApplication.toDate"
+                                required/>
+                        </div>
+                        <div [hidden]="!(editForm.controls.toDate?.dirty && editForm.controls.toDate?.invalid)">
+                            <small class="form-text text-danger" [hidden]="!editForm.controls.toDate?.errors?.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.noofday" for="field_noofday">Noofday</label>
+                    <input type="text" class="form-control" name="noofday" id="field_noofday" value="{{leaveApplication.noofday}}" disabled
+                        [(ngModel)]="leaveApplication.noofday" />
+                </div>
             </div>
             <div class="col-md-6">
                 <br>
@@ -63,16 +71,29 @@
                         <div class="col-md-6">{{leaveBalances.noOfLeave}}</div>
                     </div>
             </dl>
-
-            <dl *ngIf = "leaveRule">You can take join Leave :  
-                    <div class="row"  *ngFor="let l of leaveRule.leavetypes;">
-                            <div class="col-md-6">{{l.code}}</div>  
-                        </div>  
-            </dl>
-
+        
+            <div class="card">
+                <div class="card-header">You can take join Leave :</div>
+                <div class="card-body" *ngIf="leaveRule">
+                    <div class="row" *ngFor="let l of leaveRule.leaveTypes; let i = index">
+                        <div class="col-md-2">
+                            {{l.code}}
+                        </div>
+                        <div class="col-md-2">
+                            <input type="checkbox" class="form-control" name="c_{{l.id}}" [(ngModel)]="checkBox[i]" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" [disabled]="!checkBox[i]" class="form-control" name="t_{{l.id}}" [(ngModel)]="textBox[i]" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Days</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>  
         </div>
-      
+
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.reason" for="field_reason">Reason</label>
             <input type="text" class="form-control" name="reason" id="field_reason"
@@ -84,18 +105,13 @@
                 </small>
             </div>
         </div>
-       
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.noofday" for="field_noofday">Noofday</label>
-            <input type="text" class="form-control" name="noofday" id="field_noofday" value="{{leaveApplication.noofday}}" disabled
-                [(ngModel)]="leaveApplication.noofday" />
-        </div>
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
-        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving || leaveApplication.noofday < 1" class="btn btn-primary">
             <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
     </div>

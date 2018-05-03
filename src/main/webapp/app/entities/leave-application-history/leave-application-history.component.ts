@@ -6,7 +6,8 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
 import { LeaveApplicationHistory } from './leave-application-history.model';
 import { LeaveApplicationHistoryService } from './leave-application-history.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { ITEMS_PER_PAGE, Principal, User } from '../../shared';
+import { Employee, EmployeeService } from '../employee';
 
 @Component({
     selector: 'jhi-leave-application-history',
@@ -14,7 +15,7 @@ import { ITEMS_PER_PAGE, Principal } from '../../shared';
 })
 export class LeaveApplicationHistoryComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+currentAccount: User;
     leaveApplicationHistories: LeaveApplicationHistory[];
     error: any;
     success: any;
@@ -28,6 +29,7 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+    employee: Employee;
 
     constructor(
         private leaveApplicationHistoryService: LeaveApplicationHistoryService,
@@ -36,7 +38,8 @@ currentAccount: any;
         private principal: Principal,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private employeeService: EmployeeService
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
@@ -55,6 +58,13 @@ currentAccount: any;
                 (res: HttpResponse<LeaveApplicationHistory[]>) => this.onSuccess(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
         );
+    }
+    loadEmployee(id) {
+        this.employeeService.loadEmployeeByUser(id)
+            .subscribe((employeeResponse: HttpResponse<Employee>) => {
+                this.employee = employeeResponse.body;
+                console.log('emp id: ' + this.employee.id);
+            });
     }
     loadPage(page: number) {
         if (page !== this.previousPage) {
@@ -85,6 +95,7 @@ currentAccount: any;
         this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+            this.loadEmployee(this.currentAccount.id);
         });
         this.registerChangeInLeaveApplicationHistories();
     }

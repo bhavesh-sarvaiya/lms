@@ -121,10 +121,11 @@ public class LeaveRuleResource {
 
     @GetMapping("/leave-rules-leave-type/{id}")
     @Timed
-    public ResponseEntity<LeaveRule> getLeaveRuleByLeaveType(@PathVariable Long id) {
-        log.debug("REST request to get LeaveRule : {}", id);
-        LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveTypeRepository.findOne(id));
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(leaveRule));
+    public LeaveRule getLeaveRuleByLeaveType(@PathVariable Long id) {
+        log.debug("REST request to get LeaveType : {}", id);
+        LeaveRule leaveRule = leaveRuleRepository.findOneWithEagerRelationships(leaveTypeRepository.findOne(id));
+        System.out.println("leaveRule: " + leaveRule);
+        return leaveRule;
     }
 
     /**

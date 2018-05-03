@@ -26,6 +26,8 @@ export class LeaveApplicationDialogComponent implements OnInit {
     employees: Employee[];
     fromDate1: string;
     toDate1: string;
+    checkBox: string[];
+    textBox: string[];
     l: LeaveType;
     leaveRule: LeaveRule;
     leavetypes: LeaveType[];
@@ -72,10 +74,22 @@ export class LeaveApplicationDialogComponent implements OnInit {
                 this.leavetypes = res.body;
             }, (res: HttpErrorResponse) => this.onError(res.message));
     }
-    loadLeaveRule(event) {
+    loadLeaveRule() {
         this.leaveRuleService.findByLeaveType(this.leaveApplication.leaveType.id)
             .subscribe((leaveRuleResponse: HttpResponse<LeaveRule>) => {
                 this.leaveRule = leaveRuleResponse.body;
+                if (this.leaveRule.id === undefined) {
+                    console.log('ok');
+                    this.leaveRule = undefined;
+                } else {
+                    this.checkBox = [];
+                    this.textBox = [];
+                    for (const item of this.leaveRule.leaveTypes) {
+                        this.checkBox.push('c_' + item.id);
+                        this.checkBox.push('t_' + item.id);
+                    }
+                    console.log('length' + this.checkBox.length);
+                }
             });
         }
     clear() {
