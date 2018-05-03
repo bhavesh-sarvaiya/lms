@@ -9,6 +9,7 @@ import com.lms.repository.LeaveRuleAndMaxMinLeaveRepository;
 import com.lms.repository.LeaveRuleAndNoOfDayRepository;
 import com.lms.repository.LeaveRuleAndValidationTypeRepository;
 import com.lms.repository.LeaveRuleRepository;
+import com.lms.repository.LeaveTypeRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
 import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -37,15 +38,17 @@ public class LeaveRuleResource {
     private static final String ENTITY_NAME = "leaveRule";
 
     private final LeaveRuleRepository leaveRuleRepository;
+    private final LeaveTypeRepository leaveTypeRepository;
     private final LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository;
     private final LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository;
     private final LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository;
 
-    public LeaveRuleResource(LeaveRuleRepository leaveRuleRepository,LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveResource,LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayResource,LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeResource) {
+    public LeaveRuleResource(LeaveRuleRepository leaveRuleRepository,LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveResource,LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayResource,LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeResource, LeaveTypeRepository leaveTypeRepository) {
         this.leaveRuleRepository = leaveRuleRepository;
         this.leaveRuleAndMaxMinLeaveRepository = leaveRuleAndMaxMinLeaveResource;
         this.leaveRuleAndNoOfDayRepository = leaveRuleAndNoOfDayResource;
         this.leaveRuleAndValidationTypeRepository = leaveRuleAndValidationTypeResource;
+        this.leaveTypeRepository = leaveTypeRepository;
     }
 
     /**
@@ -113,6 +116,14 @@ public class LeaveRuleResource {
     public ResponseEntity<LeaveRule> getLeaveRule(@PathVariable Long id) {
         log.debug("REST request to get LeaveRule : {}", id);
         LeaveRule leaveRule = leaveRuleRepository.findOneWithEagerRelationships(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(leaveRule));
+    }
+
+    @GetMapping("/leave-rules-leave-type/{id}")
+    @Timed
+    public ResponseEntity<LeaveRule> getLeaveRuleByLeaveType(@PathVariable Long id) {
+        log.debug("REST request to get LeaveRule : {}", id);
+        LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveTypeRepository.findOne(id));
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(leaveRule));
     }
 

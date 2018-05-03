@@ -79,9 +79,7 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
     }
     loadEmployee(id) {
         this.employeeService.loadEmployeeByUser(id)
-            .subscribe((employeeResponse: HttpResponse<Employee>) => {
-                this.employee = employeeResponse.body;
-                console.log('logged user: ' + JSON.stringify(this.employee));
+            .subscribe((employeeResponse: HttpResponse<Employee>) => { this.employee = employeeResponse.body;
             });
     }
     load(id) {

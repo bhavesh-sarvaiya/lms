@@ -12,6 +12,7 @@ import { LeaveApplicationService } from './leave-application.service';
 import { Employee, EmployeeService } from '../employee';
 import { LeaveType, LeaveTypeService } from '../leave-type';
 import { LeaveBalance, LeaveBalanceService } from '../leave-balance';
+import { LeaveRule, LeaveRuleService } from '../leave-rule';
 
 @Component({
     selector: 'jhi-leave-application-dialog',
@@ -25,6 +26,8 @@ export class LeaveApplicationDialogComponent implements OnInit {
     employees: Employee[];
     fromDate1: string;
     toDate1: string;
+    l: LeaveType;
+    leaveRule: LeaveRule;
     leavetypes: LeaveType[];
     leaveBalance: LeaveBalance[];
     fromDateDp: any;
@@ -33,6 +36,7 @@ export class LeaveApplicationDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private leaveApplicationService: LeaveApplicationService,
+        private leaveRuleService: LeaveRuleService,
         private employeeService: EmployeeService,
         private leaveTypeService: LeaveTypeService,
         private eventManager: JhiEventManager,
@@ -45,13 +49,35 @@ export class LeaveApplicationDialogComponent implements OnInit {
        // this.employeeService.query()
           //  .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
           this.leaveBalanceService.query()
-          .subscribe((res: HttpResponse<LeaveBalance[]>) => { this.leaveBalance = res.body;
+          .subscribe((res: HttpResponse<LeaveBalance[]>) => {
+              this.leaveBalance = res.body;
             console.log(JSON.stringify(this.leaveBalance));
+            let i = 0;
+              for (const item of this.leavetypes) {
+                  if (this.leaveBalance.length > i) {
+                      for (const b of this.leaveBalance) {
+                          this.l = b.leaveType;
+                          if (item.code === this.l.code) {
+                              item.code = item.code + '(' + b.noOfLeave + ')';
+                          }
+                      }
+                  } else {
+                      item.code = item.code + '(0)';
+                  }
+                  i++;
+              }
         }, (res: HttpErrorResponse) => this.onError(res.message));
           this.leaveTypeService.query()
-            .subscribe((res: HttpResponse<LeaveType[]>) => { this.leavetypes = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<LeaveType[]>) => {
+                this.leavetypes = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
-
+    loadLeaveRule(event) {
+        this.leaveRuleService.findByLeaveType(this.leaveApplication.leaveType.id)
+            .subscribe((leaveRuleResponse: HttpResponse<LeaveRule>) => {
+                this.leaveRule = leaveRuleResponse.body;
+            });
+        }
     clear() {
         this.activeModal.dismiss('cancel');
     }

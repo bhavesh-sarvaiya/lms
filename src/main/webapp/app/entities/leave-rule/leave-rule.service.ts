@@ -12,6 +12,7 @@ export type EntityResponseType = HttpResponse<LeaveRule>;
 export class LeaveRuleService {
 
     private resourceUrl =  SERVER_API_URL + 'api/leave-rules';
+    private resourceUrl1 =  SERVER_API_URL + 'api/leave-rules-leave-type';
 
     constructor(private http: HttpClient) { }
 
@@ -29,6 +30,11 @@ export class LeaveRuleService {
 
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<LeaveRule>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    findByLeaveType(id: number): Observable<EntityResponseType> {
+        return this.http.get<LeaveRule>(`${this.resourceUrl1}/${id}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 

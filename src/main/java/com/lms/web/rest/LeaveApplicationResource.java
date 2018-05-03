@@ -141,7 +141,6 @@ public class LeaveApplicationResource {
         }
 
         List<LeaveRuleAndMaxMinLeave> leaveRuleAndMaxMinLeaves= leaveRuleAndMaxMinLeaveRepository.findAllByLeaveRule(leaveRule);
-
         if(leaveRuleAndMaxMinLeaves.size() > 1){
             if(!employee.isTeachingstaff() && employee.isGranted()){
                 Double maxDay = leaveRuleAndMaxMinLeaveRepository.findMaxLeaveLimitByLeaveRuleAndEmployeeType(leaveRule, EmpType2.MANAGEMENT);

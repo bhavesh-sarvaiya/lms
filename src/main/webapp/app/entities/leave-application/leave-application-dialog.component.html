@@ -16,7 +16,7 @@
             <div class="col-md-6">
                     <div class="form-group">
                             <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.leaveType" for="field_leaveType">Leave Type</label>
-                            <select class="form-control" id="field_leaveType" name="leaveType" [(ngModel)]="leaveApplication.leaveType"  required>
+                            <select class="form-control" id="field_leaveType" name="leaveType" (change) = "loadLeaveRule()" [(ngModel)]="leaveApplication.leaveType"  required>
                                 <option *ngIf="!editForm.value.leaveType" [ngValue]="null" selected></option>
                                 <option [ngValue]="leaveTypeOption.id === leaveApplication.leaveType?.id ? leaveApplication.leaveType : leaveTypeOption" *ngFor="let leaveTypeOption of leavetypes; trackBy: trackLeaveTypeById">{{leaveTypeOption.code}}</option>
                             </select>
@@ -63,6 +63,13 @@
                         <div class="col-md-6">{{leaveBalances.noOfLeave}}</div>
                     </div>
             </dl>
+
+            <dl *ngIf = "leaveRule">You can take join Leave :  
+                    <div class="row"  *ngFor="let l of leaveRule.leavetypes;">
+                            <div class="col-md-6">{{l.code}}</div>  
+                        </div>  
+            </dl>
+
             </div>  
         </div>
       
