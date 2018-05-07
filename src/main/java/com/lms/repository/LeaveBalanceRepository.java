@@ -23,8 +23,11 @@ public interface LeaveBalanceRepository extends JpaRepository<LeaveBalance, Long
 
 	Page<LeaveBalance> findAllByEmployee(Employee empoyee, Pageable pageable);
 	//LeaveBalance findOneByEmployeeAndLeaveType(Employee empoyee,LeaveType leaveType);
+	
 	@Query("select l.noOfLeave from LeaveBalance l where l.employee = ?1 and l.leaveType=?2")
 	Double findOneByEmployeeAndLeaveType(Employee employee, LeaveType leaveType); 
+
+	Page<LeaveBalance> findAllByEmployeeIn(List<Employee> employees, Pageable pageable);
 
 
 }

@@ -7,6 +7,7 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { Employee } from './employee.model';
 import { EmployeeService } from './employee.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'jhi-employee',
@@ -16,6 +17,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
 currentAccount: any;
     employees: Employee[];
+    employees1: Employee[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -28,6 +30,7 @@ currentAccount: any;
     predicate: any;
     previousPage: any;
     reverse: any;
+    searchValue: any;
 
     constructor(
         private employeeService: EmployeeService,
@@ -46,7 +49,24 @@ currentAccount: any;
             this.predicate = data.pagingParams.predicate;
         });
     }
-
+    searchResult() {
+        const searchValue1 = this.searchValue.toLowerCase();
+        if (this.searchValue.trim() !== '') {
+            this.employees = this.employees1;
+            this.employees = _.filter(this.employees, function(o) {
+                 return o.user.email.toLowerCase().match(searchValue1) ||
+                 o.department.name.toLowerCase().match(searchValue1) ||
+                 o.user.login.match(searchValue1) ||
+                 o.firstName.toLowerCase().match(searchValue1) ||
+                 o.lastName.toLowerCase().match(searchValue1) ||
+                 o.post.toLowerCase().match(searchValue1) ||
+                 o.gender.toLowerCase().match(searchValue1) ||
+                 o.mobileNumber.toLowerCase().match(searchValue1);
+                });
+        } else {
+            this.employees = this.employees1;
+        }
+    }
     loadAll() {
         this.employeeService.query({
             page: this.page - 1,
@@ -114,6 +134,7 @@ currentAccount: any;
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
         this.employees = data;
+        this.employees1 = this.employees;
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);

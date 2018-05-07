@@ -1,17 +1,34 @@
 <div>
-    <h2>
-        <span jhiTranslate="lmsApp.leaveBalance.home.title">Leave Balances</span>
-        <button style="display: none;" class="btn btn-primary float-right jh-create-entity create-leave-balance" [routerLink]="['/', { outlets: { popup: ['leave-balance-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span  jhiTranslate="lmsApp.leaveBalance.home.createLabel">
-            Create new Leave Balance
-            </span>
-        </button>
-    </h2>
+<div class="row">
+    <div class="col-md-2"><h2><span jhiTranslate="lmsApp.leaveBalance.home.title">Leave Balances</span></h2></div>
+    <div class="col-md-4">
+            <div class="input-group">
+                    <input type="text" name="searchValue" (input)="searchResult()"  [(ngModel)]="searchValue" id="searchValue"  placeholder="Search..." class="form-control">
+                </div>
+    </div>
+    <div class="col-md-4" *ngIf="employee && employee.post == 'REGISTRAR'">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-control-label" jhiTranslate="lmsApp.employee.department" for="field_department">Department</label>
+            </div>
+    
+            <div class="col-md-8">
+                <select class="form-control" id="field_department" name="department" [(ngModel)]="employee.department" (change)="loadAllByDepartment()">
+                    <option value="0">All</option>
+                    <option [ngValue]="departmentOption.id === employee.department?.id ? employee.department : departmentOption" *ngFor="let departmentOption of departments;">{{departmentOption.name}}</option>
+                </select>
+            </div>
+        </div>
+        <h6 *ngIf="employee.department.id != undefined">Showing {{employee.department.name}} Department's employees leave balance</h6>
+        <h6 *ngIf="employee.department.id == undefined">Showing All Department's employees leave balance</h6>
+    </div>
+</div>
+    <h6 *ngIf="employee && employee.post == 'HOD'">Showing {{employee.department.name}} Department's employees leave balance</h6>
+    
     <jhi-alert></jhi-alert>
     <div class="row">
     </div>
-    <br/>
+    <br/>   
     <div class="table-responsive" *ngIf="leaveBalances">
         <table class="table table-striped">
             <thead>

@@ -1,7 +1,10 @@
 package com.lms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lms.domain.Department;
+import com.lms.domain.Employee;
 import com.lms.domain.LeaveBalance;
+import com.lms.repository.DepartmentRepository;
 import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveBalanceRepository;
 import com.lms.repository.UserRepository;
@@ -37,12 +40,16 @@ public class LeaveBalanceResource {
     private final UserRepository userRepository;
     private static final String ENTITY_NAME = "leaveBalance";
     private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
     private final LeaveBalanceRepository leaveBalanceRepository;
 
-    public LeaveBalanceResource(LeaveBalanceRepository leaveBalanceRepository,EmployeeRepository employeeRepository,UserRepository userRepository) {
+    public LeaveBalanceResource(LeaveBalanceRepository leaveBalanceRepository,
+    EmployeeRepository employeeRepository,UserRepository userRepository,
+    DepartmentRepository departmentRepository) {
         this.leaveBalanceRepository = leaveBalanceRepository;
         this.employeeRepository=employeeRepository;
         this.userRepository = userRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     /**
@@ -99,16 +106,40 @@ public class LeaveBalanceResource {
         log.info("REST request to get a page of LeaveBalances");
         Page<LeaveBalance> page=null;
         String user=SecurityUtils.getCurrentUserLogin().get();
+        Employee employee = getLoggedUser();
         if(user.equals("admin")) {
         	page = leaveBalanceRepository.findAll(pageable);
         }
+        else if(employee.getPost().name().equalsIgnoreCase("HOD") || employee.getPost().name().equalsIgnoreCase("REGISTRAR")){
+            List<Employee> employees = employeeRepository.findAllByDepartment(employee.getDepartment());
+            page = leaveBalanceRepository.findAllByEmployeeIn(employees, pageable);
+        }
         else {
-        	page = leaveBalanceRepository.findAllByEmployee(employeeRepository.findOneByUser(userRepository.findOneByLogin(user).get()), pageable);
+        	page = leaveBalanceRepository.findAllByEmployee(employee, pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/leave-balances");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/leave-balances-department")
+    @Timed
+    public ResponseEntity<List<LeaveBalance>> getAllLeaveBalancesByDepartment(@RequestParam Long id,  Pageable pageable) {
+        log.info("REST request to get a page of LeaveBalances");
+        Page<LeaveBalance> page=null;
+        System.out.println("$$$$$$$$$$############department "+id);
+        if(id ==0) {
+        	page = leaveBalanceRepository.findAll(pageable);
+        } else{
+            List<Employee> employees = employeeRepository.findAllByDepartment(departmentRepository.findOne(id));
+        page = leaveBalanceRepository.findAllByEmployeeIn(employees, pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/leave-balances");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    private Employee getLoggedUser()
+    {
+        return employeeRepository.findOneByUser(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get());
+    }
     /**
      * GET  /leave-balances/:id : get the "id" leaveBalance.
      *

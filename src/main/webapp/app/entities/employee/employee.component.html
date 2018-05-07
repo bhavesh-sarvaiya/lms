@@ -1,14 +1,29 @@
 <div>
-        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-    <h2>
-        <span jhiTranslate="lmsApp.employee.home.title">Employees</span>
-        <button class="btn btn-primary float-right jh-create-entity create-employee" [routerLink]="['/', { outlets: { popup: ['employee-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span  jhiTranslate="lmsApp.employee.home.createLabel">
-            Create new Employee
-            </span>
-        </button>
-    </h2>
+    <div class="row">
+        <div class="col-md-2">
+                <h2>
+                        <span jhiTranslate="lmsApp.employee.home.title">Employees</span>
+                        </h2>
+        </div>
+        <div class="col-md-4">
+                <div class="input-group">
+                        <input type="text" name="searchValue" (input)="searchResult()"  [(ngModel)]="searchValue" id="searchValue"  placeholder="Search..." class="form-control">
+                    </div>
+        </div>
+        <div class="col-md-6">
+            <h2> 
+            <button class="btn btn-primary float-right jh-create-entity create-employee" [routerLink]="['/', { outlets: { popup: ['employee-new'] } }]">
+                    <span class="fa fa-plus"></span>
+                    <span  jhiTranslate="lmsApp.employee.home.createLabel">
+                    Create new Employee
+                    </span>
+                </button>
+            </h2>
+        </div>
+    </div> 
+  
+      
+        
     <jhi-alert></jhi-alert>
     <!-- <div class="row"></div> -->
     <br/>

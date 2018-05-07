@@ -5,6 +5,7 @@ import { SERVER_API_URL } from '../../app.constants';
 
 import { LeaveBalance } from './leave-balance.model';
 import { createRequestOption } from '../../shared';
+import { Department } from '../department';
 
 export type EntityResponseType = HttpResponse<LeaveBalance>;
 
@@ -12,6 +13,7 @@ export type EntityResponseType = HttpResponse<LeaveBalance>;
 export class LeaveBalanceService {
 
     private resourceUrl =  SERVER_API_URL + 'api/leave-balances';
+    private resourceUrl1 =  SERVER_API_URL + 'api/leave-balances-department';
 
     constructor(private http: HttpClient) { }
 
@@ -35,6 +37,12 @@ export class LeaveBalanceService {
     query(req?: any): Observable<HttpResponse<LeaveBalance[]>> {
         const options = createRequestOption(req);
         return this.http.get<LeaveBalance[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .map((res: HttpResponse<LeaveBalance[]>) => this.convertArrayResponse(res));
+    }
+
+    findAllByDepartment(id: number, req?: any): Observable<HttpResponse<LeaveBalance[]>> {
+        const options = createRequestOption({id, req});
+        return this.http.get<LeaveBalance[]>(this.resourceUrl1, { params: options, observe: 'response' })
             .map((res: HttpResponse<LeaveBalance[]>) => this.convertArrayResponse(res));
     }
 
