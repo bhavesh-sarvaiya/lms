@@ -13,6 +13,7 @@ import { Employee, EmployeeService } from '../employee';
 import { LeaveType, LeaveTypeService } from '../leave-type';
 import { LeaveBalance, LeaveBalanceService } from '../leave-balance';
 import { LeaveRule, LeaveRuleService } from '../leave-rule';
+import { leaveApplicationHistoryPopupRoute } from '../leave-application-history';
 
 @Component({
     selector: 'jhi-leave-application-dialog',
@@ -26,8 +27,6 @@ export class LeaveApplicationDialogComponent implements OnInit {
     employees: Employee[];
     fromDate1: string;
     toDate1: string;
-    checkBox: string[];
-    textBox: string[];
     l: LeaveType;
     leaveRule: LeaveRule;
     leavetypes: LeaveType[];
@@ -50,7 +49,7 @@ export class LeaveApplicationDialogComponent implements OnInit {
         this.isSaving = false;
        // this.employeeService.query()
           //  .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-          this.leaveBalanceService.query()
+          this.leaveBalanceService.findAllForLeaveApplication()
           .subscribe((res: HttpResponse<LeaveBalance[]>) => {
               this.leaveBalance = res.body;
             console.log(JSON.stringify(this.leaveBalance));
@@ -81,14 +80,6 @@ export class LeaveApplicationDialogComponent implements OnInit {
                 if (this.leaveRule.id === undefined) {
                     console.log('ok');
                     this.leaveRule = undefined;
-                } else {
-                    this.checkBox = [];
-                    this.textBox = [];
-                    for (const item of this.leaveRule.leaveTypes) {
-                        this.checkBox.push('c_' + item.id);
-                        this.checkBox.push('t_' + item.id);
-                    }
-                    console.log('length' + this.checkBox.length);
                 }
             });
         }
@@ -122,6 +113,18 @@ export class LeaveApplicationDialogComponent implements OnInit {
     }
     save() {
         this.isSaving = true;
+        if (this.leaveApplication.joinLeave === undefined || this.leaveApplication.joinLeave === 'none') {
+            this.leaveApplication.joinLeave = 'No';
+        } else {
+            this.l = this.leaveApplication.leaveType;
+            const leaveDay = this.l.code.split('(')[1].split(')')[0];
+            for (const b of this.leaveBalance) {
+                this.l = b.leaveType;
+                if (this.l.code === this.leaveApplication.joinLeave) {
+                    this.leaveApplication.joinLeave = this.l.code + ':' + (this.leaveApplication.noofday - parseInt(leaveDay, 0));
+                }
+            }
+        }
         console.log(this.leaveApplication);
         if (this.leaveApplication.id !== undefined) {
             this.subscribeToSaveResponse(

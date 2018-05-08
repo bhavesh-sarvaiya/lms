@@ -150,7 +150,16 @@ public class EmployeeResource {
 	@Timed
 	public ResponseEntity<List<Employee>> getAllEmployees(Pageable pageable) {
 		log.debug("REST request to get a page of Employees:{}","page of Employees");
-		Page<Employee> page = employeeRepository.findAll(pageable);
+		Page<Employee> page = employeeRepository.findAllByFirstNameLike("aja",pageable);
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/employees");
+		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+	}
+
+	@GetMapping("/employees-search/{value}")
+	@Timed
+	public ResponseEntity<List<Employee>> getAllEmployeesSearch(@PathVariable String value, Pageable pageable) {
+		log.debug("REST request to get a page of Employees:{}","page of Employees");
+		Page<Employee> page = employeeRepository.findAllByFirstNameLike(value,pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/employees");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}

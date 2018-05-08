@@ -32,6 +32,7 @@ import com.lms.domain.LeaveApplicationHistory;
 import com.lms.domain.LeaveBalance;
 import com.lms.domain.LeaveRule;
 import com.lms.domain.LeaveRuleAndMaxMinLeave;
+import com.lms.domain.LeaveType;
 import com.lms.domain.enumeration.EmpType2;
 import com.lms.domain.enumeration.Post;
 import com.lms.repository.EmployeeRepository;
@@ -42,6 +43,7 @@ import com.lms.repository.LeaveRuleAndMaxMinLeaveRepository;
 import com.lms.repository.LeaveRuleAndNoOfDayRepository;
 import com.lms.repository.LeaveRuleAndValidationTypeRepository;
 import com.lms.repository.LeaveRuleRepository;
+import com.lms.repository.LeaveTypeRepository;
 import com.lms.repository.UserRepository;
 import com.lms.security.SecurityUtils;
 import com.lms.web.rest.errors.BadRequestAlertException;
@@ -72,8 +74,14 @@ public class LeaveApplicationResource {
     private final LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository;
     private final UserRepository userRepository;
     private final LeaveBalanceRepository leaveBalanceRepository;
+    private final LeaveTypeRepository leaveTypeRepository;
 
-    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository, UserRepository userRepository,LeaveApplicationHistoryRepository leaveApplicationHistoryRepository,LeaveRuleRepository leaveRuleRepository,LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository,LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository,LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository) {
+    public LeaveApplicationResource(LeaveApplicationRepository leaveApplicationRepository,
+    		EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository, 
+    		UserRepository userRepository,LeaveApplicationHistoryRepository leaveApplicationHistoryRepository,
+    		LeaveRuleRepository leaveRuleRepository,LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository,
+    		LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository,LeaveRuleAndValidationTypeRepository 
+    		leaveRuleAndValidationTypeRepository,LeaveTypeRepository leaveTypeRepository) {
         this.leaveApplicationRepository = leaveApplicationRepository;
         this.employeeRepository=employeeRepository;
         this.leaveBalanceRepository = leaveBalanceRepository;
@@ -83,6 +91,7 @@ public class LeaveApplicationResource {
         this.leaveRuleAndNoOfDayRepository = leaveRuleAndNoOfDayRepository;
         this.leaveRuleAndValidationTypeRepository = leaveRuleAndValidationTypeRepository;
         this.leaveRuleRepository = leaveRuleRepository;
+        this.leaveTypeRepository = leaveTypeRepository;
     }
 
     /**
@@ -96,82 +105,94 @@ public class LeaveApplicationResource {
     @Timed
     public ResponseEntity<LeaveApplication> createLeaveApplication(@Valid @RequestBody LeaveApplication leaveApplication) throws URISyntaxException {
         log.debug("REST request to save LeaveApplication : {}", leaveApplication);
+        LeaveApplication result = null;
+
         if (leaveApplication.getId() != null) {
-            throw new BadRequestAlertException("A new leaveApplication cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("A new leaveApplication cannot already have an ID", ENTITY_NAME,
+                    "idexists");
         }
-       Employee employee = getLoggedUser();
+        Employee employee = getLoggedUser();
         Double intervalDays = leaveApplication.getNoofday();
-        if(intervalDays < 1 )
-        {
+        if (intervalDays < 1) {
             throw new BadRequestAlertException("Please Input valid date", ENTITY_NAME, "invalid.date");
         }
-       leaveApplication.setEmployee(employee);
-        Double leave = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),leaveApplication.getLeaveType());
-        if(leave == null)
-        {
-           throw new BadRequestAlertException("You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME, "leaveNotAssign");
+        leaveApplication.setEmployee(employee);
+        Double leave = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),
+                leaveApplication.getLeaveType());
+        if (leave == null) {
+            throw new BadRequestAlertException(
+                    "You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME,
+                    "leaveNotAssign");
         }
-        
 
-        List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
-       
-        if(!leaveApplicationList.isEmpty())
-        {
-        	Double totalAppliedLeave = 0.0;
-        	for (LeaveApplication l : leaveApplicationList)
-        		totalAppliedLeave += l.getNoofday();
-        	
-            if((totalAppliedLeave + leaveApplication.getNoofday()) > leave) {
-            	throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only and you are requested more than that ", ENTITY_NAME, "notEligible");
+        List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(
+                leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
+
+        if (!leaveApplicationList.isEmpty()) {
+            Double totalAppliedLeave = 0.0;
+            for (LeaveApplication l : leaveApplicationList) {
+                totalAppliedLeave += l.getNoofday();
+                System.out.println("day: "+l.getNoofday());
             }
-        	
+               
+            System.out.println("total day applied:"+totalAppliedLeave);
+            System.out.println("balance: "+leave);
+            System.out.println("leave request day: "+leaveApplication.getNoofday());
+            if ((totalAppliedLeave + leaveApplication.getNoofday()) > leave) {
+                throw new BadRequestAlertException(
+                        "You are not eligible for this type of leave \n Because you were already requested for this leave type",
+                        ENTITY_NAME, "alreadyReaquested");
+            }
+
         }
-        if(leaveApplication.getNoofday() > leave){
-           throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "+leave+ " and you are requested more than that ", ENTITY_NAME, "notEligible");
+        if (leaveApplication.getNoofday() > leave) {
+            throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "
+                    + leave + " and you are requested more than that ", ENTITY_NAME, "notEligible");
         }
-       
+
         LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveApplication.getLeaveType());
-        //check gender
+        // check gender
         String gender = leaveRule.getLeaveFor().name();
-        if(!gender.equalsIgnoreCase("BOTH"))
-        {
-         if(!employee.getGender().toString().equalsIgnoreCase(gender)){
-            throw new BadRequestAlertException("This leave only for "+gender, ENTITY_NAME, "invalid.gender");
-         }
+        if (!gender.equalsIgnoreCase("BOTH")) {
+            if (!employee.getGender().toString().equalsIgnoreCase(gender)) {
+                throw new BadRequestAlertException("This leave only for " + gender, ENTITY_NAME, "invalid.gender");
+            }
         }
 
-        List<LeaveRuleAndMaxMinLeave> leaveRuleAndMaxMinLeaves= leaveRuleAndMaxMinLeaveRepository.findAllByLeaveRule(leaveRule);
-        if(leaveRuleAndMaxMinLeaves.size() > 1){
-            if(!employee.isTeachingstaff() && employee.isGranted()){
-                Double maxDay = leaveRuleAndMaxMinLeaveRepository.findMaxLeaveLimitByLeaveRuleAndEmployeeType(leaveRule, EmpType2.MANAGEMENT);
-                Double minDay = leaveRuleAndMaxMinLeaveRepository.findMinLeaveLimitByLeaveRuleAndEmployeeType(leaveRule, EmpType2.EDUCATIONAL);
-                if(intervalDays > maxDay) {
+        List<LeaveRuleAndMaxMinLeave> leaveRuleAndMaxMinLeaves = leaveRuleAndMaxMinLeaveRepository
+                .findAllByLeaveRule(leaveRule);
+        if (leaveRuleAndMaxMinLeaves.size() > 1) {
+            if (!employee.isTeachingstaff() && employee.isGranted()) {
+                Double maxDay = leaveRuleAndMaxMinLeaveRepository.findMaxLeaveLimitByLeaveRuleAndEmployeeType(leaveRule,
+                        EmpType2.MANAGEMENT);
+                Double minDay = leaveRuleAndMaxMinLeaveRepository.findMinLeaveLimitByLeaveRuleAndEmployeeType(leaveRule,
+                        EmpType2.EDUCATIONAL);
+                if (intervalDays > maxDay) {
                     throw new BadRequestAlertException("You reached max leave limit", ENTITY_NAME, "maxLeaveLimit");
+                } else if (intervalDays < minDay) {
+                    throw new BadRequestAlertException("You can't take leave below some limit", ENTITY_NAME,
+                            "minLeaveLimit");
                 }
-                else if(intervalDays < minDay) {
-                    throw new BadRequestAlertException("You can't take leave below some limit", ENTITY_NAME, "minLeaveLimit");
+
+            } else {
+                if (intervalDays > leaveRuleAndMaxMinLeaves.get(0).getMaxLeaveLimit()) {
+                    throw new BadRequestAlertException("You reached max leave limit", ENTITY_NAME, "maxLeaveLimit");
+                } else if (intervalDays < leaveRuleAndMaxMinLeaves.get(0).getMinLeaveLimit()) {
+                    throw new BadRequestAlertException("You can't take leave below some limit", ENTITY_NAME,
+                            "minLeaveLimit");
                 }
 
             }
-            else {
-                if(intervalDays > leaveRuleAndMaxMinLeaves.get(0).getMaxLeaveLimit()) {
-                    throw new BadRequestAlertException("You reached max leave limit", ENTITY_NAME, "maxLeaveLimit");
-                }
-                else if(intervalDays < leaveRuleAndMaxMinLeaves.get(0).getMinLeaveLimit()) {
-                    throw new BadRequestAlertException("You can't take leave below some limit", ENTITY_NAME, "minLeaveLimit");
-                }
-            }
-            
         }
-       
+
         leaveApplication.setStatus(APPLIED);
         leaveApplication.setFlowStatus("NEW");
-        LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
-        
-        saveLeaveAppHistory(result,"");
+        result = leaveApplicationRepository.save(leaveApplication);
+
+        saveLeaveAppHistory(result, "");
+
         return ResponseEntity.created(new URI("/api/leave-applications/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
     }
 
 	private void saveLeaveAppHistory(LeaveApplication result, String forward) {

@@ -42,6 +42,9 @@ public class LeaveApplication implements Serializable {
     @Column(name = "flow_status")
     private String flowStatus;
 
+    @Column(name = "join_leave")
+    private String joinLeave;
+
     @Size(max = 500)
     @Column(name = "jhi_comment", length = 500)
     private String comment;
@@ -76,6 +79,19 @@ public class LeaveApplication implements Serializable {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getJoinLeave() {
+        return joinLeave;
+    }
+
+    public LeaveApplication joinLeave(String joinLeave) {
+        this.joinLeave = joinLeave;
+        return this;
+    }
+
+    public void setJoinLeave(String joinLeave) {
+        this.joinLeave = joinLeave;
     }
 
     public LocalDate getFromDate() {

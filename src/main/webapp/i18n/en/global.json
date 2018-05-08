@@ -147,12 +147,16 @@
         "emptyEmp": "No Employee are selected!...",
         "invalid.date": "Please Input valid date",
         "invalid.gender": "This leave only for {gender}.",
-        "notEligible": "You are not eligible for this leave",
+        "notEligible": "You are not eligible for this type of leave \n Because you not have enough leave balance",
         "leaveNotAssign": "You have not been assigned this type of leave \nPlease Contact to Authority",
         "notEligibleWhenApprove": "The Person who is requested for this application is not eligible for this leave(he/she has no enough leave balance) ",
         "constrainViolation": "Can't do this because this information used in other places, \nPossibilities(in leave apply, in leave list, in leave history)",
         "maxLeaveLimit": "You reached max leave limit",
-        "minLeaveLimit": "You can't take leave below some limit"
+        "minLeaveLimit": "You can't take leave below some limit",
+        "invalid.joinLeave": "Something wrong in join leave",
+        "max.joinLeave":"Leave join not application, trying to get more leave join\nPlease select other leave join",
+        "exception":"Exception",
+        "alreadyReaquested":"You are not eligible for this type of leave \n Because you were already requested for this leave type"
     },
     "footer": "This is your footer"
 }

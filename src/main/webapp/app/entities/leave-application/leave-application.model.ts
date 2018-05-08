@@ -9,6 +9,7 @@ export class LeaveApplication implements BaseEntity {
         public noofday?: number,
         public status?: string,
         public flowStatus?: string,
+        public joinLeave?: string,
         public comment?: string,
         public employee?: BaseEntity,
         public approvedBy?: BaseEntity,

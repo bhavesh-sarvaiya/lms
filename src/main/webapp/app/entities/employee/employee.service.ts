@@ -15,6 +15,7 @@ export class EmployeeService {
 
     private resourceUrl =  SERVER_API_URL + 'api/employees';
     private resourceUrl1 =  SERVER_API_URL + 'api/employee';
+    private resourceUrl2 =  SERVER_API_URL + 'api/employee-search';
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
     create(employee: Employee): Observable<EntityResponseType> {
@@ -39,6 +40,11 @@ export class EmployeeService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+    searchValue(value: string, req?: any): Observable<HttpResponse<Employee[]>> {
+        const options = createRequestOption(req);
+        return this.http.get<Employee[]>(`api/employee-search/${value}`, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Employee[]>) => this.convertArrayResponse(res));
+    }
     query(req?: any): Observable<HttpResponse<Employee[]>> {
         const options = createRequestOption(req);
         return this.http.get<Employee[]>(this.resourceUrl, { params: options, observe: 'response' })

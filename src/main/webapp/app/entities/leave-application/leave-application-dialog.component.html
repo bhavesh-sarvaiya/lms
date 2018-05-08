@@ -64,34 +64,46 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <br>
-                <dl>Avaibale Leave Balance:    
-                    <div class="row" *ngFor="let leaveBalances of leaveBalance;">
-                        <div class="col-md-6">{{leaveBalances.leaveType.code}}</div>  
-                        <div class="col-md-6">{{leaveBalances.noOfLeave}}</div>
+                <div class="card" style="height: 117px;">
+                    <div class="card-header" style="height: 40px;">Available Leave Balance</div>
+                    <div class="card-body" style="margin-top: -15px;">
+                        <div class="row">
+                            <div class="col-md-1" *ngFor="let leaveBalances of leaveBalance;">
+                                <div class="form-group">
+                                    <label class="form-control-label" >{{leaveBalances.leaveType.code}}</label>
+                                    <label class="form-control-label" >{{leaveBalances.noOfLeave}}</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-            </dl>
-        
-            <div class="card">
-                <div class="card-header">You can take join Leave :</div>
-                <div class="card-body" *ngIf="leaveRule">
-                    <div class="row" *ngFor="let l of leaveRule.leaveTypes; let i = index">
-                        <div class="col-md-2">
-                            {{l.code}}
-                        </div>
-                        <div class="col-md-2">
-                            <input type="checkbox" class="form-control" name="c_{{l.id}}" [(ngModel)]="checkBox[i]" />
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" [disabled]="!checkBox[i]" class="form-control" name="t_{{l.id}}" [(ngModel)]="textBox[i]" required/>
-                        </div>
-                        <div class="col-md-4">
-                            <label>Days</label>
+                </div>
+            
+                <div class="card" style=" margin-top: 10px;">
+                    <div class="card-header" style="height: 40px;">You can take join Leave :</div>
+                    <div class="card-body" >
+                            <div class="row" *ngIf="leaveRule == undefined">
+                                    <div class="col-md-12" style="height: 61px;">
+                                    <label class="form-control-label">There is no any join leave available</label>
+                                    <br>
+                                    </div>
+                            </div>
+                        <div class="row" *ngIf="leaveRule">
+                            <div class="col-md-2" *ngFor="let l of leaveRule.leaveTypes; let i = index">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="leaveApplication.joinLeave"> {{l.code}}</label>
+                                    <input type="radio" class="form-control" value="{{l.code}}" name="leaveApplication.joinLeave" id="leaveApplication.joinLeave" [(ngModel)]="leaveApplication.joinLeave" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="leaveApplication.joinLeave">None</label>
+                                    <input type="radio" class="form-control" value="none" name="leaveApplication.joinLeave" id="leaveApplication.joinLeave" [(ngModel)]="leaveApplication.joinLeave" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>  
         </div>
 
         <div class="form-group">

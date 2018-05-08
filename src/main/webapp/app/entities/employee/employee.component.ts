@@ -50,7 +50,14 @@ currentAccount: any;
         });
     }
     searchResult() {
-        const searchValue1 = this.searchValue.toLowerCase();
+        this.employeeService.searchValue(this.searchValue, {
+            page: this.page - 1,
+            size: this.itemsPerPage,
+            sort: this.sort()}).subscribe(
+                (res: HttpResponse<Employee[]>) => this.onSuccess(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        /*const searchValue1 = this.searchValue.toLowerCase();
         if (this.searchValue.trim() !== '') {
             this.employees = this.employees1;
             this.employees = _.filter(this.employees, function(o) {
@@ -65,7 +72,7 @@ currentAccount: any;
                 });
         } else {
             this.employees = this.employees1;
-        }
+        }*/
     }
     loadAll() {
         this.employeeService.query({

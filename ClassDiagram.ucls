@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.2" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="com.lms.domain.LeaveBalance" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/LeaveBalance.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="127" x="548" y="-204"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="com.lms.domain.LeaveRuleAndNoOfDay" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/LeaveRuleAndNoOfDay.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="62" width="182" x="687" y="-204"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.lms.domain.User" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/User.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="57" width="196" x="41" y="56"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.lms.domain.LeaveType" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/LeaveType.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="61" width="228" x="657" y="227"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="com.lms.domain.Employee" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/Employee.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="210" x="356" y="134"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.lms.domain.LeaveAllocation" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/LeaveAllocation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="238" x="256" y="250"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.lms.domain.LeaveApplicationHistory" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/LeaveApplicationHistory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="179" x="217" y="-207"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.lms.domain.Authority" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/Authority.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="98" width="138" x="86" y="-98"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.lms.domain.LeaveRule" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/LeaveRule.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="230" x="875" y="-17"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.lms.domain.LeaveRuleAndValidationType" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/LeaveRuleAndValidationType.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="57" width="186" x="878" y="-203"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.lms.domain.Department" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/Department.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="56" width="173" x="30" y="185"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="com.lms.domain.LeaveRuleAndMaxMinLeave" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/LeaveRuleAndMaxMinLeave.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="198" x="1070" y="-202"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="com.lms.domain.PersistentAuditEvent" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/PersistentAuditEvent.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="55" width="202" x="6" y="-206"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="com.lms.domain.LeaveApplication" project="lms" 
+    file="/lms/src/main/java/com/lms/domain/LeaveApplication.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="56" width="121" x="408" y="-204"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="15" language="java" name="com.lms.repository.DepartmentRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/DepartmentRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="220" width="152" x="1022" y="113"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="16" language="java" name="com.lms.web.rest.DepartmentResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/DepartmentResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1308" y="-25"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="com.lms.web.rest.LeaveBalanceResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LeaveBalanceResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1733" y="2"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="com.lms.web.rest.LeaveAllocationResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LeaveAllocationResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2252" y="11"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="com.lms.web.rest.LeaveApplicationHistoryResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LeaveApplicationHistoryResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2819" y="2"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="com.lms.web.rest.LogsResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LogsResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3215" y="-70"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="com.lms.web.rest.LeaveApplicationResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LeaveApplicationResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="4054" y="101"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="com.lms.web.rest.LeaveRuleResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LeaveRuleResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="5257" y="29"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="com.lms.web.rest.LeaveRuleAndMaxMinLeaveResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LeaveRuleAndMaxMinLeaveResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6029" y="-7"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="com.lms.web.rest.UserResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/UserResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6553" y="11"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" name="com.lms.web.rest.AuditResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/AuditResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="6996" y="-52"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="26" language="java" name="com.lms.web.rest.AccountResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/AccountResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7449" y="38"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" name="com.lms.web.rest.LeaveRuleAndNoOfDayResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LeaveRuleAndNoOfDayResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="7949" y="-7"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="28" language="java" name="com.lms.web.rest.LeaveRuleAndValidationTypeResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LeaveRuleAndValidationTypeResource.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="8528" y="-7"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="29" language="java" name="com.lms.web.rest.EmployeeResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/EmployeeResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="9068" y="20"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="30" language="java" name="com.lms.web.rest.LeaveTypeResource" project="lms" 
+    file="/lms/src/main/java/com/lms/web/rest/LeaveTypeResource.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="9477" y="-16"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="31" language="java" name="com.lms.repository.LeaveTypeRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/LeaveTypeRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="63" width="145" x="166" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="32" language="java" name="com.lms.repository.LeaveRuleAndMaxMinLeaveRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/LeaveRuleAndMaxMinLeaveRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="415" x="351" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="33" language="java" name="com.lms.repository.PersistenceAuditEventRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/PersistenceAuditEventRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="153" width="545" x="1623" y="684"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="34" language="java" name="com.lms.repository.LeaveApplicationRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/LeaveApplicationRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="225" width="562" x="806" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="35" language="java" name="com.lms.repository.LeaveAllocationRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/LeaveAllocationRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="63" width="175" x="1408" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="36" language="java" name="com.lms.repository.LeaveRuleRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/LeaveRuleRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="292" x="2100" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="37" language="java" name="com.lms.repository.LeaveApplicationHistoryRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/LeaveApplicationHistoryRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="460" x="2432" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="38" language="java" name="com.lms.repository.LeaveRuleAndNoOfDayRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/LeaveRuleAndNoOfDayRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="81" width="326" x="2932" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="39" language="java" name="com.lms.repository.LeaveRuleAndValidationTypeRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/LeaveRuleAndValidationTypeRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="351" x="3298" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="40" language="java" name="com.lms.repository.EmployeeRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/EmployeeRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="367" x="3689" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="41" language="java" name="com.lms.repository.LeaveBalanceRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/LeaveBalanceRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="378" x="4096" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="42" language="java" name="com.lms.repository.CustomAuditEventRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/CustomAuditEventRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="437" x="1623" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="43" language="java" name="com.lms.repository.AuthorityRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/AuthorityRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="63" width="136" x="4514" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="44" language="java" name="com.lms.repository.UserRepository" project="lms" 
+    file="/lms/src/main/java/com/lms/repository/UserRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="261" width="357" x="4690" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <association id="45">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="46" name="leaveTypeRepository"/>      
+      <multiplicity id="47" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="31" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="48">    
+    <bendpoint x="546" y="93"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="49" name="approvedBy">        
+        <position height="18" width="67" x="429" y="8"/>      
+      </attribute>      
+      <multiplicity id="50" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="51">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="52" name="leaveRuleRepository"/>      
+      <multiplicity id="53" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="54">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="55" name="leaveRuleRepository"/>      
+      <multiplicity id="56" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="57">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="58" name="leaveRuleAndValidationTypeRepository"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="39" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="61" name="leaveBalanceRepository"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="41" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="63">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="64" name="employeeRepository"/>      
+      <multiplicity id="65" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="66">    
+    <bendpoint x="290" y="-24"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="67" name="employee">        
+        <position height="18" width="54" x="300" y="50"/>      
+      </attribute>      
+      <multiplicity id="68" minimum="0" maximum="1">        
+        <position height="16" width="23" x="351" y="69"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="69">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="70" name="leaveRuleAndMaxMinLeaveRepository"/>      
+      <multiplicity id="71" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="72">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="73" name="leaveRuleAndValidationTypeRepository"/>      
+      <multiplicity id="74" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="39" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="75">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="76" name="leaveRuleRepository"/>      
+      <multiplicity id="77" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="78">    
+    <bendpoint x="833" y="113"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="79" name="leaveRules"/>      
+      <multiplicity id="80" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="81">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="82" name="userRepository"/>      
+      <multiplicity id="83" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="84">    
+    <bendpoint x="432" y="-3"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="85" name="employee">        
+        <position height="18" width="54" x="323" y="-70"/>      
+      </attribute>      
+      <multiplicity id="86" minimum="0" maximum="1">        
+        <position height="16" width="23" x="370" y="-99"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="87">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="88" name="leaveRule"/>      
+      <multiplicity id="89" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="90">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="91" name="department"/>      
+      <multiplicity id="92" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="93">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="94" name="employeeRepository"/>      
+      <multiplicity id="95" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="96">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="97" name="leaveRuleAndMaxMinLeaveRepository"/>      
+      <multiplicity id="98" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="99">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="100" name="leaveRule"/>      
+      <multiplicity id="101" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="102">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="103" name="leaveRuleRepository"/>      
+      <multiplicity id="104" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="105">    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="106" name="persistenceAuditEventRepository"/>      
+      <multiplicity id="107" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="108">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="109" name="userRepository"/>      
+      <multiplicity id="110" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="111">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="112" name="leaveRuleAndMaxMinLeaveRepository"/>      
+      <multiplicity id="113" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="114">    
+    <bendpoint x="744" y="6"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="115" name="leaveType">        
+        <position height="18" width="57" x="757" y="74"/>      
+      </attribute>      
+      <multiplicity id="116" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="117">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="118" name="userRepository"/>      
+      <multiplicity id="119" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="120">    
+    <bendpoint x="963" y="231"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="121" name="leaveTypes"/>      
+      <multiplicity id="122" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="123">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="124" name="leaveApplicationHistoryRepository"/>      
+      <multiplicity id="125" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="37" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="126">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="127" name="leaveAllocationRepository"/>      
+      <multiplicity id="128" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="35" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="129">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="130" name="leaveBalanceRepository"/>      
+      <multiplicity id="131" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="41" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="132">    
+    <bendpoint x="901" y="147"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="133" name="leaveType">        
+        <position height="18" width="57" x="824" y="145"/>      
+      </attribute>      
+      <multiplicity id="134" minimum="0" maximum="1">        
+        <position height="16" width="23" x="872" y="176"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="135">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="136" name="userRepository"/>      
+      <multiplicity id="137" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="138">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="139" name="employeeRepository"/>      
+      <multiplicity id="140" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="141">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="142" name="userRepository"/>      
+      <multiplicity id="143" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="144">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="145" name="leaveRuleRepository"/>      
+      <multiplicity id="146" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="147">    
+    <bendpoint x="236" y="-61"/>    
+    <bendpoint x="267" y="90"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="148" name="actor"/>      
+      <multiplicity id="149" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="150">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="151" name="userRepository"/>      
+      <multiplicity id="152" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="153">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="154" name="leaveRuleAndValidationTypeRepository"/>      
+      <multiplicity id="155" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="39" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="156">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="157" name="employeeRepository"/>      
+      <multiplicity id="158" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="159">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="160" name="leaveBalanceRepository"/>      
+      <multiplicity id="161" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="41" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="162">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="163" name="leaveRuleAndNoOfDayRepository"/>      
+      <multiplicity id="164" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="165">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="166" name="leaveTypeRepository"/>      
+      <multiplicity id="167" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="31" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="168">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="169" name="leaveApplicationHistoryRepository"/>      
+      <multiplicity id="170" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="37" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="171">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="172" name="employeeRepository"/>      
+      <multiplicity id="173" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="174">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="175" name="leaveApplicationRepository"/>      
+      <multiplicity id="176" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="177">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="178" name="leaveType"/>      
+      <multiplicity id="179" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="180">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="181" name="leaveRuleAndNoOfDayRepository"/>      
+      <multiplicity id="182" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="183">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="184" name="departmentRepository"/>      
+      <multiplicity id="185" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="186">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="187" name="employeeRepository"/>      
+      <multiplicity id="188" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="189">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="190" name="leaveRule"/>      
+      <multiplicity id="191" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="192">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="193" name="leaveRuleAndNoOfDayRepository"/>      
+      <multiplicity id="194" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="195">    
+    <bendpoint x="720" y="128"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="196" name="employee">        
+        <position height="18" width="54" x="610" y="32"/>      
+      </attribute>      
+      <multiplicity id="197" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="198">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="199" name="authorities"/>      
+      <multiplicity id="200" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="201">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="202" name="user"/>      
+      <multiplicity id="203" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="204">    
+    <bendpoint x="1025" y="255"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="205" name="leave"/>      
+      <multiplicity id="206" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="207">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="208" name="employeeRepository"/>      
+      <multiplicity id="209" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="210">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="211" name="leaveType"/>      
+      <multiplicity id="212" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

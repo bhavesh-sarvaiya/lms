@@ -19,13 +19,13 @@
             "reason": "Reason",
             "fromDate": "From Date",
             "toDate": "To Date",
-            "noofday": "Noofday",
+            "noofday": "No of day",
             "status": "Status",
             "flowStatus": "Flow Status",
             "comment": "Comment",
             "employee": "Name",
             "approvedBy": "Approved By",
-            "leaveType": "Leave Type"
+            "leaveType": "Select Leave Type"
         }
     }
 }
