@@ -46,7 +46,8 @@
             <th><span jhiTranslate="lmsApp.leaveApplication.comment">Comment</span></th> -->
             
             <th><span jhiTranslate="lmsApp.leaveApplication.approvedBy">Approved By</span></th>
-            <th><span jhiTranslate="lmsApp.leaveApplication.leaveType">Leave Type</span></th>
+            <th><span>Leave Type</span></th>
+            <th><span >Join leave</span></th>
             <th></th>
             </tr>
             </thead>
@@ -81,6 +82,7 @@
                         <a [routerLink]="['../leave-type', leaveApplication.leaveType?.id ]" >{{leaveApplication.leaveType?.code}}</a>
                     </div>  
                 </td>
+                <td>{{leaveApplication.joinLeave}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

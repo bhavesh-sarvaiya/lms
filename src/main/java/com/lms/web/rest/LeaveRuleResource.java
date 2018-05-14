@@ -5,6 +5,7 @@ import com.lms.domain.LeaveRule;
 import com.lms.domain.LeaveRuleAndMaxMinLeave;
 import com.lms.domain.LeaveRuleAndNoOfDay;
 import com.lms.domain.LeaveRuleAndValidationType;
+import com.lms.domain.LeaveType;
 import com.lms.repository.LeaveRuleAndMaxMinLeaveRepository;
 import com.lms.repository.LeaveRuleAndNoOfDayRepository;
 import com.lms.repository.LeaveRuleAndValidationTypeRepository;
@@ -25,6 +26,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing LeaveRule.
@@ -87,6 +89,17 @@ public class LeaveRuleResource {
         if (leaveRule.getId() == null) {
             return createLeaveRule(leaveRule);
         }
+
+        LeaveType leaveType = leaveRule.getLeave();
+        Set<LeaveType> s= leaveRule.getLeaveTypes();
+
+        for (LeaveType t : s) {
+            if(t.getCode().equals(leaveType.getCode())) {
+                throw new BadRequestAlertException("Leave type and join leave should be different", ENTITY_NAME,
+                "joinLeaveSame");
+            }
+        }
+
         LeaveRule result = leaveRuleRepository.save(leaveRule);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveRule.getId().toString()))

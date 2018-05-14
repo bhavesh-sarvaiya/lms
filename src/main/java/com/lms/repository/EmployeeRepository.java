@@ -28,7 +28,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	@Query("select e from Employee e where e.firstName LIKE %?1%")
 	Page<Employee> findAllByFirstNameLike(String firstName,Pageable pageable);
 	Employee findOneByUser(User user);
-
+	List<Employee> findAllByPostNotIn(List<Post> list);
 
 
 }

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +24,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lms.domain.Department;
 import com.lms.domain.Employee;
 import com.lms.domain.LeaveApplication;
 import com.lms.domain.LeaveApplicationHistory;
@@ -47,9 +50,12 @@ import com.lms.repository.LeaveTypeRepository;
 import com.lms.repository.UserRepository;
 import com.lms.security.SecurityUtils;
 import com.lms.web.rest.errors.BadRequestAlertException;
+import com.lms.web.rest.errors.CustomParameterizedException;
 import com.lms.web.rest.util.HeaderUtil;
 
 import io.github.jhipster.web.util.ResponseUtil;
+import liquibase.exception.CustomChangeException;
+
 
 /**
  * REST controller for managing LeaveApplication.
@@ -112,53 +118,140 @@ public class LeaveApplicationResource {
                     "idexists");
         }
         Employee employee = getLoggedUser();
-        Double intervalDays = leaveApplication.getNoofday();
-        if (intervalDays < 1) {
+        Double noOfDay = leaveApplication.getNoofday();
+
+        LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveApplication.getLeaveType());
+        // check gender
+        checkLeaveGender(leaveRule, employee);
+
+        if (noOfDay < 1) {
             throw new BadRequestAlertException("Please Input valid date", ENTITY_NAME, "invalid.date");
         }
-        leaveApplication.setEmployee(employee);
-        Double leave = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),
+        // get leave balance
+        System.out.println("\n############3"+leaveApplication.getLeaveType());
+        Double leaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),
                 leaveApplication.getLeaveType());
-        if (leave == null) {
+
+        // check he/she has leave balance
+        if (leaveBalance == null) {
             throw new BadRequestAlertException(
                     "You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME,
                     "leaveNotAssign");
         }
 
-        List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(
-                leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
+        // check min max leave
+        checkMaxMinLeave(leaveRule, noOfDay, employee);
+        leaveApplication.setEmployee(employee);
 
-        if (!leaveApplicationList.isEmpty()) {
-            Double totalAppliedLeave = 0.0;
-            for (LeaveApplication l : leaveApplicationList) {
-                totalAppliedLeave += l.getNoofday();
-                System.out.println("day: "+l.getNoofday());
-            }
-               
-            System.out.println("total day applied:"+totalAppliedLeave);
-            System.out.println("balance: "+leave);
-            System.out.println("leave request day: "+leaveApplication.getNoofday());
-            if ((totalAppliedLeave + leaveApplication.getNoofday()) > leave) {
-                throw new BadRequestAlertException(
-                        "You are not eligible for this type of leave \n Because you were already requested for this leave type",
-                        ENTITY_NAME, "alreadyReaquested");
-            }
-
+        // to check if employee is going to take join leave
+        if (!leaveApplication.getJoinLeave().equalsIgnoreCase("No")
+                && !leaveApplication.getJoinLeave().equalsIgnoreCase("none")) {
+            checkJoinLeaveBalance(leaveApplication, noOfDay, leaveBalance, employee);
+        } else {
+            checkLeaveBalance(leaveApplication, leaveBalance);
         }
-        if (leaveApplication.getNoofday() > leave) {
-            throw new BadRequestAlertException("You are not eligible for this type of leave \n Because you have only "
-                    + leave + " and you are requested more than that ", ENTITY_NAME, "notEligible");
-        }
+        leaveApplication.setStatus(APPLIED);
+        leaveApplication.setFlowStatus("NEW");
+        result = leaveApplicationRepository.save(leaveApplication);
 
-        LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveApplication.getLeaveType());
-        // check gender
+        saveLeaveAppHistory(result, "");
+        return ResponseEntity.created(new URI("/api/leave-applications/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+    }
+
+    private void checkLeaveGender(LeaveRule leaveRule,Employee employee){
         String gender = leaveRule.getLeaveFor().name();
         if (!gender.equalsIgnoreCase("BOTH")) {
             if (!employee.getGender().toString().equalsIgnoreCase(gender)) {
                 throw new BadRequestAlertException("This leave only for " + gender, ENTITY_NAME, "invalid.gender");
             }
         }
+    }
 
+    protected void checkLeaveBalance(LeaveApplication leaveApplication,Double leaveBalance){
+        List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(
+                leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
+
+        // check applied leave balance
+        if (!leaveApplicationList.isEmpty()) {
+            Double totalAppliedLeave = 0.0;
+            for (LeaveApplication l : leaveApplicationList) {
+                totalAppliedLeave += l.getNoofday();
+            }
+
+            if ((totalAppliedLeave + leaveApplication.getNoofday()) > leaveBalance) {
+                throw new BadRequestAlertException(
+                        "You are not eligible for this type of leave \n Because you were already requested more than that",
+                        ENTITY_NAME, "alreadyReaquested");
+            }
+        } else {
+            // check enough leave balance
+            if (leaveApplication.getNoofday() > leaveBalance) {
+                throw new BadRequestAlertException(
+                        "You are not eligible for this type of leave \n Because you have only " + leaveBalance
+                                + " and it is less than that ",
+                        ENTITY_NAME, "notEligible");
+            }
+        }
+    }
+    private void checkJoinLeaveBalance(LeaveApplication leaveApplication,Double noOfDay,Double leaveBalance,Employee employee){
+        // check leave requested day is < leave balance
+        if (noOfDay < leaveBalance) {
+            throw new BadRequestAlertException("You have enough leave balance, can't take join leave", ENTITY_NAME,
+                    "canNotJoinLeave");
+        }
+
+        List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(
+                leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
+
+        // check applied leave balance
+        if (!leaveApplicationList.isEmpty()) {
+            Double totalAppliedLeave = 0.0;
+            for (LeaveApplication l : leaveApplicationList) {
+                totalAppliedLeave += l.getNoofday();
+            }
+
+            if ((totalAppliedLeave + leaveApplication.getNoofday()) > leaveBalance) {
+                throw new BadRequestAlertException(
+                        "You are not eligible for this type of leave \n Because you were already requested more than that",
+                        ENTITY_NAME, "alreadyReaquested");
+            }
+        }
+
+        Double joinLeaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),
+                leaveTypeRepository.findOneByCode(leaveApplication.getJoinLeave()));
+        // check he/she has join leave balance
+        if (joinLeaveBalance == null) {
+            throw new BadRequestAlertException(
+                    "You have not been assigned join leave type balance, \nPlease Contact to Authority", ENTITY_NAME,
+                    "joinLeaveNotAssign");
+        }
+
+        leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndStatusAndJoinLeave(employee, APPLIED,
+                leaveApplication.getJoinLeave());
+
+        if (!leaveApplicationList.isEmpty()) {
+            Double totalAppliedJoinLeave = 0.0;
+            for (LeaveApplication l : leaveApplicationList) {
+                totalAppliedJoinLeave += l.getJoinLeaveDay();
+            }
+            // check applied join leave
+            if (totalAppliedJoinLeave + leaveApplication.getJoinLeaveDay() > joinLeaveBalance) {
+                throw new BadRequestAlertException(
+                        "You not have enough join leave balance, can't take join leave\n Please select other join leave",
+                        ENTITY_NAME, "notEnoughJoinLeave");
+            }
+        } else {
+            // check he/she has enough join leave balance
+            if (leaveApplication.getJoinLeaveDay() > joinLeaveBalance) {
+                throw new BadRequestAlertException(
+                        "You not have enough join leave balance, can't take join leave\n Please select other join leave",
+                        ENTITY_NAME, "notEnoughJoinLeave");
+            }
+        }
+    }
+    private void checkMaxMinLeave(LeaveRule leaveRule,Double intervalDays,Employee employee){
+        
         List<LeaveRuleAndMaxMinLeave> leaveRuleAndMaxMinLeaves = leaveRuleAndMaxMinLeaveRepository
                 .findAllByLeaveRule(leaveRule);
         if (leaveRuleAndMaxMinLeaves.size() > 1) {
@@ -184,17 +277,7 @@ public class LeaveApplicationResource {
 
             }
         }
-
-        leaveApplication.setStatus(APPLIED);
-        leaveApplication.setFlowStatus("NEW");
-        result = leaveApplicationRepository.save(leaveApplication);
-
-        saveLeaveAppHistory(result, "");
-
-        return ResponseEntity.created(new URI("/api/leave-applications/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
     }
-
 	private void saveLeaveAppHistory(LeaveApplication result, String forward) {
 		LeaveApplicationHistory leaveApplicationHistory = new LeaveApplicationHistory();
         leaveApplicationHistory.setActionDate(LocalDate.now());
@@ -240,17 +323,30 @@ public class LeaveApplicationResource {
         if (leaveApplication.getId() == null) {
             return createLeaveApplication(leaveApplication); 
         }
+
+        LeaveApplication l= leaveApplicationRepository.findOne(leaveApplication.getId());
+
+        if(l != null) {
+            if(!l.getStatus().equalsIgnoreCase(APPLIED)){
+                throw new CustomParameterizedException("This leave application already " + l.getStatus() );
+            }
+        }
+
         String status=leaveApplication.getStatus();
+       
         if(status.equals(APPROVED) || status.equals(REJECTED))
         {
             if(leaveApplication.getStatus().equalsIgnoreCase(APPROVED))
             {
+                System.out.println("\n########status: "+status);
                 LeaveBalance leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveApplication.getLeaveType(),leaveApplication.getEmployee());
                 if(leaveApplication.getNoofday() > leaveBalance.getNoOfLeave() )
                 {
                     leaveApplication.setStatus(APPLIED);
                     throw new BadRequestAlertException("The Person who is requested for this application is not eligible for this leave(he/she has no enough leave balance) ", ENTITY_NAME, "notEligibleWhenApprove");
                 }
+                System.out.println("\n###########leaveApplication.getNoofday(): "+leaveApplication.getNoofday());
+                System.out.println("\n######lleaveBalance.getNoOfLeave(): "+leaveBalance.getNoOfLeave());
                 leaveBalance.setNoOfLeave(leaveBalance.getNoOfLeave()-leaveApplication.getNoofday());
                 leaveBalanceRepository.save(leaveBalance);
             }
@@ -316,7 +412,9 @@ public class LeaveApplicationResource {
     public List<LeaveApplication> getAllLeaveApplications(@RequestParam String status) {
         log.info("REST request to get all LeaveApplications: {}", "all LeaveApplications");
         List<LeaveApplication> list = new ArrayList<>();
-        if(status.equalsIgnoreCase("all")) {
+        String user= SecurityUtils.getCurrentUserLogin().get();
+        System.out.println("\n\n####User: "+user);
+        if(user.equals("admin")) {
             list=leaveApplicationRepository.findAll();// all for admin
         }
         else 
@@ -330,83 +428,245 @@ public class LeaveApplicationResource {
                     list = leaveApplicationRepository.findAllByEmployee(employee);
             }
             else{
-                List<String> flowStatusList = new ArrayList<>();
-                List<Employee> empList;
-                List<Post> postList=new ArrayList<>();
-                postList.add(employee.getPost());
-                String flowStatus="";
                 switch (post)
                 {   
                     case "CHANCELLOR":
-                        postList.add(Post.VICECHANCELLOR);
-                        flowStatusList.add("NEW->HOD->REGISTRAR->VICECHANCELLOR->CHANCELLOR");
-                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR->CHANCELLOR");
-                        empList = employeeRepository.findAllByPostIn(postList);
+                       list=getAllLeaveApplicationsByCHANCELLOR(status,employee);
                         break;
                     case "VICECHANCELLOR":
-                        postList.add(Post.REGISTRAR);
-                        flowStatusList.add("NEW->HOD->REGISTRAR->VICECHANCELLOR");
-                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR");
-                        flowStatus = "NEW->HOD->REGISTRAR->VICECHANCELLOR->CHANCELLOR";
-                        empList = employeeRepository.findAllByPostIn(postList);
+                        list=getAllLeaveApplicationsByVICECHANCELLOR(status,employee);
                         break;
                     case "REGISTRAR":
-                        postList.add(Post.HOD);
-                        postList.add(Post.DEPUTYREGISTER);
-                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR");
-                        flowStatusList.add("NEW->HOD->REGISTRAR");
-                        flowStatus = "NEW->HOD->REGISTRAR->VICECHANCELLOR";
-                        empList = employeeRepository.findAllByPostIn(postList);   
+                    list=getAllLeaveApplicationsByREGISTRAR(status,employee);
                         break;
                     case "HOD":
-                        flowStatus = "NEW->HOD";
-                        empList = employeeRepository.findAllByDepartment(employee.getDepartment());
+                        list=getAllLeaveApplicationsByHOD(status,employee);
                         break;
                     case "DEPUTYREGISTER":
-                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER");
-                        flowStatus = "NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER";
-                        postList.add(Post.ASSISTANTREGISTER);
-                        empList = employeeRepository.findAllByPostIn(postList);
+                       list=getAllLeaveApplicationsByDEPUTYREGISTER(status,employee);
                         break;
                     case "ASSISTANTREGISTER":
-                        flowStatusList.add("NEW->SECTIONOFFICER->ASSISTANTREGISTER");
-                        flowStatus = "NEW->SECTIONOFFICER->ASSISTANTREGISTER";
-                        postList.add(Post.SECTIONOFFICER);
-                        empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                        list=getAllLeaveApplicationsByASSISTANTREGISTER(status,employee);
                         break;
                     case "SECTIONOFFICER":
-                        postList.add(Post.LDC);
-                        postList.add(Post.UDC);
-                        flowStatus = "NEW->SECTIONOFFICER";
-                        empList = employeeRepository.findAllByPostInAndDepartment(postList,employee.getDepartment());
+                      list=getAllLeaveApplicationsBySECTIONOFFICER(status,employee);
                         break;
                     default: 
-                            empList = null;
                             log.info("can't not find valid employee");
                 }
-                List<LeaveApplication> leaveAppList = null;
-                if(status.equalsIgnoreCase("Forward"))
-                {
-                    list = leaveApplicationRepository.findAllByFlowStatusLike(flowStatus);
-                }
-                else{
-                 leaveAppList = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusOrFlowStatusIn(empList,"NEW",flowStatusList);
-                
-                for(LeaveApplication l : leaveAppList ){
-                    if(l!=null)
-                    {   
-                        if(status.equals("PENDDING") && l.getStatus().equals(APPLIED) && !employee.equals(l.getEmployee()))
-                            list.add(l);  
-                        else if(status.equals(APPROVED) && (l.getStatus().equals(APPROVED) || l.getStatus().equals(REJECTED)) && l.getApprovedBy().equals(employee))
-                            list.add(l);
-                        else if(status.equals(APPLIED) && employee.equals(l.getEmployee()))
-                            list.add(l);
-                    }
-                }
-            }
             }
         }
         return  list;
+    }
+    public List<LeaveApplication> getAllLeaveApplicationsBySECTIONOFFICER(String status,Employee employee) {
+        List<LeaveApplication> list = new ArrayList<>();
+        if(status.equalsIgnoreCase(APPLIED)){
+            // your leave
+            list=leaveApplicationRepository.findAllByEmployee(employee);
+        }
+        else if(status.equalsIgnoreCase(APPROVED)){
+            // approved or rejected leave
+            List<String> statusList=new ArrayList<>();
+            statusList.add(APPROVED);
+            statusList.add(REJECTED);
+            list=leaveApplicationRepository.findAllByApprovedByAndStatusIn(employee, statusList);
+        }
+        else if(status.equalsIgnoreCase("Forward")){
+            String flowStatus = "SECTIONOFFICER->ASSISTANTREGISTER";
+            list = leaveApplicationRepository.findAllByFlowStatusLike(flowStatus);
+        }
+        else if(status.equalsIgnoreCase("PENDDING")){
+            Department department = employee.getDepartment();
+            List<Post> postList= Arrays.asList(Post.LDC,Post.UDC);
+            List<Employee> empList = employeeRepository.findAllByPostInAndDepartment(postList,department);
+            list = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusAndStatus(empList,"New",APPLIED);
+        }
+        return list;
+
+    }
+
+    public List<LeaveApplication> getAllLeaveApplicationsByASSISTANTREGISTER(String status,Employee employee) {
+        List<LeaveApplication> list = new ArrayList<>();
+       
+        if(status.equalsIgnoreCase(APPLIED)){
+            // your leave
+            list=leaveApplicationRepository.findAllByEmployee(employee);
+        }
+        else if(status.equalsIgnoreCase(APPROVED)){
+            // approved or rejected leave
+            List<String> statusList=new ArrayList<>();
+            statusList.add(APPROVED);
+            statusList.add(REJECTED);
+            list=leaveApplicationRepository.findAllByApprovedByAndStatusIn(employee, statusList);
+        }
+        else if(status.equalsIgnoreCase("Forward")){
+            
+            String flowStatus = "ASSISTANTREGISTER->DEPUTYREGISTER";
+            list = leaveApplicationRepository.findAllByFlowStatusLike(flowStatus);
+        }
+        else if(status.equalsIgnoreCase("PENDDING")){
+            Department department = employee.getDepartment();
+            List<Post> postList= Arrays.asList(Post.SECTIONOFFICER);
+            List<Employee> empList = employeeRepository.findAllByPostInAndDepartment(postList,department);
+            list = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusAndStatus(empList,"New",APPLIED);
+            
+            postList =Arrays.asList(Post.LDC,Post.UDC);
+            List<String> flowStatusList=Arrays.asList("NEW->SECTIONOFFICER->ASSISTANTREGISTER");
+            empList = employeeRepository.findAllByPostInAndDepartment(postList,department);
+            list.addAll(leaveApplicationRepository.findAllByEmployeeInAndFlowStatusInAndStatus(empList,flowStatusList,APPLIED));
+        }
+        return list;
+
+    }
+    public List<LeaveApplication> getAllLeaveApplicationsByDEPUTYREGISTER(String status,Employee employee) {
+        List<LeaveApplication> list = new ArrayList<>();
+        
+        if(status.equalsIgnoreCase(APPLIED)){
+            // your leave
+            list=leaveApplicationRepository.findAllByEmployee(employee);
+        }
+        else if(status.equalsIgnoreCase(APPROVED)){
+            // approved or rejected leave
+            List<String> statusList=new ArrayList<>();
+            statusList.add(APPROVED);
+            statusList.add(REJECTED);
+            list=leaveApplicationRepository.findAllByApprovedByAndStatusIn(employee, statusList);
+        }
+        else if(status.equalsIgnoreCase("Forward")){
+            String flowStatus = "DEPUTYREGISTER->REGISTRAR";
+            list = leaveApplicationRepository.findAllByFlowStatusLike(flowStatus);
+        }
+        else if(status.equalsIgnoreCase("PENDDING")){
+            Department department = employee.getDepartment();
+            List<Post> postList= Arrays.asList(Post.ASSISTANTREGISTER);
+            List<Employee> empList = employeeRepository.findAllByPostInAndDepartment(postList,department);
+            list = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusAndStatus(empList,"New",APPLIED);
+            postList =Arrays.asList(Post.LDC,Post.UDC,Post.SECTIONOFFICER);
+            List<String> flowStatusList=Arrays.asList("NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER","NEW->ASSISTANTREGISTER->DEPUTYREGISTER");
+            empList = employeeRepository.findAllByPostInAndDepartment(postList,department);
+            list.addAll(leaveApplicationRepository.findAllByEmployeeInAndFlowStatusInAndStatus(empList,flowStatusList,APPLIED));
+        }
+        return list;
+
+    }
+    public List<LeaveApplication> getAllLeaveApplicationsByCHANCELLOR(String status,Employee employee) {
+        
+        List<LeaveApplication> list = new ArrayList<>();
+        if(status.equalsIgnoreCase(APPROVED)){
+            // approved or rejected leave
+            List<String> statusList=new ArrayList<>();
+            statusList.add(APPROVED);
+            statusList.add(REJECTED);
+            list=leaveApplicationRepository.findAllByApprovedByAndStatusIn(employee, statusList);
+        }
+        else if(status.equalsIgnoreCase("PENDDING")){
+            List<Post> postList= Arrays.asList(Post.VICECHANCELLOR);
+            List<Employee> empList = employeeRepository.findAllByPostIn(postList);
+            list = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusAndStatus(empList,"New",APPLIED);
+
+            postList =Arrays.asList(Post.VICECHANCELLOR,Post.CHANCELLOR);
+             List<String> flowStatusList=Arrays.asList("NEW->HOD->REGISTRAR->VICECHANCELLOR->CHANCELLOR",
+            "NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR->CHANCELLOR",
+            "NEW->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR->CHANCELLOR",
+            "NEW->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR->CHANCELLOR",
+            "NEW->REGISTRAR->VICECHANCELLOR->CHANCELLOR",
+            "NEW->VICECHANCELLOR->CHANCELLOR");
+            empList = employeeRepository.findAllByPostNotIn(postList);
+            list.addAll(leaveApplicationRepository.findAllByEmployeeInAndFlowStatusInAndStatus(empList,flowStatusList,APPLIED));
+        }
+        return list;
+
+    }   
+    public List<LeaveApplication> getAllLeaveApplicationsByVICECHANCELLOR(String status,Employee employee) {
+        List<LeaveApplication> list = new ArrayList<>();
+        if(status.equalsIgnoreCase(APPLIED)){
+            // your leave
+            list=leaveApplicationRepository.findAllByEmployee(employee);
+        }
+        else if(status.equalsIgnoreCase(APPROVED)){
+            // approved or rejected leave
+            List<String> statusList=new ArrayList<>();
+            statusList.add(APPROVED);
+            statusList.add(REJECTED);
+            list=leaveApplicationRepository.findAllByApprovedByAndStatusIn(employee, statusList);
+        }
+        else if(status.equalsIgnoreCase("Forward")){
+            list = leaveApplicationRepository.findAllByFlowStatusLike("VICECHANCELLOR->CHANCELLOR");
+        }
+        else if(status.equalsIgnoreCase("PENDDING")){
+            List<Post> postList= Arrays.asList(Post.REGISTRAR);
+            List<Employee> empList = employeeRepository.findAllByPostIn(postList);
+            list = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusAndStatus(empList,"New",APPLIED);
+
+            postList =Arrays.asList(Post.VICECHANCELLOR,Post.CHANCELLOR);
+             List<String> flowStatusList=Arrays.asList("NEW->HOD->REGISTRAR->VICECHANCELLOR",
+            "NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR",
+            "NEW->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR",
+            "NEW->DEPUTYREGISTER->REGISTRAR->VICECHANCELLOR",
+            "NEW->REGISTRAR->VICECHANCELLOR");
+            empList = employeeRepository.findAllByPostNotIn(postList);
+            list.addAll(leaveApplicationRepository.findAllByEmployeeInAndFlowStatusInAndStatus(empList,flowStatusList,APPLIED));
+        }
+        return list;
+
+    }
+    public List<LeaveApplication> getAllLeaveApplicationsByREGISTRAR(String status,Employee employee) {
+        List<LeaveApplication> list = new ArrayList<>();
+        if(status.equalsIgnoreCase(APPLIED)){
+            // your leave
+            list=leaveApplicationRepository.findAllByEmployee(employee);
+        }
+        else if(status.equalsIgnoreCase(APPROVED)){
+            // approved or rejected leave
+            List<String> statusList=new ArrayList<>();
+            statusList.add(APPROVED);
+            statusList.add(REJECTED);
+            list=leaveApplicationRepository.findAllByApprovedByAndStatusIn(employee, statusList);
+        }
+        else if(status.equalsIgnoreCase("Forward")){
+            String flowStatus = "REGISTRAR->VICECHANCELLOR";
+            list = leaveApplicationRepository.findAllByFlowStatusLike(flowStatus);
+        }
+        else if(status.equalsIgnoreCase("PENDDING")){
+            List<Post> postList= Arrays.asList(Post.DEPUTYREGISTER,Post.HOD);
+            List<Employee> empList = employeeRepository.findAllByPostIn(postList);
+            list = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusAndStatus(empList,"New",APPLIED);
+
+            postList =Arrays.asList(Post.REGISTRAR,Post.VICECHANCELLOR,Post.CHANCELLOR);
+            List<String>  flowStatusList=Arrays.asList("NEW->HOD->REGISTRAR",
+            "NEW->SECTIONOFFICER->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR",
+            "NEW->ASSISTANTREGISTER->DEPUTYREGISTER->REGISTRAR",
+            "NEW->DEPUTYREGISTER->REGISTRAR");
+            empList = employeeRepository.findAllByPostNotIn(postList);
+            list.addAll(leaveApplicationRepository.findAllByEmployeeInAndFlowStatusInAndStatus(empList,flowStatusList,APPLIED));
+        }
+        return list;
+
+    }
+    public List<LeaveApplication> getAllLeaveApplicationsByHOD(String status,Employee employee) {
+        List<LeaveApplication> list = new ArrayList<>();
+        
+        if(status.equalsIgnoreCase(APPLIED)){
+            // your leave
+            list=leaveApplicationRepository.findAllByEmployee(employee);
+        }
+        else if(status.equalsIgnoreCase(APPROVED)){
+            List<String> statusList=new ArrayList<>();
+            statusList.add(APPROVED);
+            statusList.add(REJECTED);
+            list=leaveApplicationRepository.findAllByApprovedByAndStatusIn(employee, statusList);
+        }
+        else if(status.equalsIgnoreCase("Forward")){
+            list = leaveApplicationRepository.findAllByFlowStatusLike("NEW->HOD");
+        }
+        else if(status.equalsIgnoreCase("PENDDING")){
+            Department department = employee.getDepartment();
+            List<Post> postList= Arrays.asList(Post.FACULTY);
+            List<Employee> empList = employeeRepository.findAllByPostInAndDepartment(postList,department);
+            list = leaveApplicationRepository.findAllByEmployeeInAndFlowStatusAndStatus(empList,"New",APPLIED);
+        }
+        return list;
+
     }
 
     /**

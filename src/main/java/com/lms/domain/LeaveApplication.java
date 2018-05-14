@@ -59,6 +59,9 @@ public class LeaveApplication implements Serializable {
     @NotNull
     private LeaveType leaveType;
 
+    @Column(name = "join_leave_day")
+    private Double joinLeaveDay;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -118,6 +121,19 @@ public class LeaveApplication implements Serializable {
 
     public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
+    }
+
+    public Double getJoinLeaveDay() {
+        return joinLeaveDay;
+    }
+
+    public LeaveApplication joinLeaveDay(Double joinLeaveDay) {
+        this.joinLeaveDay = joinLeaveDay;
+        return this;
+    }
+
+    public void setJoinLeaveDay(Double joinLeaveDay) {
+        this.joinLeaveDay = joinLeaveDay;
     }
 
     public Double getNoofday() {
@@ -240,6 +256,8 @@ public class LeaveApplication implements Serializable {
             ", fromDate='" + getFromDate() + "'" +
             ", toDate='" + getToDate() + "'" +
             ", noofday=" + getNoofday() +
+            ", joinLeave=" + getJoinLeave() +
+            ", joinLeaveDay=" + getJoinLeaveDay() +
             ", status='" + getStatus() + "'" +
             ", flowStatus='" + getFlowStatus() + "'" +
             ", comment='" + getComment() + "'" +

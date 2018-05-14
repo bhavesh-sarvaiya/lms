@@ -44,6 +44,7 @@ export class NavbarComponent implements OnInit {
         });
         this.principal.identity().then((account) => {
             this.account = account;
+            console.log(this.account);
         });
         this.profileService.getProfileInfo().then((profileInfo) => {
             this.inProduction = profileInfo.inProduction;
@@ -60,7 +61,15 @@ export class NavbarComponent implements OnInit {
     }
 
     isAuthenticated() {
-        return this.principal.isAuthenticated();
+        const auth = this.principal.isAuthenticated();
+        if (auth) {
+            if (this.account === null) {
+                this.principal.identity().then((account) => {
+                    this.account = account;
+                });
+            }
+        }
+        return auth;
     }
 
     login() {

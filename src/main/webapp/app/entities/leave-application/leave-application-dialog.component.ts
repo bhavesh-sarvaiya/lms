@@ -14,6 +14,9 @@ import { LeaveType, LeaveTypeService } from '../leave-type';
 import { LeaveBalance, LeaveBalanceService } from '../leave-balance';
 import { LeaveRule, LeaveRuleService } from '../leave-rule';
 import { leaveApplicationHistoryPopupRoute } from '../leave-application-history';
+import * as _ from 'lodash';
+import * as $ from 'jquery';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'jhi-leave-application-dialog',
@@ -23,7 +26,6 @@ export class LeaveApplicationDialogComponent implements OnInit {
 
     leaveApplication: LeaveApplication;
     isSaving: boolean;
-
     employees: Employee[];
     fromDate1: string;
     toDate1: string;
@@ -41,47 +43,59 @@ export class LeaveApplicationDialogComponent implements OnInit {
         private employeeService: EmployeeService,
         private leaveTypeService: LeaveTypeService,
         private eventManager: JhiEventManager,
-        private leaveBalanceService: LeaveBalanceService
+        private leaveBalanceService: LeaveBalanceService,
+        private datepipe: DatePipe
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-       // this.employeeService.query()
-          //  .subscribe((res: HttpResponse<Employee[]>) => { this.employees = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-          this.leaveBalanceService.findAllForLeaveApplication()
-          .subscribe((res: HttpResponse<LeaveBalance[]>) => {
-              this.leaveBalance = res.body;
-            console.log(JSON.stringify(this.leaveBalance));
-            let i = 0;
-              for (const item of this.leavetypes) {
-                  if (this.leaveBalance.length > i) {
-                      for (const b of this.leaveBalance) {
-                          this.l = b.leaveType;
-                          if (item.code === this.l.code) {
-                              item.code = item.code + '(' + b.noOfLeave + ')';
-                          }
-                      }
-                  } else {
-                      item.code = item.code + '(0)';
-                  }
-                  i++;
-              }
-        }, (res: HttpErrorResponse) => this.onError(res.message));
-          this.leaveTypeService.query()
+        // console.log(new Date(this.leaveApplication.fromDate));
+        if (this.leaveApplication.fromDate) {
+            this.leaveApplication.fromDate = this.datepipe.transform(this.leaveApplication.fromDate, "yyyy-MM-dd");
+        }
+        if (this.leaveApplication.toDate) {
+            this.leaveApplication.toDate = this.datepipe.transform(this.leaveApplication.toDate, "yyyy-MM-dd");
+        }
+        this.leaveBalanceService.findAllForLeaveApplication()
+            .subscribe((res: HttpResponse<LeaveBalance[]>) => {
+                this.leaveBalance = res.body;
+                if (this.leaveBalance.length > 0) {
+                    for (const item of this.leavetypes) {
+                        let flag = false;
+                        for (const b of this.leaveBalance) {
+                            this.l = b.leaveType;
+                            if (item.code === this.l.code) {
+                                item.code = item.code + '(' + b.noOfLeave + ')';
+                                flag = true;
+                            }
+                        }
+                        if (!flag) {
+                            item.code = item.code + '(0)';
+                        }
+                    }
+                } else {
+                    for (const item of this.leavetypes) {
+                        item.code = item.code + '(0)';
+                    }
+                }
+            }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.leaveTypeService.query()
             .subscribe((res: HttpResponse<LeaveType[]>) => {
                 this.leavetypes = res.body;
+                this.loadLeaveRule();
             }, (res: HttpErrorResponse) => this.onError(res.message));
     }
     loadLeaveRule() {
+        if (this.leaveApplication.leaveType) {
         this.leaveRuleService.findByLeaveType(this.leaveApplication.leaveType.id)
             .subscribe((leaveRuleResponse: HttpResponse<LeaveRule>) => {
                 this.leaveRule = leaveRuleResponse.body;
                 if (this.leaveRule.id === undefined) {
-                    console.log('ok');
                     this.leaveRule = undefined;
                 }
             });
+        }
         }
     clear() {
         this.activeModal.dismiss('cancel');
@@ -99,6 +113,8 @@ export class LeaveApplicationDialogComponent implements OnInit {
     fromDate(event) {
     this.fromDate1 = event.target.value;
       console.log(this.fromDate1);
+      console.log($('#field_fromDate').value
+    );
       if (this.toDate1 !== undefined && this.fromDate1 !== '') {
         this.dayDiff();
       }
@@ -113,16 +129,25 @@ export class LeaveApplicationDialogComponent implements OnInit {
     }
     save() {
         this.isSaving = true;
+        if (this.leaveApplication.fromDate) {
+            const d = this.leaveApplication.fromDate.split("-");
+            this.leaveApplication.fromDate = {
+                year: d[0], month: d[1], day: d[2]
+            };
+        }
+        if (this.leaveApplication.toDate) {
+            const d = this.leaveApplication.toDate.split("-");
+            this.leaveApplication.toDate = {
+                year: d[0], month: d[1], day: d[2]
+            };
+        }
         if (this.leaveApplication.joinLeave === undefined || this.leaveApplication.joinLeave === 'none') {
             this.leaveApplication.joinLeave = 'No';
         } else {
-            this.l = this.leaveApplication.leaveType;
-            const leaveDay = this.l.code.split('(')[1].split(')')[0];
-            for (const b of this.leaveBalance) {
-                this.l = b.leaveType;
-                if (this.l.code === this.leaveApplication.joinLeave) {
-                    this.leaveApplication.joinLeave = this.l.code + ':' + (this.leaveApplication.noofday - parseInt(leaveDay, 0));
-                }
+            if (this.leaveApplication.joinLeave !== 'No') {
+                this.l = this.leaveApplication.leaveType;
+                const leaveDay = this.l.code.split('(')[1].charAt(0);
+                this.leaveApplication.joinLeaveDay = this.leaveApplication.noofday - parseInt(leaveDay, 0);
             }
         }
         console.log(this.leaveApplication);

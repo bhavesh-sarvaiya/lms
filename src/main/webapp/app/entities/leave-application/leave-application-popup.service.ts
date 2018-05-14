@@ -29,7 +29,7 @@ export class LeaveApplicationPopupService {
                 this.leaveApplicationService.find(id)
                     .subscribe((leaveApplicationResponse: HttpResponse<LeaveApplication>) => {
                         const leaveApplication: LeaveApplication = leaveApplicationResponse.body;
-                        if (leaveApplication.fromDate) {
+                        /*if (leaveApplication.fromDate) {
                             leaveApplication.fromDate = {
                                 year: leaveApplication.fromDate.getFullYear(),
                                 month: leaveApplication.fromDate.getMonth() + 1,
@@ -43,7 +43,7 @@ export class LeaveApplicationPopupService {
                                 month: leaveApplication.toDate.getMonth() + 1,
                                 day: leaveApplication.toDate.getDate()
                             };
-                        }
+                        }*/
                         this.ngbModalRef = this.leaveApplicationModalRef(component, leaveApplication);
                         resolve(this.ngbModalRef);
                     });

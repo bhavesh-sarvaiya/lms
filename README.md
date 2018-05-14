@@ -167,7 +167,7 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [DefinitelyTyped]: http://definitelytyped.org/
 
 ## liquibase
-    ### liquibase-diff
+    ### mvnw liquibase:diff
       	
     ### clearCheckSums
     mvnw liquibase:clearCheckSums

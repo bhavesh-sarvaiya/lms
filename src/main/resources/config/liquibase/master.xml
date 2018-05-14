@@ -41,6 +41,9 @@
     <!-- <include file="config/liquibase/changelog/20180409181325_changelog_drop_user_field.xml" relativeToChangelogFile="false"/> -->
     <include file="config/liquibase/changelog/20180412013452_changelog_add_or_remove_field.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180507033739_changelog_add_leave_join_field_to_leave_application.xml" relativeToChangelogFile="false"/>
+     <include file="config/liquibase/changelog/20180514033159_changelog_add_field_join_leave_day_to_leave_application.xml" relativeToChangelogFile="false"/>
+
+    
 
     
  

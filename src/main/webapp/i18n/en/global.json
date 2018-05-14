@@ -156,7 +156,11 @@
         "invalid.joinLeave": "Something wrong in join leave",
         "max.joinLeave":"Leave join not application, trying to get more leave join\nPlease select other leave join",
         "exception":"Exception",
-        "alreadyReaquested":"You are not eligible for this type of leave \n Because you were already requested for this leave type"
+        "joinLeaveSame":"Leave type and join leave should be different",
+        "alreadyReaquested":"You are not eligible for this type of leave \n Because you were already requested more than that",
+        "canNotJoinLeave":"You have enough leave balance, can't take join leave",
+        "notEnoughJoinLeave":"You not have enough join leave balance, can't take join leave\n Please select other join leave",
+        "joinLeaveNotAssign":"You have not been assigned join leave type balance, \nPlease Contact to Authority"
     },
     "footer": "This is your footer"
 }

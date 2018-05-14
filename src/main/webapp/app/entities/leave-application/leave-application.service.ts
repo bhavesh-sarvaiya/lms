@@ -73,16 +73,12 @@ export class LeaveApplicationService {
     /**
      * Convert a LeaveApplication to a JSON which can be sent to the server.
      */
-    private convert(leaveApplication: LeaveApplication): LeaveApplication {
+private convert(leaveApplication: LeaveApplication): LeaveApplication {
         const copy: LeaveApplication = Object.assign({}, leaveApplication);
-        let fromdate = leaveApplication.fromDate + ''.split('-');
-        fromdate = {'year' : fromdate[0], 'month' : fromdate[1], 'day' : fromdate[2]};
         copy.fromDate = this.dateUtils
-            .convertLocalDateToServer(fromdate);
-            let todate = leaveApplication.toDate + ''.split('-');
-            todate = {'year' : todate[0], 'month' : todate[1], 'day' : todate[2]};
+            .convertLocalDateToServer(leaveApplication.fromDate);
         copy.toDate = this.dateUtils
-            .convertLocalDateToServer(todate);
+            .convertLocalDateToServer(leaveApplication.toDate);
         return copy;
     }
 }

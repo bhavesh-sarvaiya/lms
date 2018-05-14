@@ -150,7 +150,7 @@ public class EmployeeResource {
 	@Timed
 	public ResponseEntity<List<Employee>> getAllEmployees(Pageable pageable) {
 		log.debug("REST request to get a page of Employees:{}","page of Employees");
-		Page<Employee> page = employeeRepository.findAllByFirstNameLike("aja",pageable);
+		Page<Employee> page = employeeRepository.findAll(pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/employees");
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}

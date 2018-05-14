@@ -16,6 +16,7 @@ import { Principal, User } from '../../shared';
 })
 export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
 
+    isSaving: boolean;
     fromDate: any;
     toDate: any;
     flowStatus: any;
@@ -41,12 +42,12 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
         d = new Date(this.leaveApplication.fromDate);
         this.leaveApplication.fromDate = { 'day': d.getDate() , 'month': d.getMonth() + 1, 'year': d.getFullYear() } ;
         console.log(status);
+        this.isSaving = true;
        if (this.leaveApplication.id !== undefined) {
             console.log(this.leaveApplication);
             this.leaveApplication.status = status;
-            this.subscribeToSaveResponse(
-            this.leaveApplicationService.update(this.leaveApplication));
-            this.registerChangeInLeaveApplications();
+            this.subscribeToSaveResponse(this.leaveApplicationService.update(this.leaveApplication));
+            // this.registerChangeInLeaveApplications();
         }
     }
     private subscribeToSaveResponse(result: Observable<HttpResponse<LeaveApplication>>) {
@@ -56,12 +57,12 @@ export class LeaveApplicationDetailComponent implements OnInit, OnDestroy {
 
     private onSaveSuccess(result: LeaveApplication) {
         this.eventManager.broadcast({ name: 'leaveApplicationListModification', content: 'OK'});
-       // this.isSaving = false;
+        this.isSaving = false;
       //  this.activeModal.dismiss(result);
     }
 
     private onSaveError() {
-       // this.isSaving = false;
+        this.isSaving = false;
     }
 
     ngOnInit() {

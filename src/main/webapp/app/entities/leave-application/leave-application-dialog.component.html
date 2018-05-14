@@ -14,53 +14,50 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                    <div class="form-group">
-                            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.leaveType" for="field_leaveType">Leave Type</label>
-                            <select class="form-control" id="field_leaveType" name="leaveType" (change) = "loadLeaveRule()" [(ngModel)]="leaveApplication.leaveType"  required>
-                                <option *ngIf="!editForm.value.leaveType" [ngValue]="null" selected></option>
-                                <option [ngValue]="leaveTypeOption.id === leaveApplication.leaveType?.id ? leaveApplication.leaveType : leaveTypeOption" *ngFor="let leaveTypeOption of leavetypes; trackBy: trackLeaveTypeById">{{leaveTypeOption.code}}</option>
-                            </select>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.leaveType" for="field_leaveType">Leave Type</label>
+                    <select class="form-control" id="field_leaveType" name="leaveType" (change)="loadLeaveRule()" [(ngModel)]="leaveApplication.leaveType"
+                        required>
+                        <option *ngIf="!editForm.value.leaveType" [ngValue]="null" selected></option>
+                        <option [ngValue]="leaveTypeOption.id === leaveApplication.leaveType?.id ? leaveApplication.leaveType : leaveTypeOption"
+                            *ngFor="let leaveTypeOption of leavetypes; trackBy: trackLeaveTypeById">{{leaveTypeOption.code}}</option>
+                    </select>
+                </div>
+                <div [hidden]="!(editForm.controls.leaveType?.dirty && editForm.controls.leaveType?.invalid)">
+                    <small class="form-text text-danger" [hidden]="!editForm.controls.leaveType?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+        
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.fromDate" for="field_fromDate">From Date</label>
+                            <div class="input-group">
+                                <input id="field_fromDate" type="date" (change)="fromDate($event)" class="form-control" name="fromDate" [(ngModel)]="leaveApplication.fromDate"
+                                    required/>
+                            </div>
+        
                         </div>
-                        <div [hidden]="!(editForm.controls.leaveType?.dirty && editForm.controls.leaveType?.invalid)">
-                            <small class="form-text text-danger"
-                                [hidden]="!editForm.controls.leaveType?.errors?.required" jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-            
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.fromDate" for="field_fromDate">From Date</label>
-                        <div class="input-group">
-                            <input id="field_fromDate" type="date" format="yyyy-mm-dd" (change)="fromDate($event)" class="form-control" name="fromDate"
-                                [(ngModel)]="leaveApplication.fromDate" required/>
-                        </div>
-                        <div [hidden]="!(editForm.controls.fromDate?.dirty && editForm.controls.fromDate?.invalid)">
-                            <small class="form-text text-danger" [hidden]="!editForm.controls.fromDate?.errors?.required" jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.toDate" for="field_toDate">To Date</label>
-                        <div class="input-group">
-                            <input id="field_toDate" type="date" (change)="toDate($event)" class="form-control" name="toDate" [(ngModel)]="leaveApplication.toDate"
-                                required/>
-                        </div>
-                        <div [hidden]="!(editForm.controls.toDate?.dirty && editForm.controls.toDate?.invalid)">
-                            <small class="form-text text-danger" [hidden]="!editForm.controls.toDate?.errors?.required" jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
+                        <div class="col-md-6">
+                            <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.toDate" for="field_toDate">To Date</label>
+                            <div class="input-group">
+                                <input id="field_toDate" type="date" (change)="toDate($event)" class="form-control" name="toDate" [(ngModel)]="leaveApplication.toDate"
+                                    required/>
+                            </div>
+                            <div [hidden]="!(editForm.controls.toDate?.dirty && editForm.controls.toDate?.invalid)">
+                                <small class="form-text text-danger" [hidden]="!editForm.controls.toDate?.errors?.required" jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group">
+        
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.noofday" for="field_noofday">Noofday</label>
-                    <input type="text" class="form-control" name="noofday" id="field_noofday" value="{{leaveApplication.noofday}}" disabled
-                        [(ngModel)]="leaveApplication.noofday" />
+                    <input type="text" class="form-control" name="noofday" id="field_noofday" value="{{leaveApplication.noofday}}" disabled [(ngModel)]="leaveApplication.noofday"
+                    />
                 </div>
             </div>
             <div class="col-md-6">
@@ -70,34 +67,36 @@
                         <div class="row">
                             <div class="col-md-1" *ngFor="let leaveBalances of leaveBalance;">
                                 <div class="form-group">
-                                    <label class="form-control-label" >{{leaveBalances.leaveType.code}}</label>
-                                    <label class="form-control-label" >{{leaveBalances.noOfLeave}}</label>
+                                    <label class="form-control-label">{{leaveBalances.leaveType.code}}</label>
+                                    <label class="form-control-label">{{leaveBalances.noOfLeave}}</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            
+        
                 <div class="card" style=" margin-top: 10px;">
                     <div class="card-header" style="height: 40px;">You can take join Leave :</div>
-                    <div class="card-body" >
-                            <div class="row" *ngIf="leaveRule == undefined">
-                                    <div class="col-md-12" style="height: 61px;">
-                                    <label class="form-control-label">There is no any join leave available</label>
-                                    <br>
-                                    </div>
+                    <div class="card-body">
+                        <div class="row" *ngIf="leaveRule == undefined">
+                            <div class="col-md-12" style="height: 61px;">
+                                <label class="form-control-label">There is no any join leave available</label>
+                                <br>
                             </div>
+                        </div>
                         <div class="row" *ngIf="leaveRule">
                             <div class="col-md-2" *ngFor="let l of leaveRule.leaveTypes; let i = index">
                                 <div class="form-group">
                                     <label class="form-control-label" for="leaveApplication.joinLeave"> {{l.code}}</label>
-                                    <input type="radio" class="form-control" value="{{l.code}}" name="leaveApplication.joinLeave" id="leaveApplication.joinLeave" [(ngModel)]="leaveApplication.joinLeave" />
+                                    <input type="radio" class="form-control" value="{{l.code}}" name="leaveApplication.joinLeave" id="leaveApplication.joinLeave"
+                                        [(ngModel)]="leaveApplication.joinLeave" />
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label class="form-control-label" for="leaveApplication.joinLeave">None</label>
-                                    <input type="radio" class="form-control" value="none" name="leaveApplication.joinLeave" id="leaveApplication.joinLeave" [(ngModel)]="leaveApplication.joinLeave" />
+                                    <input type="radio" class="form-control" value="none" name="leaveApplication.joinLeave" id="leaveApplication.joinLeave" [(ngModel)]="leaveApplication.joinLeave"
+                                    />
                                 </div>
                             </div>
                         </div>
