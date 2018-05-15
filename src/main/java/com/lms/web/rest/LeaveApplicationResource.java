@@ -128,7 +128,8 @@ public class LeaveApplicationResource {
             throw new BadRequestAlertException("Please Input valid date", ENTITY_NAME, "invalid.date");
         }
         // get leave balance
-        System.out.println("\n############3"+leaveApplication.getLeaveType());
+        System.out.println("\n############3"+leaveApplication.getEmployee());
+        leaveApplication.setEmployee(employee);
         Double leaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),
                 leaveApplication.getLeaveType());
 
@@ -141,7 +142,7 @@ public class LeaveApplicationResource {
 
         // check min max leave
         checkMaxMinLeave(leaveRule, noOfDay, employee);
-        leaveApplication.setEmployee(employee);
+        
 
         // to check if employee is going to take join leave
         if (!leaveApplication.getJoinLeave().equalsIgnoreCase("No")
@@ -163,7 +164,7 @@ public class LeaveApplicationResource {
         String gender = leaveRule.getLeaveFor().name();
         if (!gender.equalsIgnoreCase("BOTH")) {
             if (!employee.getGender().toString().equalsIgnoreCase(gender)) {
-                throw new BadRequestAlertException("This leave only for " + gender, ENTITY_NAME, "invalid.gender");
+                throw new CustomParameterizedException("This leave only for " + gender,"custom.error");
             }
         }
     }
@@ -195,12 +196,8 @@ public class LeaveApplicationResource {
         }
     }
     private void checkJoinLeaveBalance(LeaveApplication leaveApplication,Double noOfDay,Double leaveBalance,Employee employee){
-        // check leave requested day is < leave balance
-        if (noOfDay < leaveBalance) {
-            throw new BadRequestAlertException("You have enough leave balance, can't take join leave", ENTITY_NAME,
-                    "canNotJoinLeave");
-        }
 
+        
         List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(
                 leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
 
@@ -210,12 +207,18 @@ public class LeaveApplicationResource {
             for (LeaveApplication l : leaveApplicationList) {
                 totalAppliedLeave += l.getNoofday();
             }
-
-            if ((totalAppliedLeave + leaveApplication.getNoofday()) > leaveBalance) {
-                throw new BadRequestAlertException(
-                        "You are not eligible for this type of leave \n Because you were already requested more than that",
-                        ENTITY_NAME, "alreadyReaquested");
+            Double availableLeave = leaveBalance - totalAppliedLeave;
+            // check leave requested day is < leave balance
+            if (noOfDay < availableLeave) {
+                throw new BadRequestAlertException("You have enough leave balance, can't take join leave", ENTITY_NAME,
+                        "canNotJoinLeave");
             }
+
+        }
+        // check leave requested day is < leave balance
+        else if  (noOfDay < leaveBalance) {
+            throw new BadRequestAlertException("You have enough leave balance, can't take join leave", ENTITY_NAME,
+                    "canNotJoinLeave");
         }
 
         Double joinLeaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),
