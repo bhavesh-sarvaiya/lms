@@ -121,8 +121,8 @@
                         <div class="row">
                             <div class="col-md-6">
                         <div class="form-group">
-                                <label *ngIf="leaveRuleAndNoOfDay.employeeType != 'EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER'" class="form-control-label"  for="field_noOfDay">Days</label>
-                                <label *ngIf="leaveRuleAndNoOfDay.employeeType == 'EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER'" class="form-control-label" for="field_noOfDay">For educational with vacationer</label>
+                                <label *ngIf="leaveRuleAndNoOfDay.employeeType == 'ALL'" class="form-control-label"  for="field_noOfDay">Days</label>
+                                <label *ngIf="leaveRuleAndNoOfDay.employeeType != 'ALL'" class="form-control-label" for="field_noOfDay">For educational with vacationer</label>
                                 <input type="number" class="form-control" name="noOfDay" id="field_noOfDay"
                                     [(ngModel)]="leaveRuleAndNoOfDay.noOfDay" required/>
                                 <div [hidden]="!(editForm.controls.noOfDay?.dirty && editForm.controls.noOfDay?.invalid)">
@@ -138,7 +138,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group" *ngIf="leaveRuleAndNoOfDay.employeeType == 'EDUCATIONAL_WITH_VACATIONER_AND_EDUCATIONAL_WITH_NON_VACATIONER'">
+                            <div class="form-group" *ngIf="leaveRuleAndNoOfDay.employeeType != 'ALL'">
                                     <label class="form-control-label">For educational with non vacationer</label>
                                     <input type="number" class="form-control" name="noOfDay2" id="field_noOfDay2"
                                         [(ngModel)]="leaveRuleAndNoOfDay.noOfDay2" />
@@ -163,7 +163,7 @@
                     <label class="form-control-label" jhiTranslate="lmsApp.leaveRuleAndMaxMinLeave.employeeType" for="field_employeeType">Employee Type</label>
                 </div>
                 <div class="col-md-9">
-                    <select class="form-control" name="employeeType" [(ngModel)]="leaveRuleAndMaxMinLeave.employeeType" id="field_employeeType"  required>
+                    <select class="form-control" name="employeeType2" [(ngModel)]="leaveRuleAndMaxMinLeave.employeeType" id="field_employeeType"  required>
                         <option value="ALL">{{'lmsApp.EmpType2.ALL' | translate}}</option>
                         <option value="MANAGEMENT_AND_EDUCATIONAL">{{'lmsApp.EmpType2.MANAGEMENT_AND_EDUCATIONAL' | translate}}</option>
                     </select>
@@ -178,8 +178,8 @@
                         <div class="row">
                         <div class="col-md-6">
                         <div class="form-group">
-                            <label *ngIf="leaveRuleAndMaxMinLeave.employeeType != 'Educational, Management'" class="form-control-label"  for="field_maxLeaveLimit">Maximum leave limit</label>
-                            <label *ngIf="leaveRuleAndMaxMinLeave.employeeType == 'Educational, Management'" class="form-control-label"  for="field_maxLeaveLimit">Maximum leave limit(Management)</label>
+                            <label *ngIf="leaveRuleAndMaxMinLeave.employeeType != 'MANAGEMENT_AND_EDUCATIONAL'" class="form-control-label"  for="field_maxLeaveLimit">Maximum leave limit</label>
+                            <label *ngIf="leaveRuleAndMaxMinLeave.employeeType == 'MANAGEMENT_AND_EDUCATIONAL'" class="form-control-label"  for="field_maxLeaveLimit">Maximum leave limit(Management)</label>
                             <input type="number" class="form-control" name="maxLeaveLimit" id="field_maxLeaveLimit"
                                 [(ngModel)]="leaveRuleAndMaxMinLeave.maxLeaveLimit" required/>
                             <div [hidden]="!(editForm.controls.maxLeaveLimit?.dirty && editForm.controls.maxLeaveLimit?.invalid)">

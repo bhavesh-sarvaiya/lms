@@ -34,7 +34,7 @@
                         <div class="col-md-6">
                             <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.fromDate" for="field_fromDate">From Date</label>
                             <div class="input-group">
-                                <input id="field_fromDate" type="date" (change)="fromDate($event)" class="form-control" name="fromDate" [(ngModel)]="leaveApplication.fromDate"
+                                <input id="field_fromDate" type="date" (change)="fromDate($event)" class="form-control" name="fromDateCompnent" [(ngModel)]="fromDateCompnent"
                                     required/>
                             </div>
         
@@ -42,11 +42,11 @@
                         <div class="col-md-6">
                             <label class="form-control-label" jhiTranslate="lmsApp.leaveApplication.toDate" for="field_toDate">To Date</label>
                             <div class="input-group">
-                                <input id="field_toDate" type="date" (change)="toDate($event)" class="form-control" name="toDate" [(ngModel)]="leaveApplication.toDate"
+                                <input id="field_toDate" type="date" (change)="toDate($event)" class="form-control" name="toDateCompnent" [(ngModel)]="toDateCompnent"
                                     required/>
                             </div>
-                            <div [hidden]="!(editForm.controls.toDate?.dirty && editForm.controls.toDate?.invalid)">
-                                <small class="form-text text-danger" [hidden]="!editForm.controls.toDate?.errors?.required" jhiTranslate="entity.validation.required">
+                            <div [hidden]="!(editForm.controls.toDateCompnent?.dirty && editForm.controls.toDateCompnent?.invalid)">
+                                <small class="form-text text-danger" [hidden]="!editForm.controls.toDateCompnent?.errors?.required" jhiTranslate="entity.validation.required">
                                     This field is required.
                                 </small>
                             </div>

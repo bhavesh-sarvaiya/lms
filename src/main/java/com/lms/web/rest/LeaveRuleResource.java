@@ -67,6 +67,16 @@ public class LeaveRuleResource {
         if (leaveRule.getId() != null) {
             throw new BadRequestAlertException("A new leaveRule cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        LeaveType leaveType = leaveRule.getLeave();
+        Set<LeaveType> s= leaveRule.getLeaveTypes();
+
+        for (LeaveType t : s) {
+            if(t.getCode().equals(leaveType.getCode())) {
+                throw new BadRequestAlertException("Leave type and join leave should be different", ENTITY_NAME,
+                "joinLeaveSame");
+            }
+        }
+
         LeaveRule result = leaveRuleRepository.save(leaveRule);
         return ResponseEntity.created(new URI("/api/leave-rules/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

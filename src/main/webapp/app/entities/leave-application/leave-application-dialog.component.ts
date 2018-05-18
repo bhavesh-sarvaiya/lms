@@ -29,6 +29,8 @@ export class LeaveApplicationDialogComponent implements OnInit {
     employees: Employee[];
     fromDate1: string;
     toDate1: string;
+    fromDateCompnent: string;
+    toDateCompnent: string;
     l: LeaveType;
     leaveRule: LeaveRule;
     leavetypes: LeaveType[];
@@ -52,10 +54,10 @@ export class LeaveApplicationDialogComponent implements OnInit {
         this.isSaving = false;
         // console.log(new Date(this.leaveApplication.fromDate));
         if (this.leaveApplication.fromDate) {
-            this.leaveApplication.fromDate = this.datepipe.transform(this.leaveApplication.fromDate, "yyyy-MM-dd");
+            this.fromDateCompnent = this.datepipe.transform(this.leaveApplication.fromDate, "yyyy-MM-dd");
         }
         if (this.leaveApplication.toDate) {
-            this.leaveApplication.toDate = this.datepipe.transform(this.leaveApplication.toDate, "yyyy-MM-dd");
+            this.toDateCompnent = this.datepipe.transform(this.leaveApplication.toDate, "yyyy-MM-dd");
         }
         this.leaveBalanceService.findAllForLeaveApplication()
             .subscribe((res: HttpResponse<LeaveBalance[]>) => {
@@ -112,9 +114,6 @@ export class LeaveApplicationDialogComponent implements OnInit {
 
     fromDate(event) {
     this.fromDate1 = event.target.value;
-      console.log(this.fromDate1);
-      console.log($('#field_fromDate').value
-    );
       if (this.toDate1 !== undefined && this.fromDate1 !== '') {
         this.dayDiff();
       }
@@ -122,34 +121,33 @@ export class LeaveApplicationDialogComponent implements OnInit {
 
     toDate(event?: any) {
       this.toDate1 = event.target.value;
-      console.log( this.toDate1);
      if (this.fromDate1 !== undefined && this.toDate1 !== '') {
         this.dayDiff();
       }
     }
     save() {
         this.isSaving = true;
-        if (this.leaveApplication.fromDate) {
-            const d = this.leaveApplication.fromDate.split("-");
+        if (this.fromDateCompnent) {
+            const d = this.fromDateCompnent.split("-");
             this.leaveApplication.fromDate = {
                 year: d[0], month: d[1], day: d[2]
             };
         }
-        if (this.leaveApplication.toDate) {
-            const d = this.leaveApplication.toDate.split("-");
+        if (this.toDateCompnent) {
+            const d = this.toDateCompnent.split("-");
             this.leaveApplication.toDate = {
                 year: d[0], month: d[1], day: d[2]
             };
         }
-        if (this.leaveApplication.joinLeave === undefined || this.leaveApplication.joinLeave === 'none') {
-            this.leaveApplication.joinLeave = 'No';
-        } else {
-            if (this.leaveApplication.joinLeave !== 'No') {
-                this.l = this.leaveApplication.leaveType;
-                const leaveDay = this.l.code.split('(')[1].charAt(0);
-                this.leaveApplication.joinLeaveDay = this.leaveApplication.noofday - parseInt(leaveDay, 0);
-            }
-        }
+        // if (this.leaveApplication.joinLeave === undefined || this.leaveApplication.joinLeave === 'none') {
+        //     this.leaveApplication.joinLeave = 'No';
+        // } else {
+        //     if (this.leaveApplication.joinLeave !== 'No') {
+        //         this.l = this.leaveApplication.leaveType;
+        //         const leaveDay = this.l.code.split('(')[1].charAt(0);
+        //         this.leaveApplication.joinLeaveDay = this.leaveApplication.noofday - parseInt(leaveDay, 0);
+        //     }
+        // }
         console.log(this.leaveApplication);
         if (this.leaveApplication.id !== undefined) {
             this.subscribeToSaveResponse(
@@ -162,7 +160,7 @@ export class LeaveApplicationDialogComponent implements OnInit {
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<LeaveApplication>>) {
         result.subscribe((res: HttpResponse<LeaveApplication>) =>
-            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError(res));
     }
 
     private onSaveSuccess(result: LeaveApplication) {
@@ -171,7 +169,8 @@ export class LeaveApplicationDialogComponent implements OnInit {
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError() {
+    private onSaveError(error: any) {
+        console.log(error);
         this.isSaving = false;
     }
 

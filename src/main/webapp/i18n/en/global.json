@@ -145,7 +145,6 @@
         "emailexists": "Email is already in use!",
         "idexists": "A new {{ entityName }} cannot already have an ID",
         "emptyEmp": "No Employee are selected!...",
-        "invalid.date": "Please Input valid date",
         "invalid.gender": "This leave only for {gender}.",
         "notEligible": "You are not eligible for this type of leave \n Because you not have enough leave balance",
         "leaveNotAssign": "You have not been assigned this type of leave \nPlease Contact to Authority",

@@ -120,24 +120,34 @@ public class LeaveApplicationResource {
         Employee employee = getLoggedUser();
         Double noOfDay = leaveApplication.getNoofday();
 
+        leaveApplication.setEmployee(employee);
+        leaveApplication.setLeaveType(leaveTypeRepository.findOne(leaveApplication.getLeaveType().getId()));
         LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveApplication.getLeaveType());
+
+        if(leaveRule == null){
+            throw new CustomParameterizedException("This leave type of leave application has no rule\nPlease contact to authority" ,"custom.error");
+        }
         // check gender
         checkLeaveGender(leaveRule, employee);
 
         if (noOfDay < 1) {
-            throw new BadRequestAlertException("Please Input valid date", ENTITY_NAME, "invalid.date");
+            throw new CustomParameterizedException("This leave type of leave application has no rule\nPlease contact to authority" ,"invalid.date");
         }
         // get leave balance
-        System.out.println("\n############3"+leaveApplication.getEmployee());
-        leaveApplication.setEmployee(employee);
         Double leaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),
                 leaveApplication.getLeaveType());
-
         // check he/she has leave balance
         if (leaveBalance == null) {
             throw new BadRequestAlertException(
                     "You have not been assigned this type of leave, \nPlease Contact to Authority", ENTITY_NAME,
                     "leaveNotAssign");
+        }
+        if (leaveApplication.getJoinLeave() == null) {
+            leaveApplication.setJoinLeave("none");
+        } else {
+            if (!leaveApplication.getJoinLeave().equalsIgnoreCase("none")) {
+            	leaveApplication.setJoinLeaveDay(noOfDay - leaveBalance);
+            }
         }
 
         // check min max leave
@@ -145,14 +155,14 @@ public class LeaveApplicationResource {
         
 
         // to check if employee is going to take join leave
-        if (!leaveApplication.getJoinLeave().equalsIgnoreCase("No")
-                && !leaveApplication.getJoinLeave().equalsIgnoreCase("none")) {
+        if (!leaveApplication.getJoinLeave().equalsIgnoreCase("none")) {
             checkJoinLeaveBalance(leaveApplication, noOfDay, leaveBalance, employee);
         } else {
             checkLeaveBalance(leaveApplication, leaveBalance);
         }
         leaveApplication.setStatus(APPLIED);
         leaveApplication.setFlowStatus("NEW");
+        leaveApplication.setNoofday(leaveApplication.getNoofday()-leaveApplication.getJoinLeaveDay());
         result = leaveApplicationRepository.save(leaveApplication);
 
         saveLeaveAppHistory(result, "");
@@ -174,8 +184,8 @@ public class LeaveApplicationResource {
                 leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
 
         // check applied leave balance
+        Double totalAppliedLeave = 0.0;
         if (!leaveApplicationList.isEmpty()) {
-            Double totalAppliedLeave = 0.0;
             for (LeaveApplication l : leaveApplicationList) {
                 totalAppliedLeave += l.getNoofday();
             }
@@ -194,20 +204,50 @@ public class LeaveApplicationResource {
                         ENTITY_NAME, "notEligible");
             }
         }
+        
+		leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndStatusAndJoinLeave(
+				leaveApplication.getEmployee(), APPLIED, leaveApplication.getLeaveType().getCode());
+		Double totalAppliedJoinLeave = totalAppliedLeave;
+		if (!leaveApplicationList.isEmpty()) {
+			for (LeaveApplication l : leaveApplicationList) {
+				totalAppliedJoinLeave += l.getJoinLeaveDay();
+			}
+
+		}
+		// check he/she has enough join leave balance
+		if (totalAppliedJoinLeave+leaveApplication.getNoofday() > leaveBalance) {
+			throw new CustomParameterizedException(
+                    "You are not eligible for this type of leave \n Because you have already applied " + totalAppliedJoinLeave
+                            + " leave and you have just "+leaveBalance,"custom.error");
+		}
+        
     }
     private void checkJoinLeaveBalance(LeaveApplication leaveApplication,Double noOfDay,Double leaveBalance,Employee employee){
 
+    	List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndStatusAndJoinLeave(
+				leaveApplication.getEmployee(), APPLIED, leaveApplication.getLeaveType().getCode());
         
-        List<LeaveApplication> leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(
+		Double totalAppliedLeave=0.0;
+		if (!leaveApplicationList.isEmpty()) {
+			Double totalAppliedJoinLeave=0.0;
+			for (LeaveApplication l : leaveApplicationList) {
+				totalAppliedJoinLeave += l.getJoinLeaveDay();
+			}
+			totalAppliedLeave = totalAppliedJoinLeave;
+			
+		}
+        
+         leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndLeaveTypeAndStatus(
                 leaveApplication.getEmployee(), leaveApplication.getLeaveType(), APPLIED);
-
+        
         // check applied leave balance
         if (!leaveApplicationList.isEmpty()) {
-            Double totalAppliedLeave = 0.0;
             for (LeaveApplication l : leaveApplicationList) {
                 totalAppliedLeave += l.getNoofday();
             }
             Double availableLeave = leaveBalance - totalAppliedLeave;
+            
+            
             // check leave requested day is < leave balance
             if (noOfDay < availableLeave) {
                 throw new BadRequestAlertException("You have enough leave balance, can't take join leave", ENTITY_NAME,
@@ -216,14 +256,16 @@ public class LeaveApplicationResource {
 
         }
         // check leave requested day is < leave balance
-        else if  (noOfDay < leaveBalance) {
+        else if  (leaveBalance >= noOfDay+totalAppliedLeave) {
             throw new BadRequestAlertException("You have enough leave balance, can't take join leave", ENTITY_NAME,
                     "canNotJoinLeave");
         }
-
+        if(totalAppliedLeave >= leaveBalance){
+        	 throw new CustomParameterizedException("You don't have leave balance of this type of leave application \n Because you were applied "+totalAppliedLeave+" leave", "custom.error");
+        }
         Double joinLeaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),
                 leaveTypeRepository.findOneByCode(leaveApplication.getJoinLeave()));
-        // check he/she has join leave balance
+        // check he/she has join leave balance 
         if (joinLeaveBalance == null) {
             throw new BadRequestAlertException(
                     "You have not been assigned join leave type balance, \nPlease Contact to Authority", ENTITY_NAME,
@@ -232,7 +274,7 @@ public class LeaveApplicationResource {
 
         leaveApplicationList = leaveApplicationRepository.findAllByEmployeeAndStatusAndJoinLeave(employee, APPLIED,
                 leaveApplication.getJoinLeave());
-
+        leaveApplication.setJoinLeaveDay(leaveApplication.getJoinLeaveDay() + totalAppliedLeave);
         if (!leaveApplicationList.isEmpty()) {
             Double totalAppliedJoinLeave = 0.0;
             for (LeaveApplication l : leaveApplicationList) {
@@ -262,7 +304,12 @@ public class LeaveApplicationResource {
                 Double maxDay = leaveRuleAndMaxMinLeaveRepository.findMaxLeaveLimitByLeaveRuleAndEmployeeType(leaveRule,
                         EmpType2.MANAGEMENT);
                 Double minDay = leaveRuleAndMaxMinLeaveRepository.findMinLeaveLimitByLeaveRuleAndEmployeeType(leaveRule,
-                        EmpType2.EDUCATIONAL);
+                        EmpType2.MANAGEMENT);
+                if(maxDay ==null && minDay == null) {
+               	 System.err.println("maxDay: "+maxDay);
+               	 System.err.println("minDay: "+minDay);
+               	 throw new CustomParameterizedException("Problem in leave Rule\nPlease inform to Authority", "custom.error");
+                }
                 if (intervalDays > maxDay) {
                     throw new BadRequestAlertException("You reached max leave limit", ENTITY_NAME, "maxLeaveLimit");
                 } else if (intervalDays < minDay) {
@@ -271,9 +318,18 @@ public class LeaveApplicationResource {
                 }
 
             } else {
-                if (intervalDays > leaveRuleAndMaxMinLeaves.get(0).getMaxLeaveLimit()) {
+            	 Double maxDay = leaveRuleAndMaxMinLeaveRepository.findMaxLeaveLimitByLeaveRuleAndEmployeeType(leaveRule,
+                         EmpType2.EDUCATIONAL);
+                 Double minDay = leaveRuleAndMaxMinLeaveRepository.findMinLeaveLimitByLeaveRuleAndEmployeeType(leaveRule,
+                         EmpType2.EDUCATIONAL);
+                 if(maxDay ==null && minDay == null) {
+                	 System.err.println("maxDay: "+maxDay);
+                	 System.err.println("minDay: "+minDay);
+                	 throw new CustomParameterizedException("Problem in leave Rule\nPlease inform to Authority", "custom.error");
+                 }
+                if (intervalDays > maxDay) {
                     throw new BadRequestAlertException("You reached max leave limit", ENTITY_NAME, "maxLeaveLimit");
-                } else if (intervalDays < leaveRuleAndMaxMinLeaves.get(0).getMinLeaveLimit()) {
+                } else if (intervalDays < minDay) {
                     throw new BadRequestAlertException("You can't take leave below some limit", ENTITY_NAME,
                             "minLeaveLimit");
                 }

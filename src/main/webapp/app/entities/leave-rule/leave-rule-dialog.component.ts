@@ -145,8 +145,6 @@ export class LeaveRuleDialogComponent implements OnInit {
 
     private onSaveSuccess(result: LeaveRule) {
         this.eventManager.broadcast({ name: 'leaveRuleListModification', content: 'OK'});
-        this.isSaving = false;
-        this.activeModal.dismiss(result);
         if (this.leaveRuleAndNoOfDay.employeeType + '' !== 'ALL') {
           this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL_WITH_VACATIONER'];
           this.saveLeaveRuleAndNoOfDay();
@@ -158,6 +156,11 @@ export class LeaveRuleDialogComponent implements OnInit {
             this.leaveRuleAndMaxMinLeave.employeeType = EmpType2['MANAGEMENT'];
             this.saveLeaveRuleAndMaxMinLeave();
             this.leaveRuleAndMaxMinLeave.employeeType = EmpType2['EDUCATIONAL'];
+            if (this.leaveRuleAndMaxMinLeaves && this.leaveRuleAndMaxMinLeaves.length > 1) {
+                this.leaveRuleAndMaxMinLeave.id = this.leaveRuleAndMaxMinLeaves[1].id;
+            } else {
+                this.leaveRuleAndMaxMinLeave.id = undefined;
+            }
             this.leaveRuleAndMaxMinLeave.maxLeaveLimit = this.leaveRuleAndMaxMinLeave.maxLeaveLimit1;
             this.leaveRuleAndMaxMinLeave.minLeaveLimit = this.leaveRuleAndMaxMinLeave.minLeaveLimit1;
           }
@@ -173,6 +176,8 @@ export class LeaveRuleDialogComponent implements OnInit {
           this.leaveRuleAndValidationType.level5 = this.leaveRuleAndValidationType.level51;
           this.leaveRuleAndValidationType.level6 = this.leaveRuleAndValidationType.level61;
           this.saveleaveRuleAndValidationType();
+          this.isSaving = false;
+          this.activeModal.dismiss(result);
     }
     saveleaveRuleAndValidationType() {
         this.isSaving = true;
