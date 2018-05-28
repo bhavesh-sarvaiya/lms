@@ -6,6 +6,8 @@ import { SERVER_API_URL } from '../../app.constants';
 import { LeaveRule } from './leave-rule.model';
 import { createRequestOption } from '../../shared';
 import { LeaveRuleAndNoOfDay } from '../leave-rule-and-no-of-day';
+import { LeaveRuleAndMaxMinLeave } from '../leave-rule-and-max-min-leave';
+import { LeaveRuleAndValidationType } from '../leave-rule-and-validation-type';
 
 export type EntityResponseType = HttpResponse<LeaveRule>;
 
@@ -17,15 +19,15 @@ export class LeaveRuleService {
 
     constructor(private http: HttpClient) { }
 
-    create(leaveRule: LeaveRule, leaveRuleAndNoOfDay: LeaveRuleAndNoOfDay[]): Observable<EntityResponseType> {
+    create(leaveRule: LeaveRule, leaveRuleAndNoOfDay: LeaveRuleAndNoOfDay[], leaveRuleAndMaxMinLeave: LeaveRuleAndMaxMinLeave[], leaveRuleAndValidationType: LeaveRuleAndValidationType[]): Observable<EntityResponseType> {
         leaveRule = this.convert(leaveRule);
-        return this.http.post<LeaveRule>(this.resourceUrl, {leaveRule, leaveRuleAndNoOfDay}, { observe: 'response' })
+        return this.http.post<LeaveRule>(this.resourceUrl, {leaveRule, leaveRuleAndNoOfDay, leaveRuleAndMaxMinLeave, leaveRuleAndValidationType}, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    update(leaveRule: LeaveRule,  leaveRuleAndNoOfDay: LeaveRuleAndNoOfDay[]): Observable<EntityResponseType> {
+    update(leaveRule: LeaveRule,  leaveRuleAndNoOfDay: LeaveRuleAndNoOfDay[],  leaveRuleAndMaxMinLeave: LeaveRuleAndMaxMinLeave[], leaveRuleAndValidationType: LeaveRuleAndValidationType[]): Observable<EntityResponseType> {
         leaveRule = this.convert(leaveRule);
-        return this.http.put<LeaveRule>(this.resourceUrl, {leaveRule, leaveRuleAndNoOfDay}, { observe: 'response' })
+        return this.http.put<LeaveRule>(this.resourceUrl, {leaveRule, leaveRuleAndNoOfDay, leaveRuleAndMaxMinLeave, leaveRuleAndValidationType}, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 

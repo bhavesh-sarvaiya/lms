@@ -135,130 +135,42 @@ export class LeaveRuleDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         this.leaveRuleAndNoOfDays = [];
-        if (this.leaveRuleAndNoOfDay.employeeType + '' !== 'ALL' && this.leaveRuleAndNoOfDay.employeeType !== undefined) {
+        if (this.leaveRuleAndNoOfDay.employeeType + '' === 'EDUCATIONAL_VACATIONER_NON') {
             this.leaveRuleAndNoOfDays.push({id: undefined, employeeType: EmpType1['EDUCATIONAL_WITH_VACATIONER'], noOfDay: this.leaveRuleAndNoOfDay.noOfDay, leaveRule: undefined});
             this.leaveRuleAndNoOfDays.push({id: undefined, employeeType: EmpType1['EDUCATIONAL_WITH_NON_VACATIONER'], noOfDay: this.leaveRuleAndNoOfDay.noOfDay2, leaveRule: undefined});
         } else {
             this.leaveRuleAndNoOfDays.push(this.leaveRuleAndNoOfDay);
         }
-        if (this.leaveRule.id !== undefined) {
-            this.subscribeToSaveResponse( this.leaveRuleService.update(this.leaveRule, this.leaveRuleAndNoOfDays));
+        this.leaveRuleAndMaxMinLeaves = [];
+        if (this.leaveRuleAndMaxMinLeave.employeeType + '' === 'MANAGEMENT_AND_EDUCATIONAL') {
+            this.leaveRuleAndMaxMinLeaves.push({id: undefined, employeeType:  EmpType2['MANAGEMENT'], maxLeaveLimit:  this.leaveRuleAndMaxMinLeave.maxLeaveLimit, minLeaveLimit:  this.leaveRuleAndMaxMinLeave.minLeaveLimit, maxLeaveLimit1: undefined});
+            this.leaveRuleAndMaxMinLeaves.push({id: undefined, employeeType: EmpType2['EDUCATIONAL'], maxLeaveLimit:  this.leaveRuleAndMaxMinLeave.maxLeaveLimit1, minLeaveLimit:  this.leaveRuleAndMaxMinLeave.minLeaveLimit1, maxLeaveLimit1: undefined});
+        }
+        else {
+            this.leaveRuleAndMaxMinLeaves.push(this.leaveRuleAndMaxMinLeave);
+        }
+        this.leaveRuleAndValidationTypes = [];
+        if (this.leaveRuleAndValidationType.validationType !== undefined) {
+        this.leaveRuleAndValidationTypes.push({id: undefined, employeeType: EmpType3['EDUCATIONAL'], validationType: this.leaveRuleAndValidationType.validationType, level1:  this.leaveRuleAndValidationType.level1, level2:  this.leaveRuleAndValidationType.level2, level3:  this.leaveRuleAndValidationType.level3, level4:  this.leaveRuleAndValidationType.level4});
+        }else {
+            this.leaveRuleAndValidationTypes.push({id: undefined, employeeType: undefined, validationType: undefined, level1:  this.leaveRuleAndValidationType.level1, level2:  this.leaveRuleAndValidationType.level2, level3:  this.leaveRuleAndValidationType.level3, level4:  this.leaveRuleAndValidationType.level4});
+        }
+        if (this.leaveRuleAndValidationType.validationType1 !== undefined) {
+        this.leaveRuleAndValidationTypes.push({id: undefined, employeeType: EmpType3['MANAGEMENT'], validationType: this.leaveRuleAndValidationType.validationType1, level1:  this.leaveRuleAndValidationType.level11, level2:  this.leaveRuleAndValidationType.level21, level3:  this.leaveRuleAndValidationType.level31, level4:  this.leaveRuleAndValidationType.level41, level5:  this.leaveRuleAndValidationType.level51, level6:  this.leaveRuleAndValidationType.level61});
         } else {
-           this.subscribeToSaveResponse(this.leaveRuleService.create(this.leaveRule, this.leaveRuleAndNoOfDays));
+            this.leaveRuleAndValidationTypes.push({id: undefined, employeeType: undefined, validationType: undefined, level1:  this.leaveRuleAndValidationType.level11, level2:  this.leaveRuleAndValidationType.level21, level3:  this.leaveRuleAndValidationType.level31, level4:  this.leaveRuleAndValidationType.level41, level5:  this.leaveRuleAndValidationType.level51, level6:  this.leaveRuleAndValidationType.level61});
+        }
+        if (this.leaveRule.id !== undefined) {
+          this.subscribeToSaveResponse( this.leaveRuleService.update(this.leaveRule, this.leaveRuleAndNoOfDays, this.leaveRuleAndMaxMinLeaves, this.leaveRuleAndValidationTypes));
+        } else {
+         this.subscribeToSaveResponse(this.leaveRuleService.create(this.leaveRule, this.leaveRuleAndNoOfDays, this.leaveRuleAndMaxMinLeaves, this.leaveRuleAndValidationTypes));
             }
-            console.log(this.leaveRuleAndNoOfDays);
     }
 
     private onSaveSuccess(result: LeaveRule) {
-       /* if (this.leaveRuleAndNoOfDay.employeeType + '' !== 'ALL' && this.leaveRuleAndNoOfDay.employeeType !== undefined) {
-            this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL_WITH_VACATIONER'];
-            this.saveLeaveRuleAndNoOfDay();
-            this.leaveRuleAndNoOfDay.noOfDay = this.leaveRuleAndNoOfDay.noOfDay2;
-            this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL_WITH_NON_VACATIONER'];
-        }
-        this.saveLeaveRuleAndNoOfDay();*/
-      /*  if (this.leaveRuleAndMaxMinLeave.employeeType + '' !== 'ALL') {
-            this.leaveRuleAndMaxMinLeave.employeeType = EmpType2['MANAGEMENT'];
-            this.saveLeaveRuleAndMaxMinLeave();
-            this.leaveRuleAndMaxMinLeave.employeeType = EmpType2['EDUCATIONAL'];
-            if (this.leaveRuleAndMaxMinLeaves && this.leaveRuleAndMaxMinLeaves.length > 1) {
-                this.leaveRuleAndMaxMinLeave.id = this.leaveRuleAndMaxMinLeaves[1].id;
-            } else {
-                this.leaveRuleAndMaxMinLeave.id = undefined;
-            }
-            this.leaveRuleAndMaxMinLeave.maxLeaveLimit = this.leaveRuleAndMaxMinLeave.maxLeaveLimit1;
-            this.leaveRuleAndMaxMinLeave.minLeaveLimit = this.leaveRuleAndMaxMinLeave.minLeaveLimit1;
-          }
-          this.saveLeaveRuleAndMaxMinLeave();
-          this.leaveRuleAndValidationType.employeeType = EmpType3['EDUCATIONAL'];
-          this.saveleaveRuleAndValidationType();
-          this.leaveRuleAndValidationType.employeeType = EmpType3['MANAGEMENT'];
-          this.leaveRuleAndValidationType.validationType = this.leaveRuleAndValidationType.validationType1;
-          this.leaveRuleAndValidationType.level1 = this.leaveRuleAndValidationType.level11;
-          this.leaveRuleAndValidationType.level2 = this.leaveRuleAndValidationType.level21;
-          this.leaveRuleAndValidationType.level3 = this.leaveRuleAndValidationType.level31;
-          this.leaveRuleAndValidationType.level4 = this.leaveRuleAndValidationType.level41;
-          this.leaveRuleAndValidationType.level5 = this.leaveRuleAndValidationType.level51;
-          this.leaveRuleAndValidationType.level6 = this.leaveRuleAndValidationType.level61;
-          this.saveleaveRuleAndValidationType();*/
           this.eventManager.broadcast({ name: 'leaveRuleListModification', content: 'OK'});
           this.isSaving = false;
           this.activeModal.dismiss(result);
-    }
-    saveleaveRuleAndValidationType() {
-        this.isSaving = true;
-        if (this.leaveRuleAndValidationType.id !== undefined) {
-            this.subscribeToSaveResponse3(
-                this.leaveRuleAndValidationTypeService.update(this.leaveRuleAndValidationType));
-        } else {
-            this.leaveRuleAndValidationType.leaveRule = this.leaveRule;
-            this.subscribeToSaveResponse3(
-                this.leaveRuleAndValidationTypeService.create(this.leaveRuleAndValidationType));
-        }
-    }
-    saveLeaveRuleAndNoOfDay() {
-        this.isSaving = true;
-        if (this.leaveRuleAndNoOfDay.id !== undefined) {
-            this.subscribeToSaveResponse1(
-                this.leaveRuleAndNoOfDayService.update(this.leaveRuleAndNoOfDay));
-        } else {
-            this.leaveRuleAndNoOfDay.leaveRule = this.leaveRule;
-            this.subscribeToSaveResponse1(
-                this.leaveRuleAndNoOfDayService.create(this.leaveRuleAndNoOfDay));
-        }
-    }
-    saveLeaveRuleAndMaxMinLeave() {
-        this.isSaving = true;
-        if (this.leaveRuleAndMaxMinLeave.id !== undefined) {
-            this.subscribeToSaveResponse2(
-                this.leaveRuleAndMaxMinLeaveService.update(this.leaveRuleAndMaxMinLeave));
-        } else {
-            this.leaveRuleAndMaxMinLeave.leaveRule = this.leaveRule;
-            this.subscribeToSaveResponse2(
-                this.leaveRuleAndMaxMinLeaveService.create(this.leaveRuleAndMaxMinLeave));
-        }
-    }
-    private subscribeToSaveResponse1(result: Observable<HttpResponse<LeaveRuleAndNoOfDay>>) {
-        result.subscribe((res: HttpResponse<LeaveRuleAndNoOfDay>) =>
-            this.onSaveSuccess1(res.body), (res: HttpErrorResponse) => this.onSaveError1());
-    }
-
-    private onSaveSuccess1(result: LeaveRuleAndNoOfDay) {
-        this.eventManager.broadcast({ name: 'leaveRuleAndNoOfDayListModification', content: 'OK'});
-        this.isSaving = false;
-        this.activeModal.dismiss(result);
-    }
-
-    private onSaveError1() {
-        this.isSaving = false;
-    }
-    private subscribeToSaveResponse2(result: Observable<HttpResponse<LeaveRuleAndMaxMinLeave>>) {
-        result.subscribe((res: HttpResponse<LeaveRuleAndMaxMinLeave>) =>
-            this.onSaveSuccess2(res.body), (res: HttpErrorResponse) => this.onSaveError2());
-    }
-
-    private onSaveSuccess2(result: LeaveRuleAndMaxMinLeave) {
-        this.eventManager.broadcast({ name: 'leaveRuleAndMaxMinLeaveListModification', content: 'OK'});
-        this.isSaving = false;
-        this.activeModal.dismiss(result);
-    }
-
-    private onSaveError2() {
-        this.isSaving = false;
-    }
-    private subscribeToSaveResponse3(result: Observable<HttpResponse<LeaveRuleAndValidationType>>) {
-        result.subscribe((res: HttpResponse<LeaveRuleAndValidationType>) =>
-            this.onSaveSuccess3(res.body), (res: HttpErrorResponse) => this.onSaveError3());
-    }
-
-    private onSaveSuccess3(result: LeaveRuleAndValidationType) {
-        this.eventManager.broadcast({ name: 'leaveRuleAndValidationTypeListModification', content: 'OK'});
-        this.isSaving = false;
-        this.activeModal.dismiss(result);
-    }
-
-    private onSaveError3() {
-        this.isSaving = false;
     }
     private subscribeToSaveResponse(result: Observable<HttpResponse<LeaveRule>>) {
         result.subscribe((res: HttpResponse<LeaveRule>) =>

@@ -1,6 +1,12 @@
 <div>
     <h2>
         <span jhiTranslate="lmsApp.leaveType.home.title">Leave Types</span>
+        <button class="btn btn-primary" (click)="exportExcel()">
+            <!-- <span class="fa fa-plus"></span> -->
+            <span >
+            Export Excel
+            </span>
+        </button>
         <button class="btn btn-primary float-right jh-create-entity create-leave-type" [routerLink]="['/', { outlets: { popup: ['leave-type-new'] } }]">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="lmsApp.leaveType.home.createLabel">

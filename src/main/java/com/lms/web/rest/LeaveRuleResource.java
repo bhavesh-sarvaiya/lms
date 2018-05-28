@@ -79,12 +79,22 @@ public class LeaveRuleResource {
             throw new CustomParameterizedException("This leave type already have leave rule\nSo please select other leave type", "custom.error");
         }
 
-        checkValidation(leaveRule,leaveRuleAndNoOfDay);
+        checkValidation(leaveRule,leaveRuleAndNoOfDay,leaveRuleAndMaxMinLeave, leaveRuleAndValidationType);
         LeaveRule result = leaveRuleRepository.save(leaveRule);
         if(result != null){
             for (int i = 0; i < leaveRuleAndNoOfDay.length;i++) {
             	leaveRuleAndNoOfDay[i].setLeaveRule(leaveRule);
                 leaveRuleAndNoOfDayRepository.save(leaveRuleAndNoOfDay[i]);     
+            }
+
+            for (int i = 0; i < leaveRuleAndMaxMinLeave.length;i++) {
+                leaveRuleAndMaxMinLeave[i].setLeaveRule(leaveRule);
+                leaveRuleAndMaxMinLeaveRepository.save(leaveRuleAndMaxMinLeave[i]);     
+            }
+
+            for (int i = 0; i < leaveRuleAndValidationType.length;i++) {
+                leaveRuleAndValidationType[i].setLeaveRule(leaveRule);
+                leaveRuleAndValidationTypeRepository.save(leaveRuleAndValidationType[i]);     
             }
         }
         return ResponseEntity.created(new URI("/api/leave-rules/" + result.getId()))
@@ -113,18 +123,29 @@ public class LeaveRuleResource {
         if (leaveRule.getId() == null) {
             return createLeaveRule(requestWrapperLeaveRule);
         }
-        checkValidation(leaveRule,leaveRuleAndNoOfDay);
+        checkValidation(leaveRule,leaveRuleAndNoOfDay,leaveRuleAndMaxMinLeave, leaveRuleAndValidationType);
         LeaveRule result = leaveRuleRepository.save(leaveRule);
         for (int i = 0; i < leaveRuleAndNoOfDay.length;i++) {
         	leaveRuleAndNoOfDay[i].setLeaveRule(leaveRule);
             leaveRuleAndNoOfDayRepository.save(leaveRuleAndNoOfDay[i]);     
         }
+
+        for (int i = 0; i < leaveRuleAndMaxMinLeave.length;i++) {
+        	leaveRuleAndMaxMinLeave[i].setLeaveRule(leaveRule);
+            leaveRuleAndMaxMinLeaveRepository.save(leaveRuleAndMaxMinLeave[i]);     
+        }
+
+        for (int i = 0; i < leaveRuleAndValidationType.length;i++) {
+        	leaveRuleAndValidationType[i].setLeaveRule(leaveRule);
+            leaveRuleAndValidationTypeRepository.save(leaveRuleAndValidationType[i]);     
+        }
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveRule.getId().toString()))
             .body(result);
     }
 
-    public void checkValidation(LeaveRule leaveRule, LeaveRuleAndNoOfDay[] leaveRuleAndNoOfDay){
+    public void checkValidation(LeaveRule leaveRule, LeaveRuleAndNoOfDay[] leaveRuleAndNoOfDay, LeaveRuleAndMaxMinLeave leaveRuleAndMaxMinLeave[],  LeaveRuleAndValidationType leaveRuleAndValidationType[]){
         if(leaveRule.getLeave() == null){
             throw new CustomParameterizedException("Please select leave type", "custom.error");
         }
@@ -142,7 +163,12 @@ public class LeaveRuleResource {
                 throw new CustomParameterizedException("Leave type and join leave should be different","custom.error");
             }
         }
-
+        if(leaveRule.isCommulative()){
+            if(leaveRule.getCommulativeLimit() == null)
+                throw new CustomParameterizedException("Please enter commulative leave", "custom.error");
+            if(leaveRule.getCommulativeLimit() < 1)
+             throw new CustomParameterizedException("Commulative leave shlould be greater than 0", "custom.error");
+        }
         if(leaveRuleAndNoOfDay.length == 2){
             if(leaveRuleAndNoOfDay[0].getNoOfDay() == null){
                 throw new CustomParameterizedException("Please Enter allocation day for vacationar","custom.error");
@@ -152,7 +178,7 @@ public class LeaveRuleResource {
             }
 
             if(leaveRuleAndNoOfDay[0].getNoOfDay() < 1){
-                throw new CustomParameterizedException("Please Enter valid allocation day for vacationar","custom.error");
+                throw new CustomParameterizedException("Allocation day shlould be greater than 0 for vacationar","custom.error");
             }
 
             if(leaveRuleAndNoOfDay[1].getNoOfDay() < 1){
@@ -168,25 +194,119 @@ public class LeaveRuleResource {
             }
         }
         else if(leaveRuleAndNoOfDay.length == 1){
+            if(leaveRuleAndNoOfDay[0].getEmployeeType() == null){
+                throw new CustomParameterizedException("Please select employee type for allocation day","custom.error");
+            }
             if(leaveRuleAndNoOfDay[0].getNoOfDay() == null){
                 throw new CustomParameterizedException("Please Enter allocation day","custom.error");
             }
             if(leaveRuleAndNoOfDay[0].getNoOfDay() < 1){
-                throw new CustomParameterizedException("Please Enter valid allocation day","custom.error");
+                throw new CustomParameterizedException("Allocation day shlould be greater than 0","custom.error");
             }
             if(leaveRuleAndNoOfDay[0].getNoOfDay().toString().matches("^\\d+$")){
                 throw new CustomParameterizedException("Please Enter valid allocation day", "custom.error");
             }
         } else{
-                throw new CustomParameterizedException("Something went wrong in Noof day", "custom.error");
+                throw new CustomParameterizedException("Something went wrong in allocation day", "custom.error");
         }
+
+        if(leaveRuleAndMaxMinLeave.length == 2){
+            if(leaveRuleAndMaxMinLeave[0].getMaxLeaveLimit() == null){
+                throw new CustomParameterizedException("Please Enter max leave limit for management","custom.error");
+            }
+            if(leaveRuleAndMaxMinLeave[0].getMinLeaveLimit() == null){
+                throw new CustomParameterizedException("Please Enter min leave limit for management","custom.error");
+            }
+
+            if(leaveRuleAndMaxMinLeave[0].getMinLeaveLimit() < 1){
+                throw new CustomParameterizedException("Minimum leave limit should be more than 0 for management","custom.error");
+            }
+
+            if(leaveRuleAndMaxMinLeave[0].getMinLeaveLimit() >= leaveRuleAndMaxMinLeave[0].getMaxLeaveLimit()){
+                throw new CustomParameterizedException("Maximum leave limit should be more than Minimum leave limit for management","custom.error");
+            }
+
+            if(leaveRuleAndMaxMinLeave[1].getMaxLeaveLimit() == null){
+                throw new CustomParameterizedException("Please Enter max leave limit for educational","custom.error");
+            }
+            if(leaveRuleAndMaxMinLeave[1].getMinLeaveLimit() == null){
+                throw new CustomParameterizedException("Please Enter min leave limit for educational","custom.error");
+            }
+
+            if(leaveRuleAndMaxMinLeave[1].getMinLeaveLimit() < 1){
+                throw new CustomParameterizedException("Minimum leave limit should be more than 0 for educational","custom.error");
+            }
+
+            if(leaveRuleAndMaxMinLeave[1].getMinLeaveLimit() >= leaveRuleAndMaxMinLeave[1].getMaxLeaveLimit()){
+                throw new CustomParameterizedException("Maximum leave limit should be more than Minimum leave limit for educational","custom.error");
+            }
+           
+           
+        }
+        else if(leaveRuleAndMaxMinLeave.length == 1){
+            if(leaveRuleAndMaxMinLeave[0].getEmployeeType() == null){
+                throw new CustomParameterizedException("Please select employee type for leave can take at a time","custom.error");
+            }
+
+            if(leaveRuleAndMaxMinLeave[0].getMaxLeaveLimit() == null){
+                throw new CustomParameterizedException("Please Enter max leave limit","custom.error");
+            }
+            if(leaveRuleAndMaxMinLeave[0].getMinLeaveLimit() == null){
+                throw new CustomParameterizedException("Please Enter min leave limit","custom.error");
+            }
+
+            if(leaveRuleAndMaxMinLeave[0].getMinLeaveLimit() < 1){
+                throw new CustomParameterizedException("Minimum leave limit should be more than 0","custom.error");
+            }
+
+            if(leaveRuleAndMaxMinLeave[0].getMinLeaveLimit() >= leaveRuleAndMaxMinLeave[0].getMaxLeaveLimit()){
+                throw new CustomParameterizedException("Maximum leave limit should be more than Minimum leave limit","custom.error");
+            }
+
+           
+        } else{
+                throw new CustomParameterizedException("Something went wrong in leave can take at a time", "custom.error");
+        }
+
+        if(leaveRuleAndValidationType.length == 2){
+            if(leaveRuleAndValidationType[0].getValidationType() == null){
+                throw new CustomParameterizedException("Please select validation type in educational","custom.error");
+            }
+            if(leaveRuleAndValidationType[0].getLevel1() == null){
+                throw new CustomParameterizedException("Please enter level1 value in educational","custom.error");
+            }
+
+            if(leaveRuleAndValidationType[1].getValidationType() == null){
+                throw new CustomParameterizedException("Please select validation type in management","custom.error");
+            }
+            if(leaveRuleAndValidationType[1].getLevel1() == null){
+                throw new CustomParameterizedException("Please enter level1 value in management","custom.error");
+            }
+           
+        }else{
+            throw new CustomParameterizedException("Something went wrong in Validation type", "custom.error");
+    }
+
         if(leaveRule.getId() != null){
-			List<LeaveRuleAndNoOfDay> leaveRuleAndNoOfDays = leaveRuleAndNoOfDayRepository
-					.findAllByLeaveRule(leaveRule);
-			for (LeaveRuleAndNoOfDay entity : leaveRuleAndNoOfDays) {
-				leaveRuleAndNoOfDayRepository.delete(entity);
-			}
+            List<LeaveRuleAndNoOfDay> leaveRuleAndNoOfDays = leaveRuleAndNoOfDayRepository
+                    .findAllByLeaveRule(leaveRule);
+            for (LeaveRuleAndNoOfDay entity : leaveRuleAndNoOfDays) {
+                leaveRuleAndNoOfDayRepository.delete(entity);
+            }
+
+            List<LeaveRuleAndMaxMinLeave> leaveRuleAndMaxMinLeaves = leaveRuleAndMaxMinLeaveRepository
+                    .findAllByLeaveRule(leaveRule);
+            for (LeaveRuleAndMaxMinLeave entity : leaveRuleAndMaxMinLeaves) {
+                leaveRuleAndMaxMinLeaveRepository.delete(entity);
+            }
+
+            List<LeaveRuleAndValidationType> leaveRuleAndValidationTypes = leaveRuleAndValidationTypeRepository
+                    .findAllByLeaveRule(leaveRule);
+            for (LeaveRuleAndValidationType entity : leaveRuleAndValidationTypes) {
+                leaveRuleAndValidationTypeRepository.delete(entity);
+            }
         }
+
     }
 
 

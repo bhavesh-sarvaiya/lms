@@ -76,8 +76,6 @@ public class LeaveApplicationResource {
     private final EmployeeRepository employeeRepository;
     private final LeaveRuleRepository leaveRuleRepository;
     private final LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository;
-    private final LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository;
-    private final LeaveRuleAndValidationTypeRepository leaveRuleAndValidationTypeRepository;
     private final UserRepository userRepository;
     private final LeaveBalanceRepository leaveBalanceRepository;
     private final LeaveTypeRepository leaveTypeRepository;
@@ -86,16 +84,13 @@ public class LeaveApplicationResource {
     		EmployeeRepository employeeRepository,LeaveBalanceRepository leaveBalanceRepository, 
     		UserRepository userRepository,LeaveApplicationHistoryRepository leaveApplicationHistoryRepository,
     		LeaveRuleRepository leaveRuleRepository,LeaveRuleAndMaxMinLeaveRepository leaveRuleAndMaxMinLeaveRepository,
-    		LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository,LeaveRuleAndValidationTypeRepository 
-    		leaveRuleAndValidationTypeRepository,LeaveTypeRepository leaveTypeRepository) {
+    	LeaveTypeRepository leaveTypeRepository) {
         this.leaveApplicationRepository = leaveApplicationRepository;
         this.employeeRepository=employeeRepository;
         this.leaveBalanceRepository = leaveBalanceRepository;
         this.userRepository = userRepository;
         this.leaveApplicationHistoryRepository = leaveApplicationHistoryRepository;
         this.leaveRuleAndMaxMinLeaveRepository = leaveRuleAndMaxMinLeaveRepository;
-        this.leaveRuleAndNoOfDayRepository = leaveRuleAndNoOfDayRepository;
-        this.leaveRuleAndValidationTypeRepository = leaveRuleAndValidationTypeRepository;
         this.leaveRuleRepository = leaveRuleRepository;
         this.leaveTypeRepository = leaveTypeRepository;
     }
@@ -521,7 +516,7 @@ public class LeaveApplicationResource {
         List<LeaveApplication> list = new ArrayList<>();
         String user= SecurityUtils.getCurrentUserLogin().get();
         System.out.println("\n\n####User: "+user);
-        if(user.equals("admin")) {
+        if(status.equalsIgnoreCase("all")) {
             list=leaveApplicationRepository.findAll();// all for admin
         }
         else 

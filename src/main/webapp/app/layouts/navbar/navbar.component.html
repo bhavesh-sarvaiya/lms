@@ -215,7 +215,10 @@
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                   <span *ngIf="!getImageUrl()">
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    <span>
+                    <span *ngIf="account" style="
+                    font-size: 20px;
+                    color: #d7f0ff;
+                ">
                       {{account.login}}
                     </span>
                   </span>

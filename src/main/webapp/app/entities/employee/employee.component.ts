@@ -8,6 +8,7 @@ import { Employee } from './employee.model';
 import { EmployeeService } from './employee.service';
 import { ITEMS_PER_PAGE, Principal } from '../../shared';
 import * as _ from 'lodash';
+import * as XLSX from 'xlsx';
 
 @Component({
     selector: 'jhi-employee',
@@ -74,6 +75,22 @@ currentAccount: any;
             this.employees = this.employees1;
         }
     }
+    exportExcel() {
+        /* generate worksheet */
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.employees);
+
+        /* generate workbook and add the worksheet */
+        const today = new Date();
+        const dd = today.getDate();
+        const mm = today.getMonth() + 1; //January is 0!
+        const yyyy = today.getFullYear();
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'employee');
+        const name = 'employee_' + new Date().toString().slice(4, 24).replace(/ /g, '_')  + '.xlsx';
+        /* save to file */
+        XLSX.writeFile(wb, name);
+    }
+
     loadAll() {
         this.employeeService.query({
             page: this.page - 1,

@@ -6,6 +6,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { LeaveType } from './leave-type.model';
 import { LeaveTypeService } from './leave-type.service';
 import { Principal } from '../../shared';
+import * as XLSX from 'xlsx';
 
 @Component({
     selector: 'jhi-leave-type',
@@ -31,6 +32,17 @@ leaveTypes: LeaveType[];
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
+    }
+    exportExcel() {
+        /* generate worksheet */
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.leaveTypes);
+
+        /* generate workbook and add the worksheet */
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'LeaveType');
+        const name = 'LeaveType_' + new Date().toString().slice(4, 24).replace(/ /g, '_')  + '.xlsx';
+        /* save to file */
+        XLSX.writeFile(wb, name);
     }
     ngOnInit() {
         this.loadAll();
