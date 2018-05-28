@@ -134,25 +134,30 @@ export class LeaveRuleDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.leaveRule.id !== undefined) {
-            this.subscribeToSaveResponse(
-                this.leaveRuleService.update(this.leaveRule));
+        this.leaveRuleAndNoOfDays = [];
+        if (this.leaveRuleAndNoOfDay.employeeType + '' !== 'ALL' && this.leaveRuleAndNoOfDay.employeeType !== undefined) {
+            this.leaveRuleAndNoOfDays.push({id: undefined, employeeType: EmpType1['EDUCATIONAL_WITH_VACATIONER'], noOfDay: this.leaveRuleAndNoOfDay.noOfDay, leaveRule: undefined});
+            this.leaveRuleAndNoOfDays.push({id: undefined, employeeType: EmpType1['EDUCATIONAL_WITH_NON_VACATIONER'], noOfDay: this.leaveRuleAndNoOfDay.noOfDay2, leaveRule: undefined});
         } else {
-            this.subscribeToSaveResponse(
-                this.leaveRuleService.create(this.leaveRule));
+            this.leaveRuleAndNoOfDays.push(this.leaveRuleAndNoOfDay);
+        }
+        if (this.leaveRule.id !== undefined) {
+            this.subscribeToSaveResponse( this.leaveRuleService.update(this.leaveRule, this.leaveRuleAndNoOfDays));
+        } else {
+           this.subscribeToSaveResponse(this.leaveRuleService.create(this.leaveRule, this.leaveRuleAndNoOfDays));
             }
+            console.log(this.leaveRuleAndNoOfDays);
     }
 
     private onSaveSuccess(result: LeaveRule) {
-        this.eventManager.broadcast({ name: 'leaveRuleListModification', content: 'OK'});
-        if (this.leaveRuleAndNoOfDay.employeeType + '' !== 'ALL') {
-          this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL_WITH_VACATIONER'];
-          this.saveLeaveRuleAndNoOfDay();
-          this.leaveRuleAndNoOfDay.noOfDay = this.leaveRuleAndNoOfDay.noOfDay2;
-          this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL_WITH_NON_VACATIONER'];
+       /* if (this.leaveRuleAndNoOfDay.employeeType + '' !== 'ALL' && this.leaveRuleAndNoOfDay.employeeType !== undefined) {
+            this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL_WITH_VACATIONER'];
+            this.saveLeaveRuleAndNoOfDay();
+            this.leaveRuleAndNoOfDay.noOfDay = this.leaveRuleAndNoOfDay.noOfDay2;
+            this.leaveRuleAndNoOfDay.employeeType = EmpType1['EDUCATIONAL_WITH_NON_VACATIONER'];
         }
-        this.saveLeaveRuleAndNoOfDay();
-        if (this.leaveRuleAndMaxMinLeave.employeeType + '' !== 'ALL') {
+        this.saveLeaveRuleAndNoOfDay();*/
+      /*  if (this.leaveRuleAndMaxMinLeave.employeeType + '' !== 'ALL') {
             this.leaveRuleAndMaxMinLeave.employeeType = EmpType2['MANAGEMENT'];
             this.saveLeaveRuleAndMaxMinLeave();
             this.leaveRuleAndMaxMinLeave.employeeType = EmpType2['EDUCATIONAL'];
@@ -175,7 +180,8 @@ export class LeaveRuleDialogComponent implements OnInit {
           this.leaveRuleAndValidationType.level4 = this.leaveRuleAndValidationType.level41;
           this.leaveRuleAndValidationType.level5 = this.leaveRuleAndValidationType.level51;
           this.leaveRuleAndValidationType.level6 = this.leaveRuleAndValidationType.level61;
-          this.saveleaveRuleAndValidationType();
+          this.saveleaveRuleAndValidationType();*/
+          this.eventManager.broadcast({ name: 'leaveRuleListModification', content: 'OK'});
           this.isSaving = false;
           this.activeModal.dismiss(result);
     }

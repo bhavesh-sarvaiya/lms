@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,6 +38,7 @@ import com.lms.service.MailService;
 import com.lms.service.UserService;
 import com.lms.service.dto.UserDTO;
 import com.lms.web.rest.errors.BadRequestAlertException;
+import com.lms.web.rest.errors.CustomParameterizedException;
 import com.lms.web.rest.errors.EmailAlreadyUsedException;
 import com.lms.web.rest.errors.LoginAlreadyUsedException;
 import com.lms.web.rest.util.HeaderUtil;
@@ -88,6 +90,8 @@ public class EmployeeResource {
 		if (employee.getId() != null) {
 			throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME, "idexists");
 		}
+		
+		checkValidation(employee);
 		Set<String> roles = new HashSet<>();
 		roles.add("ROLE_USER");
 		UserDTO userDTO = new UserDTO();
@@ -129,6 +133,7 @@ public class EmployeeResource {
 		if (employee.getId() == null) {
 			return createEmployee(employee);
 		}
+		checkValidation(employee);
 		User user = userRepository.findOneById(employee.getUser().getId());
 		user.setEmail(employee.getUser().getEmail());
 		user.setLogin(employee.getUser().getLogin());
@@ -136,6 +141,67 @@ public class EmployeeResource {
 		userRepository.save(user);
 		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, employee.getId().toString()))
 				.body(result);
+	}
+
+	public void checkValidation(Employee employee){
+		if(employee.getUser().getLogin().trim().equals("")){
+			throw new CustomParameterizedException("Please enter employee enrollment no", "custom.error");
+		}
+		if(employee.getFirstName().trim().equals("")){
+			throw new CustomParameterizedException("Please enter first name", "custom.error");
+		}
+		if(employee.getLastName().trim().equals("")){
+			throw new CustomParameterizedException("Please enter last name", "custom.error");
+		}
+		if(employee.getGender() == null){
+			throw new CustomParameterizedException("Please select gender", "custom.error");
+		}
+		if(employee.getDepartment() == null){
+			throw new CustomParameterizedException("Please select departmnet", "custom.error");
+		}
+		if(employee.getPost() == null){
+			throw new CustomParameterizedException("Please select post", "custom.error");
+		}
+		if(employee.getAddress().trim().equals("")){
+			throw new CustomParameterizedException("Please enter address", "custom.error");
+		}
+		if(employee.getCity().trim().equals("")){
+			throw new CustomParameterizedException("Please enter city name", "custom.error");
+		}
+		if(employee.getState().trim().equals("")){
+			throw new CustomParameterizedException("Please enter state name", "custom.error");
+		}
+		if(employee.getPincode().trim().equals("")){
+			throw new CustomParameterizedException("Please enter pincode", "custom.error");
+		}
+		if(employee.getUser().getEmail().trim().length() < 5){
+			throw new CustomParameterizedException("Email length should be greater than 5", "custom.error");
+		}
+		if(!employee.getUser().getEmail().trim().matches("^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$")){
+			throw new CustomParameterizedException("Please enter valid email address", "custom.error");
+		}
+		if(employee.getMobileNumber() != null && !employee.getMobileNumber().matches("^\\d+$")){
+			throw new CustomParameterizedException("Please enter only number in mobile numbber", "custom.error");
+		}
+		
+		if(employee.getDob() == null){
+			throw new CustomParameterizedException("Please enter Date of birth", "custom.error");
+		}
+		if(employee.getDob().isEqual(LocalDate.now()) || employee.getDob().isAfter(LocalDate.now())){
+			throw new CustomParameterizedException("Please enter Valid Date of birth\n it's should be less than today", "custom.error");
+		}
+		if(employee.getJoinDate() == null){
+			throw new CustomParameterizedException("Please enter join date", "custom.error");
+		}
+		if(employee.getDob().isEqual(employee.getJoinDate()) || employee.getDob().isAfter(employee.getJoinDate()) ){
+			throw new CustomParameterizedException("Please enter Valid Date of birth\n it's should be less than join date", "custom.error");
+		}
+		if(employee.getDob().isEqual(employee.getJoinDate()) || employee.getDob().isAfter(employee.getJoinDate()) ){
+			throw new CustomParameterizedException("Please enter Valid Date of birth\n it's should be less than join date", "custom.error");
+		}
+
+
+
 	}
 
 	/**

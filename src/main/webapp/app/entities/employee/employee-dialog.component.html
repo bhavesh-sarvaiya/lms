@@ -50,7 +50,7 @@
 									required. </small>
 							</div>
 						<!-- </div> -->
-						<!-- <div class="form-group"> -->
+						<!-- <div class="form-group">
 							<label class="form-control-label"
 								jhiTranslate="lmsApp.employee.middleName" for="field_middleName">Middle
 								Name</label> <input type="text" class="form-control" name="middleName"
@@ -62,7 +62,7 @@
 									jhiTranslate="entity.validation.required"> This field is
 									required. </small>
 							</div>
-						<!-- </div> -->
+						</div> -->
 						<!-- <div class="form-group"> -->
 							<label class="form-control-label"
 								jhiTranslate="lmsApp.employee.lastName" for="field_lastName">Last
@@ -100,7 +100,7 @@
 							<label class="form-control-label"
 								jhiTranslate="lmsApp.employee.department" for="field_department">Department</label>
 							<select class="form-control" id="field_department"
-								name="department" [(ngModel)]="employee.department">
+								name="department" [(ngModel)]="employee.department" required>
 								<option [ngValue]="null"></option>
 								<option
 									[ngValue]="departmentOption.id === employee.department?.id ? employee.department : departmentOption"
@@ -260,7 +260,7 @@
 					<!-- <div class="form-group"> -->
 						<label class="form-control-label"
 							jhiTranslate="lmsApp.employee.email" for="field_email">Email</label>
-						<input type="text" class="form-control" name="email"
+						<input type="email" class="form-control" name="email"
 							id="field_email" [(ngModel)]="employee.user.email" required
 							maxlength="255" />
 						<div
@@ -279,30 +279,31 @@
 					<!-- <div class="form-group"> -->
 						<label class="form-control-label"
 							jhiTranslate="lmsApp.employee.mobileNumber"
-							for="field_mobileNumber">Mobile Number</label> <input type="text"
-							class="form-control" name="mobileNumber" id="field_mobileNumber"
-							[(ngModel)]="employee.mobileNumber" required />
-						<div
+							for="field_mobileNumber">Mobile Number</label> <input type="number"
+							class="form-control" name="mobileNumber" maxlength="10" id="field_mobileNumber"
+							oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+							[(ngModel)]="employee.mobileNumber" />
+						<!-- <div
 							[hidden]="!(editForm.controls.mobileNumber?.dirty && editForm.controls.mobileNumber?.invalid)">
 							<small class="form-text text-danger"
 								[hidden]="!editForm.controls.mobileNumber?.errors?.required"
 								jhiTranslate="entity.validation.required"> This field is
 								required. </small>
-						</div>
+						</div> -->
 					<!-- </div> -->
 	
 					<!-- <div class="form-group"> -->
 						<label class="form-control-label"
 							jhiTranslate="lmsApp.employee.phoneNumber" for="field_phoneNumber">Phone
 							Number</label> <input type="text" class="form-control" name="phoneNumber"
-							id="field_phoneNumber" [(ngModel)]="employee.phoneNumber" required />
-						<div
+							id="field_phoneNumber" [(ngModel)]="employee.phoneNumber" />
+						<!-- <div
 							[hidden]="!(editForm.controls.phoneNumber?.dirty && editForm.controls.phoneNumber?.invalid)">
 							<small class="form-text text-danger"
 								[hidden]="!editForm.controls.phoneNumber?.errors?.required"
 								jhiTranslate="entity.validation.required"> This field is
 								required. </small>
-						</div>
+						</div> -->
 					<!-- </div> -->
 	
 					<!-- <div class="form-group"> -->
@@ -357,7 +358,7 @@
 						<div class="input-group">
 							<input id="field_retiredDate" type="text" class="form-control"
 								name="retiredDate" ngbDatepicker  #retiredDateDp="ngbDatepicker"
-								[(ngModel)]="employee.retiredDate" required /> <span
+								[(ngModel)]="employee.retiredDate" /> <span
 								class="input-group-append">
 								<button type="button" class="btn btn-secondary"
 									(click)="retiredDateDp.toggle()">
@@ -365,13 +366,13 @@
 								</button>
 							</span>
 						</div>
-						<div
+						<!-- <div
 							[hidden]="!(editForm.controls.retiredDate?.dirty && editForm.controls.retiredDate?.invalid)">
 							<small class="form-text text-danger"
 								[hidden]="!editForm.controls.retiredDate?.errors?.required"
 								jhiTranslate="entity.validation.required"> This field is
 								required. </small>
-						</div>
+						</div> -->
 					<!-- </div> -->
 	
 				</div>
@@ -382,35 +383,35 @@
 							for="field_fatherHusbandName">Father Husband Name</label> <input
 							type="text" class="form-control" name="fatherHusbandName"
 							id="field_fatherHusbandName"
-							[(ngModel)]="employee.fatherHusbandName" required />
-						<div
+							[(ngModel)]="employee.fatherHusbandName"  />
+						<!-- <div
 							[hidden]="!(editForm.controls.fatherHusbandName?.dirty && editForm.controls.fatherHusbandName?.invalid)">
 							<small class="form-text text-danger"
 								[hidden]="!editForm.controls.fatherHusbandName?.errors?.required"
 								jhiTranslate="entity.validation.required"> This field is
 								required. </small>
-						</div>
+						</div> -->
 					<!-- </div> -->
 					<!-- <div class="form-group"> -->
 						<label class="form-control-label"
 							jhiTranslate="lmsApp.employee.qualification"
 							for="field_qualification">Qualification</label> <input type="text"
 							class="form-control" name="qualification" id="field_qualification"
-							[(ngModel)]="employee.qualification" required />
-						<div
+							[(ngModel)]="employee.qualification"  />
+						<!-- <div
 							[hidden]="!(editForm.controls.qualification?.dirty && editForm.controls.qualification?.invalid)">
 							<small class="form-text text-danger"
 								[hidden]="!editForm.controls.qualification?.errors?.required"
 								jhiTranslate="entity.validation.required"> This field is
 								required. </small>
-						</div>
+						</div> -->
 					<!-- </div> -->
 	
 					<!-- <div class="form-group"> -->
 						<label class="form-control-label"
 							jhiTranslate="lmsApp.employee.bloodGroup" for="field_bloodGroup">Blood
 							Group</label> <select class="form-control" name="bloodGroup"
-							[(ngModel)]="employee.bloodGroup" id="field_bloodGroup" required>
+							[(ngModel)]="employee.bloodGroup" id="field_bloodGroup" >
 							<option value="APOSITIVE">{{'lmsApp.BloodGroup.APOSITIVE'
 								| translate}}</option>
 							<option value="OPOSITIVE">{{'lmsApp.BloodGroup.OPOSITIVE'
@@ -428,13 +429,13 @@
 							<option value="ABNEGATIVE">{{'lmsApp.BloodGroup.ABNEGATIVE'
 								| translate}}</option>
 						</select>
-						<div
+						<!-- <div
 							[hidden]="!(editForm.controls.bloodGroup?.dirty && editForm.controls.bloodGroup?.invalid)">
 							<small class="form-text text-danger"
 								[hidden]="!editForm.controls.bloodGroup?.errors?.required"
 								jhiTranslate="entity.validation.required"> This field is
 								required. </small>
-						</div>
+						</div> -->
 					<!-- </div> -->
 					<!-- <div class="form-group"> -->
 						<label class="form-control-label"
@@ -442,7 +443,7 @@
 							for="field_maritalStatus">Marital Status</label> <select
 							class="form-control" name="maritalStatus"
 							[(ngModel)]="employee.maritalStatus" id="field_maritalStatus"
-							required>
+							>
 							<option value="MARRIED">{{'lmsApp.MaritalStatus.MARRIED'
 								| translate}}</option>
 							<option value="UNMMARIED">{{'lmsApp.MaritalStatus.UNMMARIED'
@@ -450,13 +451,13 @@
 							<option value="DIVORCED">{{'lmsApp.MaritalStatus.DIVORCED'
 								| translate}}</option>
 						</select>
-						<div
+						<!-- <div
 							[hidden]="!(editForm.controls.maritalStatus?.dirty && editForm.controls.maritalStatus?.invalid)">
 							<small class="form-text text-danger"
 								[hidden]="!editForm.controls.maritalStatus?.errors?.required"
 								jhiTranslate="entity.validation.required"> This field is
 								required. </small>
-						</div>
+						</div> -->
 					<!-- </div> -->
 					
 					<!-- <div class="form-group"> -->
@@ -486,13 +487,10 @@
 						<label class="form-control-label"
 							jhiTranslate="lmsApp.employee.payband" for="field_payband">Payband</label>
 						<input type="number" class="form-control" name="payband"
-							id="field_payband" [(ngModel)]="employee.payband" required />
+							id="field_payband" [(ngModel)]="employee.payband" />
 						<div
 							[hidden]="!(editForm.controls.payband?.dirty && editForm.controls.payband?.invalid)">
 							<small class="form-text text-danger"
-								[hidden]="!editForm.controls.payband?.errors?.required"
-								jhiTranslate="entity.validation.required"> This field is
-								required. </small> <small class="form-text text-danger"
 								[hidden]="!editForm.controls.payband?.errors?.number"
 								jhiTranslate="entity.validation.number"> This field
 								should be a number. </small>
@@ -520,6 +518,7 @@
 		</div> 
 		
 	  </div>
+	  <jhi-alert-error></jhi-alert-error>
 	  <br>
 	  <div class="card">
 		<div class="card-block">

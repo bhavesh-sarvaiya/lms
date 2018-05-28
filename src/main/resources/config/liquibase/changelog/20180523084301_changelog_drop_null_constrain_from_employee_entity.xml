@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1527064993145-1">
+        <dropColumn columnName="middle_name" tableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1527064993145-2">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="blood_group" tableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1527064993145-3">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="father_husband_name" tableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1527064993145-4">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="marital_status" tableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1527064993145-5">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="mobile_number" tableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1527064993145-6">
+        <dropNotNullConstraint columnDataType="double precision" columnName="payband" tableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1527064993145-7">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="phone_number" tableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1527064993145-8">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="qualification" tableName="employee"/>
+    </changeSet>
+    <changeSet author="Bhavesh Sarvaiya (generated)" id="1527064993145-9">
+        <dropNotNullConstraint columnDataType="blob" columnName="retired_date" tableName="employee"/>
+    </changeSet>
+</databaseChangeLog>

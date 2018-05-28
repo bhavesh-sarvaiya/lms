@@ -6,12 +6,14 @@ import com.lms.domain.LeaveRuleAndMaxMinLeave;
 import com.lms.domain.LeaveRuleAndNoOfDay;
 import com.lms.domain.LeaveRuleAndValidationType;
 import com.lms.domain.LeaveType;
+import com.lms.domain.RequestWrapperLeaveRule;
 import com.lms.repository.LeaveRuleAndMaxMinLeaveRepository;
 import com.lms.repository.LeaveRuleAndNoOfDayRepository;
 import com.lms.repository.LeaveRuleAndValidationTypeRepository;
 import com.lms.repository.LeaveRuleRepository;
 import com.lms.repository.LeaveTypeRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
+import com.lms.web.rest.errors.CustomParameterizedException;
 import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -62,22 +64,29 @@ public class LeaveRuleResource {
      */
     @PostMapping("/leave-rules")
     @Timed
-    public ResponseEntity<LeaveRule> createLeaveRule(@Valid @RequestBody LeaveRule leaveRule) throws URISyntaxException {
-        log.debug("REST request to save LeaveRule : {}", leaveRule);
+    public ResponseEntity<LeaveRule> createLeaveRule(@RequestBody RequestWrapperLeaveRule requestWrapperLeaveRule) throws URISyntaxException {
+        LeaveRule leaveRule = requestWrapperLeaveRule.getLeaveRule();
+        LeaveRuleAndNoOfDay leaveRuleAndNoOfDay[]=requestWrapperLeaveRule.getLeaveRuleAndNoOfDay();
+        LeaveRuleAndMaxMinLeave leaveRuleAndMaxMinLeave[]=requestWrapperLeaveRule.getLeaveRuleAndMaxMinLeave();
+        LeaveRuleAndValidationType leaveRuleAndValidationType[]=requestWrapperLeaveRule.getLeaveRuleAndValidationType();
+        
+        log.debug("REST request to save LeaveRule : {}", leaveRule); 
         if (leaveRule.getId() != null) {
             throw new BadRequestAlertException("A new leaveRule cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        LeaveType leaveType = leaveRule.getLeave();
-        Set<LeaveType> s= leaveRule.getLeaveTypes();
-
-        for (LeaveType t : s) {
-            if(t.getCode().equals(leaveType.getCode())) {
-                throw new BadRequestAlertException("Leave type and join leave should be different", ENTITY_NAME,
-                "joinLeaveSame");
-            }
+        LeaveRule l = leaveRuleRepository.findOneByLeave(leaveRule.getLeave());
+        if(l != null){
+            throw new CustomParameterizedException("This leave type already have leave rule\nSo please select other leave type", "custom.error");
         }
 
+        checkValidation(leaveRule,leaveRuleAndNoOfDay);
         LeaveRule result = leaveRuleRepository.save(leaveRule);
+        if(result != null){
+            for (int i = 0; i < leaveRuleAndNoOfDay.length;i++) {
+            	leaveRuleAndNoOfDay[i].setLeaveRule(leaveRule);
+                leaveRuleAndNoOfDayRepository.save(leaveRuleAndNoOfDay[i]);     
+            }
+        }
         return ResponseEntity.created(new URI("/api/leave-rules/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -94,27 +103,92 @@ public class LeaveRuleResource {
      */
     @PutMapping("/leave-rules")
     @Timed
-    public ResponseEntity<LeaveRule> updateLeaveRule(@Valid @RequestBody LeaveRule leaveRule) throws URISyntaxException {
-        log.debug("REST request to update LeaveRule : {}", leaveRule);
+    public ResponseEntity<LeaveRule> updateLeaveRule(@RequestBody RequestWrapperLeaveRule requestWrapperLeaveRule) throws URISyntaxException {
+    	 LeaveRule leaveRule = requestWrapperLeaveRule.getLeaveRule();
+         LeaveRuleAndNoOfDay leaveRuleAndNoOfDay[]=requestWrapperLeaveRule.getLeaveRuleAndNoOfDay();
+         LeaveRuleAndMaxMinLeave leaveRuleAndMaxMinLeave[]=requestWrapperLeaveRule.getLeaveRuleAndMaxMinLeave();
+         LeaveRuleAndValidationType leaveRuleAndValidationType[]=requestWrapperLeaveRule.getLeaveRuleAndValidationType();
+         
+    	log.debug("REST request to update LeaveRule : {}", leaveRule);
         if (leaveRule.getId() == null) {
-            return createLeaveRule(leaveRule);
+            return createLeaveRule(requestWrapperLeaveRule);
         }
+        checkValidation(leaveRule,leaveRuleAndNoOfDay);
+        LeaveRule result = leaveRuleRepository.save(leaveRule);
+        for (int i = 0; i < leaveRuleAndNoOfDay.length;i++) {
+        	leaveRuleAndNoOfDay[i].setLeaveRule(leaveRule);
+            leaveRuleAndNoOfDayRepository.save(leaveRuleAndNoOfDay[i]);     
+        }
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveRule.getId().toString()))
+            .body(result);
+    }
 
+    public void checkValidation(LeaveRule leaveRule, LeaveRuleAndNoOfDay[] leaveRuleAndNoOfDay){
+        if(leaveRule.getLeave() == null){
+            throw new CustomParameterizedException("Please select leave type", "custom.error");
+        }
+        if(leaveRule.getLeaveFor() == null){
+            throw new CustomParameterizedException("Please select leave for", "custom.error");
+        }
+        if(leaveRule.getAllocationTimePeriod() == null){
+            throw new CustomParameterizedException("Please select allocation time period", "custom.error");
+        }
         LeaveType leaveType = leaveRule.getLeave();
         Set<LeaveType> s= leaveRule.getLeaveTypes();
 
         for (LeaveType t : s) {
             if(t.getCode().equals(leaveType.getCode())) {
-                throw new BadRequestAlertException("Leave type and join leave should be different", ENTITY_NAME,
-                "joinLeaveSame");
+                throw new CustomParameterizedException("Leave type and join leave should be different","custom.error");
             }
         }
 
-        LeaveRule result = leaveRuleRepository.save(leaveRule);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveRule.getId().toString()))
-            .body(result);
+        if(leaveRuleAndNoOfDay.length == 2){
+            if(leaveRuleAndNoOfDay[0].getNoOfDay() == null){
+                throw new CustomParameterizedException("Please Enter allocation day for vacationar","custom.error");
+            }
+            if(leaveRuleAndNoOfDay[1].getNoOfDay() == null){
+                throw new CustomParameterizedException("Please Enter allocation day for non-vacationar","custom.error");
+            }
+
+            if(leaveRuleAndNoOfDay[0].getNoOfDay() < 1){
+                throw new CustomParameterizedException("Please Enter valid allocation day for vacationar","custom.error");
+            }
+
+            if(leaveRuleAndNoOfDay[1].getNoOfDay() < 1){
+                throw new CustomParameterizedException("Please Enter valid allocation day for non-vacationar","custom.error");
+            }
+
+            if(leaveRuleAndNoOfDay[0].getNoOfDay().toString().matches("^\\d+$")){
+                throw new CustomParameterizedException("Please Enter valid allocation day for vacationar", "custom.error");
+            }
+
+            if(leaveRuleAndNoOfDay[1].getNoOfDay().toString().matches("^\\d+$")){
+                throw new CustomParameterizedException("Please Enter valid allocation day for non-vacationar", "custom.error");
+            }
+        }
+        else if(leaveRuleAndNoOfDay.length == 1){
+            if(leaveRuleAndNoOfDay[0].getNoOfDay() == null){
+                throw new CustomParameterizedException("Please Enter allocation day","custom.error");
+            }
+            if(leaveRuleAndNoOfDay[0].getNoOfDay() < 1){
+                throw new CustomParameterizedException("Please Enter valid allocation day","custom.error");
+            }
+            if(leaveRuleAndNoOfDay[0].getNoOfDay().toString().matches("^\\d+$")){
+                throw new CustomParameterizedException("Please Enter valid allocation day", "custom.error");
+            }
+        } else{
+                throw new CustomParameterizedException("Something went wrong in Noof day", "custom.error");
+        }
+        if(leaveRule.getId() != null){
+			List<LeaveRuleAndNoOfDay> leaveRuleAndNoOfDays = leaveRuleAndNoOfDayRepository
+					.findAllByLeaveRule(leaveRule);
+			for (LeaveRuleAndNoOfDay entity : leaveRuleAndNoOfDays) {
+				leaveRuleAndNoOfDayRepository.delete(entity);
+			}
+        }
     }
+
 
     /**
      * GET  /leave-rules : get all the leaveRules.

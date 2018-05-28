@@ -31,6 +31,7 @@ import com.lms.repository.EmployeeRepository;
 import com.lms.repository.LeaveAllocationRepository;
 import com.lms.repository.LeaveBalanceRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
+import com.lms.web.rest.errors.CustomParameterizedException;
 import com.lms.web.rest.util.HeaderUtil;
 import com.lms.web.rest.util.PaginationUtil;
 
@@ -78,13 +79,11 @@ public class LeaveAllocationResource {
 			throw new BadRequestAlertException("A new leaveAllocation cannot already have an ID", ENTITY_NAME,
 					"idexists");
 		}
+		checkValidation(leaveAllocation);
 		LeaveAllocation result = null;
-		if (leaveAllocation.getEmployee() == null || leaveAllocation.getEmployee().equals("")) {
-			throw new BadRequestAlertException("No Employee are selected!..", ENTITY_NAME, "emptyEmp");
-		} else {
-			saveLeaveBalance(leaveAllocation.getEmployee(), leaveAllocation);
-			result = leaveAllocationRepository.save(leaveAllocation);
-		}
+	
+		saveLeaveBalance(leaveAllocation.getEmployee(), leaveAllocation);
+		result = leaveAllocationRepository.save(leaveAllocation);
 		
 		return ResponseEntity.created(new URI("/api/leave-allocations/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
@@ -120,6 +119,47 @@ public class LeaveAllocationResource {
 		log.info("method: saveLeaveBalance: {}","Completed");
 	}
 
+	public void checkValidation(LeaveAllocation leaveAllocation)
+	{
+		String message = "";
+		if(leaveAllocation.getLeaveType() == null){
+			message = "Please select leave type";
+		}
+		
+		if(leaveAllocation.getNoOfLeave() == null || leaveAllocation.getNoOfLeave().toString().trim().equals("")){
+			if(message.equals(""))
+			message = "Please enter no of day";
+			else
+			 message+="\nPlease enter no of day";
+		}
+		if(!(leaveAllocation.getNoOfLeave().toString().matches("^\\d+$"))){
+			if(message.equals(""))
+			message = "Please enter only number in no of day";
+			else
+			 message+="\nPlease enter only number in no of day	";
+		}
+		if(leaveAllocation.getNoOfLeave() != null && leaveAllocation.getNoOfLeave() < 1){
+			if(message.equals(""))
+			message = "Please enter no of day greater than 0";
+			else
+			 message+="\nPlease enter no of day greater than 0";
+		}
+		if(leaveAllocation.getAllocationDate() == null){
+			if(message.equals(""))
+			message = "Please enter allocation date";
+			else
+			 message+="\nPlease enter allocation date";
+		}
+		if(leaveAllocation.getEmployee() == null || leaveAllocation.getEmployee().equals("")){
+			if(message.equals(""))
+			message = "Please select at least one employee";
+			else
+			 message+="\nPlease select at least one employee";
+		}
+		if(!message.equals("")) {
+			throw new CustomParameterizedException(message, "custom.error");
+		}
+	}
 	/**
 	 * PUT /leave-allocations : Updates an existing leaveAllocation.
 	 *
@@ -139,6 +179,28 @@ public class LeaveAllocationResource {
 		log.debug("REST request to update LeaveAllocation : {}", leaveAllocation);
 		if (leaveAllocation.getId() == null) {
 			return createLeaveAllocation(leaveAllocation);
+		}
+		String message="";
+		if(leaveAllocation.getNoOfLeave() == null || leaveAllocation.getNoOfLeave().toString().trim().equals("")){
+			if(message.equals(""))
+			message = "Please enter no of day";
+			else
+			 message+="\nPlease enter no of day";
+		}
+		if(!(leaveAllocation.getNoOfLeave().toString().matches("^\\d+$"))){
+			if(message.equals(""))
+			message = "Please enter only number in no of day";
+			else
+			 message+="\nPlease enter only number in no of day	";
+		}
+		if(leaveAllocation.getNoOfLeave() != null && leaveAllocation.getNoOfLeave() < 1){
+			if(message.equals(""))
+			message = "Please enter no of day greater than 0";
+			else
+			 message+="\nPlease enter no of day greater than 0";
+		}
+		if(message.equals("")){
+			throw new CustomParameterizedException(message, "custom.error");
 		}
 		LeaveAllocation l=leaveAllocationRepository.findOne(leaveAllocation.getId());
 		double noOfLeave =leaveAllocation.getNoOfLeave();

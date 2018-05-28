@@ -73,6 +73,9 @@ export class LeaveAllocationService {
      */
     private convert(leaveAllocation: LeaveAllocation): LeaveAllocation {
         const copy: LeaveAllocation = Object.assign({}, leaveAllocation);
+        if (leaveAllocation.allocationDate === undefined || leaveAllocation.allocationDate === null || leaveAllocation.allocationDate.toString().trim() === '') {
+            return copy;
+        }
         copy.allocationDate = this.dateUtils
             .convertLocalDateToServer(leaveAllocation.allocationDate);
         return copy;

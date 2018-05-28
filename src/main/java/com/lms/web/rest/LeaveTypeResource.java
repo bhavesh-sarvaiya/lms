@@ -5,6 +5,7 @@ import com.lms.domain.LeaveType;
 
 import com.lms.repository.LeaveTypeRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
+import com.lms.web.rest.errors.CustomParameterizedException;
 import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -51,10 +52,27 @@ public class LeaveTypeResource {
         if (leaveType.getId() != null) {
             throw new BadRequestAlertException("A new leaveType cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        checkValidation(leaveType);
         LeaveType result = leaveTypeRepository.save(leaveType);
         return ResponseEntity.created(new URI("/api/leave-types/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    public void checkValidation(LeaveType leaveType){
+        String message = "";
+        if (leaveType.getName().trim().equals("")) {
+            message = "Please enter leave type name";
+        }
+        if (leaveType.getCode().trim().equals("")) {
+            if(!message.equals(""))
+            message = message+" and code name";
+            else message = "Please enter code name";
+        } 
+        if(!message.equals("")){
+            throw new CustomParameterizedException(message, "custom.error");
+        }
+        System.out.println("\n\n##### : "+message);
     }
 
     /**
@@ -73,6 +91,7 @@ public class LeaveTypeResource {
         if (leaveType.getId() == null) {
             return createLeaveType(leaveType);
         }
+        checkValidation(leaveType);
         LeaveType result = leaveTypeRepository.save(leaveType);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveType.getId().toString()))

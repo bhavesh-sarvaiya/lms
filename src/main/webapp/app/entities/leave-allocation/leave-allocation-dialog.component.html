@@ -15,6 +15,69 @@
 				type="text" class="form-control" id="id" name="id"
 				[(ngModel)]="leaveAllocation.id" readonly />
 		</div>
+
+		<div class="row">
+			<div class="col-md-4" [hidden]="leaveAllocation.id">
+				<div class="form-group" >
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.leaveAllocation.leaveType"
+						for="field_leaveType">Leave Type</label> <select
+						class="form-control" id="field_leaveType" name="leaveType"
+						[(ngModel)]="leaveAllocation.leaveType">
+						<option [ngValue]="null"></option>
+						<option
+							[ngValue]="leaveTypeOption.id === leaveAllocation.leaveType?.id ? leaveAllocation.leaveType : leaveTypeOption"
+							*ngFor="let leaveTypeOption of leavetypes; trackBy: trackLeaveTypeById">{{leaveTypeOption.code}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.leaveAllocation.noOfLeave"
+						for="field_noOfLeave">No Of Leave</label> <input type="number"
+						class="form-control" name="noOfLeave" id="field_noOfLeave"
+						[(ngModel)]="leaveAllocation.noOfLeave" required />
+					<div
+						[hidden]="!(editForm.controls.noOfLeave?.dirty && editForm.controls.noOfLeave?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.noOfLeave?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small> <small class="form-text text-danger"
+							[hidden]="!editForm.controls.noOfLeave?.errors?.number"
+							jhiTranslate="entity.validation.number"> This field should
+							be a number. </small>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4" [hidden]="leaveAllocation.id" >
+				<div class="form-group">
+					<label class="form-control-label"
+						jhiTranslate="lmsApp.leaveAllocation.allocationDate"
+						for="field_allocationDate">Allocation Date</label>
+					<div class="input-group">
+						<input id="field_allocationDate" type="text" class="form-control"
+							name="allocationDate"
+							ngbDatepicker  #allocationDateDp="ngbDatepicker"
+							[(ngModel)]="leaveAllocation.allocationDate" required /> <span
+							class="input-group-append">
+							<button type="button" class="btn btn-secondary"
+								(click)="allocationDateDp.toggle()">
+								<i class="fa fa-calendar"></i>
+							</button>
+						</span>
+					</div>
+					<div
+						[hidden]="!(editForm.controls.allocationDate?.dirty && editForm.controls.allocationDate?.invalid)">
+						<small class="form-text text-danger"
+							[hidden]="!editForm.controls.allocationDate?.errors?.required"
+							jhiTranslate="entity.validation.required"> This field is
+							required. </small>
+					</div>
+				</div>
+			</div>
+		</div>
+	
 	<div class="form-group">
 			<div class="form-group" [hidden]="leaveAllocation.id">
 					<label class="form-control-label" for="field_employee">
@@ -28,60 +91,10 @@
 				</div>				
 		</div>
 		
-		<div class="form-group">
-			<label class="form-control-label"
-				jhiTranslate="lmsApp.leaveAllocation.noOfLeave"
-				for="field_noOfLeave">No Of Leave</label> <input type="number"
-				class="form-control" name="noOfLeave" id="field_noOfLeave"
-				[(ngModel)]="leaveAllocation.noOfLeave" required />
-			<div
-				[hidden]="!(editForm.controls.noOfLeave?.dirty && editForm.controls.noOfLeave?.invalid)">
-				<small class="form-text text-danger"
-					[hidden]="!editForm.controls.noOfLeave?.errors?.required"
-					jhiTranslate="entity.validation.required"> This field is
-					required. </small> <small class="form-text text-danger"
-					[hidden]="!editForm.controls.noOfLeave?.errors?.number"
-					jhiTranslate="entity.validation.number"> This field should
-					be a number. </small>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="form-control-label"
-				jhiTranslate="lmsApp.leaveAllocation.allocationDate"
-				for="field_allocationDate">Allocation Date</label>
-			<div class="input-group">
-				<input id="field_allocationDate" type="text" class="form-control"
-					name="allocationDate"
-					ngbDatepicker  #allocationDateDp="ngbDatepicker"
-					[(ngModel)]="leaveAllocation.allocationDate" required /> <span
-					class="input-group-append">
-					<button type="button" class="btn btn-secondary"
-						(click)="allocationDateDp.toggle()">
-						<i class="fa fa-calendar"></i>
-					</button>
-				</span>
-			</div>
-			<div
-				[hidden]="!(editForm.controls.allocationDate?.dirty && editForm.controls.allocationDate?.invalid)">
-				<small class="form-text text-danger"
-					[hidden]="!editForm.controls.allocationDate?.errors?.required"
-					jhiTranslate="entity.validation.required"> This field is
-					required. </small>
-			</div>
-		</div>
+		
+		
 
-		<div class="form-group" [hidden]="leaveAllocation.id">
-			<label class="form-control-label"
-				jhiTranslate="lmsApp.leaveAllocation.leaveType"
-				for="field_leaveType">Leave Type</label> <select
-				class="form-control" id="field_leaveType" name="leaveType"
-				[(ngModel)]="leaveAllocation.leaveType">
-				<option [ngValue]="null"></option>
-				<option
-					[ngValue]="leaveTypeOption.id === leaveAllocation.leaveType?.id ? leaveAllocation.leaveType : leaveTypeOption"
-					*ngFor="let leaveTypeOption of leavetypes; trackBy: trackLeaveTypeById">{{leaveTypeOption.code}}</option>
-			</select>
-		</div>
+		
 	
 	</div>
 	<div class="modal-footer">

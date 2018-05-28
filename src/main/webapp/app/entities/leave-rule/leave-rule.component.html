@@ -16,19 +16,25 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <!-- <th><span jhiTranslate="global.field.id">ID</span></th> -->
+            <th><span >Leave Type</span></th>
             <th><span jhiTranslate="lmsApp.leaveRule.leaveFor">Leave For</span></th>
             <th><span jhiTranslate="lmsApp.leaveRule.commulative">Commulative</span></th>
             <th><span jhiTranslate="lmsApp.leaveRule.commulativeLimit">Commulative Limit</span></th>
             <th><span jhiTranslate="lmsApp.leaveRule.allocationTimePeriod">Allocation Time Period</span></th>
             <th><span jhiTranslate="lmsApp.leaveRule.leaveType">Leave Type</span></th>
-            <th><span jhiTranslate="lmsApp.leaveRule.leave">Leave</span></th>
+            
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let leaveRule of leaveRules ;trackBy: trackId">
-                <td><a [routerLink]="['../leave-rule', leaveRule.id ]">{{leaveRule.id}}</a></td>
+                <!-- <td><a [routerLink]="['../leave-rule', leaveRule.id ]">{{leaveRule.id}}</a></td> -->
+                <td>
+                    <div *ngIf="leaveRule.leave">
+                        <a [routerLink]="['../leave-type', leaveRule.leave?.id ]" >{{leaveRule.leave?.code}}</a>
+                    </div>
+                </td>
                 <td jhiTranslate="{{'lmsApp.LeaveFor.' + leaveRule.leaveFor}}">{{leaveRule.leaveFor}}</td>
                 <td>{{leaveRule.commulative}}</td>
                 <td>{{leaveRule.commulativeLimit}}</td>
@@ -38,11 +44,7 @@
                             <a class="form-control-static" [routerLink]="['../leave-type', leaveType?.id ]">{{leaveType.code}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td>
-                    <div *ngIf="leaveRule.leave">
-                        <a [routerLink]="['../leave-type', leaveRule.leave?.id ]" >{{leaveRule.leave?.code}}</a>
-                    </div>
-                </td>
+               
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

@@ -100,6 +100,24 @@ public class LeaveApplicationResource {
         this.leaveTypeRepository = leaveTypeRepository;
     }
 
+    public void checkValidation(LeaveApplication leaveApplication){
+        if(leaveApplication.getLeaveType() == null){
+        	throw new CustomParameterizedException("Please select leave type", "custom.error");
+        }
+        if(leaveApplication.getFromDate() == null){
+        	throw new CustomParameterizedException("Please enter start date", "custom.error");
+        }
+        if(leaveApplication.getToDate() == null){
+        	throw new CustomParameterizedException("Please enter end date", "custom.error");
+        }
+        if(leaveApplication.getToDate().isBefore(leaveApplication.getFromDate())){
+        	throw new CustomParameterizedException("Please enter valid date\nStart date should be less than end date", "custom.error");
+        }
+        if(leaveApplication.getReason().trim().equals("")){
+        	throw new CustomParameterizedException("Please enter reason for leave", "custom.error");
+        }
+    }
+
     /**
      * POST  /leave-applications : Create a new leaveApplication.
      *
@@ -117,6 +135,7 @@ public class LeaveApplicationResource {
             throw new BadRequestAlertException("A new leaveApplication cannot already have an ID", ENTITY_NAME,
                     "idexists");
         }
+        checkValidation(leaveApplication);
         Employee employee = getLoggedUser();
         Double noOfDay = leaveApplication.getNoofday();
 
@@ -131,7 +150,7 @@ public class LeaveApplicationResource {
         checkLeaveGender(leaveRule, employee);
 
         if (noOfDay < 1) {
-            throw new CustomParameterizedException("This leave type of leave application has no rule\nPlease contact to authority" ,"invalid.date");
+            throw new CustomParameterizedException("No of day should be more than 0" ,"custom.error");
         }
         // get leave balance
         Double leaveBalance = leaveBalanceRepository.findOneByEmployeeAndLeaveType(leaveApplication.getEmployee(),
@@ -387,7 +406,7 @@ public class LeaveApplicationResource {
 
         if(l != null) {
             if(!l.getStatus().equalsIgnoreCase(APPLIED)){
-                throw new CustomParameterizedException("This leave application already " + l.getStatus() );
+                throw new CustomParameterizedException("This leave application already " + l.getStatus(),"custome.error" );
             }
         }
 
@@ -398,16 +417,45 @@ public class LeaveApplicationResource {
             if(leaveApplication.getStatus().equalsIgnoreCase(APPROVED))
             {
                 System.out.println("\n########status: "+status);
-                LeaveBalance leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveApplication.getLeaveType(),leaveApplication.getEmployee());
-                if(leaveApplication.getNoofday() > leaveBalance.getNoOfLeave() )
-                {
-                    leaveApplication.setStatus(APPLIED);
-                    throw new BadRequestAlertException("The Person who is requested for this application is not eligible for this leave(he/she has no enough leave balance) ", ENTITY_NAME, "notEligibleWhenApprove");
+                LeaveBalance leaveBalance;
+                
+                if(!leaveApplication.getJoinLeave().equalsIgnoreCase("none")){
+                	leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveTypeRepository.findOneByCode(leaveApplication.getJoinLeave()),leaveApplication.getEmployee());
+                	if(leaveApplication.getJoinLeaveDay() > leaveBalance.getNoOfLeave()){
+                		leaveApplication.setStatus(APPLIED);
+                		throw new CustomParameterizedException("This leave type has no enough join leave balance","custome.error" );
+                	}
+                	leaveBalance.setNoOfLeave(leaveBalance.getNoOfLeave()-leaveApplication.getJoinLeaveDay());
+                	leaveBalance = leaveBalanceRepository.save(leaveBalance);
+                	if(leaveBalance == null){
+                		leaveApplication.setStatus(APPLIED);
+                		throw new CustomParameterizedException("Error in leave approve","custome.error" );
+                	}
+                	leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveApplication.getLeaveType(),leaveApplication.getEmployee());
+                	
+                	leaveBalance.setNoOfLeave(leaveBalance.getNoOfLeave()-leaveApplication.getNoofday());
+                	leaveBalance = leaveBalanceRepository.save(leaveBalance);
+                	if(leaveBalance == null){
+                		leaveApplication.setStatus(APPLIED);
+                		throw new CustomParameterizedException("Error in leave approve","custome.error" );
+                	}
+                	
+                } else{
+                	leaveBalance = leaveBalanceRepository.findOneByLeaveTypeAndEmployee(leaveApplication.getLeaveType(),leaveApplication.getEmployee());
+					if (leaveApplication.getNoofday() > leaveBalance.getNoOfLeave()) {
+						leaveApplication.setStatus(APPLIED);
+						throw new CustomParameterizedException(
+								"The Person who is requested for this application is not eligible for this leave(he/she has no enough leave balance) ", "custome.error");
+					}
+					
+					 leaveBalance.setNoOfLeave(leaveBalance.getNoOfLeave()-leaveApplication.getNoofday());
+					 leaveBalance=leaveBalanceRepository.save(leaveBalance);
+		             if(leaveBalance == null){
+	                		leaveApplication.setStatus(APPLIED);
+	                		throw new CustomParameterizedException("Error in leave approve","custome.error" );
+	                	}
                 }
-                System.out.println("\n###########leaveApplication.getNoofday(): "+leaveApplication.getNoofday());
-                System.out.println("\n######lleaveBalance.getNoOfLeave(): "+leaveBalance.getNoOfLeave());
-                leaveBalance.setNoOfLeave(leaveBalance.getNoOfLeave()-leaveApplication.getNoofday());
-                leaveBalanceRepository.save(leaveBalance);
+               
             }
             leaveApplication.setApprovedBy(getLoggedUser());
             saveLeaveAppHistory(leaveApplication,"");

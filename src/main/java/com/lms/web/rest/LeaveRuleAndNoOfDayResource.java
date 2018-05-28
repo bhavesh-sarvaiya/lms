@@ -4,9 +4,11 @@ import com.codahale.metrics.annotation.Timed;
 import com.lms.domain.LeaveRule;
 import com.lms.domain.LeaveRuleAndNoOfDay;
 import com.lms.domain.LeaveType;
+import com.lms.domain.enumeration.EmpType1;
 import com.lms.repository.LeaveRuleAndNoOfDayRepository;
 import com.lms.repository.LeaveRuleRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
+import com.lms.web.rest.errors.CustomParameterizedException;
 import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -30,7 +32,7 @@ public class LeaveRuleAndNoOfDayResource {
 
     private final Logger log = LoggerFactory.getLogger(LeaveRuleAndNoOfDayResource.class);
 
-    private static final String ENTITY_NAME = "leaveRuleAndNoOfDay";
+    private static final String ENTITY_NAME = "leaveRule";
 
     private final LeaveRuleAndNoOfDayRepository leaveRuleAndNoOfDayRepository;
     private final LeaveRuleRepository leaveRuleRepository;
@@ -49,7 +51,7 @@ public class LeaveRuleAndNoOfDayResource {
      */
     @PostMapping("/leave-rule-and-no-of-days")
     @Timed
-    public ResponseEntity<LeaveRuleAndNoOfDay> createLeaveRuleAndNoOfDay(@Valid @RequestBody LeaveRuleAndNoOfDay leaveRuleAndNoOfDay) throws URISyntaxException {
+    public ResponseEntity<LeaveRuleAndNoOfDay> createLeaveRuleAndNoOfDay(@RequestBody LeaveRuleAndNoOfDay leaveRuleAndNoOfDay) throws URISyntaxException {
         log.debug("REST request to save LeaveRuleAndNoOfDay : {}", leaveRuleAndNoOfDay);
         if (leaveRuleAndNoOfDay.getId() != null) {
             throw new BadRequestAlertException("A new leaveRuleAndNoOfDay cannot already have an ID", ENTITY_NAME, "idexists");
@@ -57,10 +59,43 @@ public class LeaveRuleAndNoOfDayResource {
         LeaveType leaveType = leaveRuleAndNoOfDay.getLeaveRule().getLeave();
         LeaveRule leaveRule = leaveRuleRepository.findOneByLeave(leaveType);
         leaveRuleAndNoOfDay.setLeaveRule(leaveRule);
+        checkValidation(leaveRuleAndNoOfDay);
         LeaveRuleAndNoOfDay result = leaveRuleAndNoOfDayRepository.save(leaveRuleAndNoOfDay);
         return ResponseEntity.created(new URI("/api/leave-rule-and-no-of-days/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    public void checkValidation(LeaveRuleAndNoOfDay leaveRuleAndNoOfDay){
+    	if(leaveRuleAndNoOfDay.getEmployeeType() == null){
+    		leaveRuleRepository.delete(leaveRuleAndNoOfDay.getLeaveRule());
+            throw new CustomParameterizedException("Please select Employee type in day allocation at a time", "custom.error");
+        }
+    	if(!leaveRuleAndNoOfDay.getEmployeeType().name().equals("ALL")){
+    		if(leaveRuleAndNoOfDay.getEmployeeType().name().equals("EDUCATIONAL_WITH_NON_VACATIONER")){
+    			if(leaveRuleAndNoOfDay.getNoOfDay() == null){
+    				leaveRuleAndNoOfDayRepository.delete(leaveRuleAndNoOfDayRepository.findOneByLeaveRuleAndEmployeeType(leaveRuleAndNoOfDay.getLeaveRule(), EmpType1.EDUCATIONAL_WITH_VACATIONER));
+            		leaveRuleRepository.delete(leaveRuleAndNoOfDay.getLeaveRule());
+                    throw new CustomParameterizedException("Please enter number of day", "custom.error");
+                }
+			}
+    		
+        }
+    	if(!leaveRuleAndNoOfDay.getEmployeeType().name().equals("ALL")){
+    		if(leaveRuleAndNoOfDay.getEmployeeType().name().equals("EDUCATIONAL_WITH_VACATIONER")){
+    			if(leaveRuleAndNoOfDay.getNoOfDay() == null){
+    				leaveRuleAndNoOfDayRepository.delete(leaveRuleAndNoOfDayRepository.findOneByLeaveRuleAndEmployeeType(leaveRuleAndNoOfDay.getLeaveRule(), EmpType1.EDUCATIONAL_WITH_NON_VACATIONER));
+            		leaveRuleRepository.delete(leaveRuleAndNoOfDay.getLeaveRule());
+                    throw new CustomParameterizedException("Please enter number of day", "custom.error");
+                }
+			}
+    		
+        }
+    	if(leaveRuleAndNoOfDay.getNoOfDay() == null){
+    		leaveRuleRepository.delete(leaveRuleAndNoOfDay.getLeaveRule());
+            throw new CustomParameterizedException("Please enter number of day", "custom.error");
+        }
+        
     }
 
     /**

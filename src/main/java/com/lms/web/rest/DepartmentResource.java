@@ -5,6 +5,7 @@ import com.lms.domain.Department;
 
 import com.lms.repository.DepartmentRepository;
 import com.lms.web.rest.errors.BadRequestAlertException;
+import com.lms.web.rest.errors.CustomParameterizedException;
 import com.lms.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -51,12 +52,18 @@ public class DepartmentResource {
         if (department.getId() != null) {
             throw new BadRequestAlertException("A new department cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        checkValidation(department);
         Department result = departmentRepository.save(department);
         return ResponseEntity.created(new URI("/api/departments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
+    public void checkValidation(Department department){
+        if(department.getName().trim().equals("")){
+                throw new CustomParameterizedException("Please enter department name", "custom.error");
+        }
+    }
     /**
      * PUT  /departments : Updates an existing department.
      *
@@ -73,6 +80,7 @@ public class DepartmentResource {
         if (department.getId() == null) {
             return createDepartment(department);
         }
+        checkValidation(department);
         Department result = departmentRepository.save(department);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, department.getId().toString()))
@@ -119,8 +127,8 @@ public class DepartmentResource {
             departmentRepository.delete(id);
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
-            throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME,
-                    "constrainViolation");
+            throw new CustomParameterizedException("Exception: "+e.getMessage(),
+                    "custom.error");
         }
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }

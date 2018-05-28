@@ -39,13 +39,8 @@ public class Employee implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "post", nullable = false)
     private Post post;
-
-    @NotNull
-    @Column(name = "middle_name", nullable = false)
-    private String middleName;
-
-    @NotNull
-    @Column(name = "father_husband_name", nullable = false)
+    
+    @Column(name = "father_husband_name", nullable = true)
     private String fatherHusbandName;
 
     @NotNull
@@ -73,25 +68,25 @@ public class Employee implements Serializable {
     @Column(name = "pincode", nullable = false)
     private String pincode;
 
-    @NotNull
+    
     @Enumerated(EnumType.STRING)
-    @Column(name = "marital_status", nullable = false)
+    @Column(name = "marital_status", nullable = true)
     private MaritalStatus maritalStatus;
 
-    @NotNull
-    @Column(name = "phone_number", nullable = false)
+    
+    @Column(name = "phone_number", nullable = true)
     private String phoneNumber;
 
-    @NotNull
-    @Column(name = "mobile_number", nullable = false)
+    
+    @Column(name = "mobile_number", nullable = true)
     private String mobileNumber;
 
-    @NotNull
+    
     @Enumerated(EnumType.STRING)
-    @Column(name = "blood_group", nullable = false)
+    @Column(name = "blood_group", nullable = true)
     private BloodGroup bloodGroup;
 
-    @NotNull
+    
     @Column(name = "physical_fit", nullable = false)
     private Boolean physicalFit;
 
@@ -99,16 +94,16 @@ public class Employee implements Serializable {
     @Column(name = "join_date", nullable = false)
     private LocalDate joinDate;
 
-    @NotNull
-    @Column(name = "retired_date", nullable = false)
+    
+    @Column(name = "retired_date", nullable = true)
     private LocalDate retiredDate;
 
-    @NotNull
-    @Column(name = "qualification", nullable = false)
+    
+    @Column(name = "qualification", nullable = true)
     private String qualification;
 
-    @NotNull
-    @Column(name = "payband", nullable = false)
+    
+    @Column(name = "payband", nullable = true)
     private Double payband;
 
     @Column(name = "granted")
@@ -117,7 +112,7 @@ public class Employee implements Serializable {
     @Column(name = "othe_note")
     private String otheNote;
 
-    @NotNull
+    @NotNull(message = "Please enter first name")
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -180,18 +175,6 @@ public class Employee implements Serializable {
         this.post = post;
     }
 
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public Employee middleName(String middleName) {
-        this.middleName = middleName;
-        return this;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
 
     public String getFatherHusbandName() {
         return fatherHusbandName;
@@ -507,7 +490,6 @@ public class Employee implements Serializable {
             ", teachingstaff='" + isTeachingstaff() + "'" +
             ", canHaveVacation='" + isCanHaveVacation() + "'" +
             ", post='" + getPost() + "'" +
-            ", middleName='" + getMiddleName() + "'" +
             ", fatherHusbandName='" + getFatherHusbandName() + "'" +
             ", gender='" + getGender() + "'" +
             ", dob='" + getDob() + "'" +

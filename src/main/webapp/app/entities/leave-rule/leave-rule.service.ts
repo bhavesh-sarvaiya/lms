@@ -5,6 +5,7 @@ import { SERVER_API_URL } from '../../app.constants';
 
 import { LeaveRule } from './leave-rule.model';
 import { createRequestOption } from '../../shared';
+import { LeaveRuleAndNoOfDay } from '../leave-rule-and-no-of-day';
 
 export type EntityResponseType = HttpResponse<LeaveRule>;
 
@@ -16,15 +17,15 @@ export class LeaveRuleService {
 
     constructor(private http: HttpClient) { }
 
-    create(leaveRule: LeaveRule): Observable<EntityResponseType> {
-        const copy = this.convert(leaveRule);
-        return this.http.post<LeaveRule>(this.resourceUrl, copy, { observe: 'response' })
+    create(leaveRule: LeaveRule, leaveRuleAndNoOfDay: LeaveRuleAndNoOfDay[]): Observable<EntityResponseType> {
+        leaveRule = this.convert(leaveRule);
+        return this.http.post<LeaveRule>(this.resourceUrl, {leaveRule, leaveRuleAndNoOfDay}, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    update(leaveRule: LeaveRule): Observable<EntityResponseType> {
-        const copy = this.convert(leaveRule);
-        return this.http.put<LeaveRule>(this.resourceUrl, copy, { observe: 'response' })
+    update(leaveRule: LeaveRule,  leaveRuleAndNoOfDay: LeaveRuleAndNoOfDay[]): Observable<EntityResponseType> {
+        leaveRule = this.convert(leaveRule);
+        return this.http.put<LeaveRule>(this.resourceUrl, {leaveRule, leaveRuleAndNoOfDay}, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 

@@ -7,6 +7,7 @@ import { LeaveApplication } from './leave-application.model';
 import { LeaveApplicationService } from './leave-application.service';
 import { Principal, User } from '../../shared';
 import { Employee, EmployeeService, Post } from '../employee';
+import * as $ from 'jquery';
 
 @Component({
     selector: 'jhi-leave-application',
@@ -50,12 +51,19 @@ leaveApplications: LeaveApplication[];
         );
     }
     ngOnInit(status?) {
+        $(document).ready(function(){
+            $(".nav-tabs a").click(function(){
+                $(this).tab('show');
+            });
+        });
             this.principal.identity().then((account) => {
                 this.currentAccount = account;
                 this.loadEmployee(this.currentAccount.id);
                 this.loadAll(status);
             });
         this.registerChangeInLeaveApplications();
+        // Select all tabs
+
     }
 
     ngOnDestroy() {
