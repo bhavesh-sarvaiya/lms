@@ -29,5 +29,6 @@ public interface LeaveBalanceRepository extends JpaRepository<LeaveBalance, Long
 
 	Page<LeaveBalance> findAllByEmployeeIn(List<Employee> employees, Pageable pageable);
 
+	List<LeaveBalance> findAllByEmployee(Employee empoyee);
 
 }

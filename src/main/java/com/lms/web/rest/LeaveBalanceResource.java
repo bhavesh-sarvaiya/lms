@@ -132,6 +132,16 @@ public class LeaveBalanceResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/leave-balances-leave-application-home")
+    @Timed
+    public List<LeaveBalance> getAllLeaveBalancesForLeaveApplicationHome() {
+        log.info("REST request to get a page of LeaveBalances");
+      
+        Employee employee = getLoggedUser();
+       return leaveBalanceRepository.findAllByEmployee(employee);
+      }
+
+
     @GetMapping("/leave-balances-department")
     @Timed
     public ResponseEntity<List<LeaveBalance>> getAllLeaveBalancesByDepartment(@RequestParam Long id,  Pageable pageable) {

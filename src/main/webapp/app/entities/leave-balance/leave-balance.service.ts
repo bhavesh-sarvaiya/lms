@@ -15,6 +15,7 @@ export class LeaveBalanceService {
     private resourceUrl =  SERVER_API_URL + 'api/leave-balances';
     private resourceUrl1 =  SERVER_API_URL + 'api/leave-balances-department';
     private resourceUrl2 =  SERVER_API_URL + 'api/leave-balances-leave-application';
+    private resourceUrl3 =  SERVER_API_URL + 'api/leave-balances-leave-application-home';
 
     constructor(private http: HttpClient) { }
 
@@ -44,6 +45,12 @@ export class LeaveBalanceService {
     findAllForLeaveApplication(req?: any): Observable<HttpResponse<LeaveBalance[]>> {
         const options = createRequestOption(req);
         return this.http.get<LeaveBalance[]>(this.resourceUrl2, { params: options, observe: 'response' })
+            .map((res: HttpResponse<LeaveBalance[]>) => this.convertArrayResponse(res));
+    }
+
+    findAllForLeaveApplicationHome(req?: any): Observable<HttpResponse<LeaveBalance[]>> {
+        const options = createRequestOption(req);
+        return this.http.get<LeaveBalance[]>(this.resourceUrl3, { params: options, observe: 'response' })
             .map((res: HttpResponse<LeaveBalance[]>) => this.convertArrayResponse(res));
     }
 
