@@ -138,7 +138,10 @@ public class LeaveBalanceResource {
         log.info("REST request to get a page of LeaveBalances");
       
         Employee employee = getLoggedUser();
-       return leaveBalanceRepository.findAllByEmployee(employee);
+        if(employee.getUser().getLogin().equalsIgnoreCase("admin")){
+            return leaveBalanceRepository.findAll();
+        }
+        return leaveBalanceRepository.findAllByEmployee(employee);
       }
 
 

@@ -10,6 +10,14 @@ Main page styles
     background-size: contain;
 }
 
+.custome-font{
+    font-size:  12px;
+}
+.table-responsive.max-height{
+    max-height: 170px;
+}
+
+
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media
 only screen and (-webkit-min-device-pixel-ratio: 2),

@@ -55,7 +55,7 @@ public class DepartmentResource {
         checkValidation(department);
         Department result = departmentRepository.save(department);
         return ResponseEntity.created(new URI("/api/departments/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getName()))
             .body(result);
     }
 
@@ -83,7 +83,7 @@ public class DepartmentResource {
         checkValidation(department);
         Department result = departmentRepository.save(department);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, department.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, department.getName()))
             .body(result);
     }
 
@@ -123,13 +123,15 @@ public class DepartmentResource {
     @Timed
     public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
         log.debug("REST request to delete Department : {}", id);
+        Department department;
         try {
-            departmentRepository.delete(id);
+             department = departmentRepository.findOne(id);
+            departmentRepository.delete(department);
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             throw new CustomParameterizedException("Exception: "+e.getMessage(),
                     "custom.error");
         }
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, department.getName())).build();
     }
 }

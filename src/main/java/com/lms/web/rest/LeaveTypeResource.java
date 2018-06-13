@@ -55,7 +55,7 @@ public class LeaveTypeResource {
         checkValidation(leaveType);
         LeaveType result = leaveTypeRepository.save(leaveType);
         return ResponseEntity.created(new URI("/api/leave-types/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getCode()))
             .body(result);
     }
 
@@ -94,7 +94,7 @@ public class LeaveTypeResource {
         checkValidation(leaveType);
         LeaveType result = leaveTypeRepository.save(leaveType);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveType.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveType.getCode()))
             .body(result);
     }
 
@@ -134,13 +134,15 @@ public class LeaveTypeResource {
     @Timed
     public ResponseEntity<Void> deleteLeaveType(@PathVariable Long id) {
         log.debug("REST request to delete LeaveType : {}", id);
+        LeaveType l;
         try {
-            leaveTypeRepository.delete(id);
+            l=leaveTypeRepository.findOne(id);
+            leaveTypeRepository.delete(l);
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME,
                     "constrainViolation");
         }
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, l.getCode())).build();
     }
 }

@@ -19,6 +19,9 @@ a:hover {
     color: #533f03;
     font-weight: bold;
 }
+.table-responsive{
+    font-size:  13px;
+}
 
 /* ==========================================================================
 Browser Upgrade Prompt

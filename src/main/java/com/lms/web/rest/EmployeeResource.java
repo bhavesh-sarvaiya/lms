@@ -111,7 +111,7 @@ public class EmployeeResource {
 			mailService.sendCreationEmail(newUser);
 		}
 		return ResponseEntity.created(new URI("/api/employees/" + result.getId()))
-				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getUser().getLogin())).body(result);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class EmployeeResource {
 		user.setLogin(employee.getUser().getLogin());
 		Employee result = employeeRepository.save(employee);
 		userRepository.save(user);
-		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, employee.getId().toString()))
+		return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME,  result.getUser().getLogin()))
 				.body(result);
 	}
 
@@ -264,11 +264,12 @@ public class EmployeeResource {
 	@DeleteMapping("/employees/{id}")
 	@Timed
 	public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+		User user;
 		try{
 		log.debug("REST request to delete Employee : {}", id);
 		
 		log.debug("Deleted User: Empoyee: {}", id);
-		User user = employeeRepository.findOne(id).getUser();
+		user = employeeRepository.findOne(id).getUser();
 		employeeRepository.delete(id);
 		userRepository.delete(user);
 		}
@@ -276,6 +277,6 @@ public class EmployeeResource {
 			e.printStackTrace();
 			throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME, "constrainViolation");
 		}
-		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+		return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, user.getLogin())).build();
 	}
 }

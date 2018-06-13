@@ -1,5 +1,6 @@
 package com.lms.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.lms.domain.Department;
@@ -36,5 +37,11 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 	List<LeaveApplication> findAllByEmployeeInAndFlowStatusAndStatus(List<Employee> employeeList,String flowStatus,String status);
 
 	List<LeaveApplication> findAllByEmployeeAndStatusAndJoinLeave(Employee employee,String status,String joinLeave);
+
+	List<LeaveApplication> findAllByEmployeeAndStatusInAndFromDateGreaterThan(Employee employee,List<String> status,LocalDate fromDate);
+	List<LeaveApplication> findAllByStatusInAndFromDateGreaterThan(List<String> status,LocalDate fromDate);
+
+	
+	
 
 }

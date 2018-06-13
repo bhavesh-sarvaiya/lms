@@ -14,6 +14,7 @@ export type EntityResponseType = HttpResponse<LeaveApplicationHistory>;
 export class LeaveApplicationHistoryService {
 
     private resourceUrl =  SERVER_API_URL + 'api/leave-application-histories';
+    private resourceUrl1 =  SERVER_API_URL + 'api/leave-application-histories-home';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -37,6 +38,12 @@ export class LeaveApplicationHistoryService {
     query(req?: any): Observable<HttpResponse<LeaveApplicationHistory[]>> {
         const options = createRequestOption(req);
         return this.http.get<LeaveApplicationHistory[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .map((res: HttpResponse<LeaveApplicationHistory[]>) => this.convertArrayResponse(res));
+    }
+
+    getFromHome(req?: any): Observable<HttpResponse<LeaveApplicationHistory[]>> {
+        const options = createRequestOption(req);
+        return this.http.get<LeaveApplicationHistory[]>(this.resourceUrl1, { params: options, observe: 'response' })
             .map((res: HttpResponse<LeaveApplicationHistory[]>) => this.convertArrayResponse(res));
     }
 

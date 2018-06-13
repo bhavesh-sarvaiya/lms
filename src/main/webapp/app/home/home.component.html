@@ -1,16 +1,20 @@
-<div class="row" [ngSwitch]="isAuthenticated()"  *ngIf="account && account.login != 'admin'">
-   <div class="col-md-6" *ngSwitchCase="true">
-       <span>Available Leave Balance</span>
-       <div class="table-responsive" *ngIf="leaveBalances" style="max-height: 182px;">
-            <table class="table">
+<div class="row" [ngSwitch]="isAuthenticated()"  *ngIf="account">
+    
+    <div class="col-md-6" *ngSwitchCase="true">
+       <h4><b>Available Leave Balance({{lengthBalance}})</b></h4>
+       <div class="table-responsive max-height" *ngIf="leaveBalances">
+            <table class="table custome-font" >
                     <thead>
                             <tr>
-                            <th><span >Leave Type</span></th>
-                            <th><span > No of Day </span></th>
+                                    <th *ngIf="account.login == 'admin'" ><span>Employee</span> </th>                                    
+                                
+                            <th><span >Leave</span></th>
+                            <th><span > Day</span></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr *ngFor="let leaveBalance of leaveBalances">
+                                    <td *ngIf="account.login == 'admin'">{{leaveBalance.employee.user.login}}</td>
                                 <td>{{leaveBalance.leaveType.code}}</td>
                                 <td>{{leaveBalance.noOfLeave}}</td>
                             </tr>
@@ -19,18 +23,19 @@
             </div>
 
    </div>
-
+   
    <div class="col-md-6" *ngSwitchCase="true">
-        <span><strong>Applied leave</strong></span>
+        <h4><b>Applied leave({{lengthLeave}})</b></h4>
         <div class="row">
-                <div class="table-responsive" *ngIf="leaveApplications" style="max-height: 182px;">
-                        <table class="table">
+                <div class="table-responsive max-height" *ngIf="leaveApplications ">
+                        <table class="table custome-font">
                                 <thead>
                                         <tr>
+                                       <th *ngIf="account.login == 'admin'"><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></th>
                                         <th><span jhiTranslate="lmsApp.leaveApplication.fromDate">From Date</span></th>
                                         <th><span jhiTranslate="lmsApp.leaveApplication.toDate">To Date</span></th>
-                                        <th><span jhiTranslate="lmsApp.leaveApplication.noofday">Noofday</span></th>
-                                        <th><span>Leave Type</span></th>
+                                        <th><span>Day</span></th>
+                                        <th><span>Leave</span></th>
                                         <th><span >Join leave</span></th>
                                         <th><span >Join leave Day </span></th>
                                         <th></th>
@@ -38,6 +43,11 @@
                                         </thead>
                                         <tbody>
                                         <tr *ngFor="let leaveApplication of leaveApplications ;">
+                                        <td *ngIf="account.login == 'admin'">   
+                                                <div *ngIf="leaveApplication.employee">
+                                                        <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee.user.login}}</a>
+                                                    </div>
+                                            </td>
                                             <td>{{leaveApplication.fromDate | date:'mediumDate'}}</td>
                                             <td>{{leaveApplication.toDate | date:'mediumDate'}}</td>
                                             <td>{{leaveApplication.noofday}}</td>                                          
@@ -67,6 +77,160 @@
         </div>
    </div>
  </div>
+ <hr>
+ <div class="row" [ngSwitch]="isAuthenticated()"  *ngIf="account">
+        <div class="col-md-6" *ngSwitchCase="true">
+                <h4><b>Approved/Rejected Leave({{lengthLeave1}})</b></h4><span>Last 6 month</span>
+                <div class="row">
+                        <div class="table-responsive max-height" *ngIf="leaveApplications1">
+                                <table class="table custome-font">
+                                        <thead>
+                                                <tr>
+                                                <th *ngIf="account.login == 'admin'"><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></th>
+                                                <th><span jhiTranslate="lmsApp.leaveApplication.fromDate">From Date</span></th>
+                                                <th><span jhiTranslate="lmsApp.leaveApplication.toDate">To Date</span></th>
+                                                <th><span>Day</span></th>
+                                                 <th><span jhiTranslate="lmsApp.leaveApplication.status">Status</span></th>
+                                                <th><span>Leave</span></th>
+                                                <th><span >Join leave</span></th>
+                                                <th><span >Join leave Day </span></th>
+                                                <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr *ngFor="let leaveApplication of leaveApplications1 ;">
+                                                        <td *ngIf="account.login == 'admin'">   
+                                                                <div *ngIf="leaveApplication.employee">
+                                                                        <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee.user.login}}</a>
+                                                                    </div>
+                                                            </td>
+                                                    <td>{{leaveApplication.fromDate | date:'mediumDate'}}</td>
+                                                    <td>{{leaveApplication.toDate | date:'mediumDate'}}</td>
+                                                    <td>{{leaveApplication.noofday}}</td>     
+                                                    <td  *ngIf="leaveApplication.status == 'APPROVED'" ><span  class="badge badge-success" >{{leaveApplication.status}}</span></td>
+                                                    <td  *ngIf="leaveApplication.status == 'REJECTED'"><span  class="badge badge-danger">{{leaveApplication.status}}</span></td>
+                                                                                       
+                                                    <td>
+                                                        <div *ngIf="leaveApplication.leaveType">
+                                                            <a [routerLink]="['../leave-type', leaveApplication.leaveType?.id ]" >{{leaveApplication.leaveType?.code}}</a>
+                                                        </div>  
+                                                    </td>
+                                                    <td>{{leaveApplication.joinLeave}}</td>
+                                                    <td>{{leaveApplication.joinLeaveDay}}</td>
+                                                    <td class="text-right">
+                                                            <div class="btn-group flex-btn-group-container">
+                                                                <button type="submit"
+                                                                        [routerLink]="['../leave-application', leaveApplication.id ]"
+                                                                        class="btn btn-info btn-sm">
+                                                                    <span class="fa fa-eye"></span>
+                                                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                                                                </button>
+                                                                </div>
+                                                            </td>
+                                                </tr>
+                                               
+                                                </tbody>
+                                            </table>
+                                </div>
+                                    
+                </div>
+           </div>
+           <div class="col-md-6" *ngSwitchCase="true">
+                <h4><b>Leave History({{lengthHis}})</b></h4><span>Last 20</span>
+                <div class="row">
+                        <div class="table-responsive max-height" *ngIf="leaveApplicationHistories">
+                                <table class="table custome-font" >
+                                    <thead>
+                                    <tr>
+                                    <th *ngIf="account.login == 'admin'" ><span jhiTranslate="lmsApp.leaveApplicationHistory.employee">Employee</span></th>                                    
+                                        
+                                    <th><span>Leave</span> </span></th>
+                                    <th><span jhiTranslate="lmsApp.leaveApplicationHistory.actionDate">Action Date</span></span></th>
+                                    <th ><span jhiTranslate="lmsApp.leaveApplicationHistory.status">Status</span> </th>
+                                    <th><span jhiTranslate="lmsApp.leaveApplicationHistory.actionInfo">Action Info</span> </th>
+                                    
+                                      <!-- <th></th> -->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let leaveApplicationHistory of leaveApplicationHistories ;">
+                                            <td *ngIf="account.login == 'admin'" >
+                                                    <div *ngIf="leaveApplicationHistory.employee">
+                                                        <a [routerLink]="['../employee', leaveApplicationHistory.employee?.id ]" >{{leaveApplicationHistory.employee.user?.login}}</a>
+                                                    </div>
+                                                </td>
+                                        <td>
+                                            <div *ngIf="leaveApplicationHistory.leaveType">
+                                                <a [routerLink]="['../leave-type', leaveApplicationHistory.leaveType?.id ]" >{{leaveApplicationHistory.leaveType?.code}}</a>
+                                            </div>
+                                        </td>
+                                        <td>{{leaveApplicationHistory.actionDate | date:'mediumDate'}}</td>
+                                        <td>{{leaveApplicationHistory.status}}</td>
+                                        <td>{{leaveApplicationHistory.actionInfo}}</td>
+                                       
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+           </div>
+    </div>
+
+ <!-- <div class="row" [ngSwitch]="isAuthenticated()"  *ngIf="account && account.login == 'admin'">
+        <div class="col-md-6" *ngSwitchCase="true">
+                <h4><b>Applied leave({{lengthLeave}})</b></h4>
+                <div class="row">
+                        <div class="table-responsive max-height" *ngIf="leaveApplications">
+                                <table class="table custome-font">
+                                        <thead>
+                                                <tr>
+                                                        <th><span jhiTranslate="lmsApp.leaveApplication.employee">Employee</span></th>
+                                                <th><span jhiTranslate="lmsApp.leaveApplication.fromDate">From Date</span></th>
+                                                <th><span jhiTranslate="lmsApp.leaveApplication.toDate">To Date</span></th>
+                                                <th><span>Day</span></th>
+                                                <th><span>Leave</span></th>
+                                                <th><span >Join leave</span></th>
+                                                <th><span >Join leave Day </span></th>
+                                                <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr *ngFor="let leaveApplication of leaveApplications ;">
+                                                <td>   
+                                                        <div *ngIf="leaveApplication.employee">
+                                                                <a [routerLink]="['../employee', leaveApplication.employee?.id ]" >{{leaveApplication.employee.user.login}}</a>
+                                                            </div>
+                                                    </td>
+                                                    <td>{{leaveApplication.fromDate | date:'mediumDate'}}</td>
+                                                    <td>{{leaveApplication.toDate | date:'mediumDate'}}</td>
+                                                    <td>{{leaveApplication.noofday}}</td>                                          
+                                                    <td>
+                                                        <div *ngIf="leaveApplication.leaveType">
+                                                            <a [routerLink]="['../leave-type', leaveApplication.leaveType?.id ]" >{{leaveApplication.leaveType?.code}}</a>
+                                                        </div>  
+                                                    </td>
+                                                    <td>{{leaveApplication.joinLeave}}</td>
+                                                    <td>{{leaveApplication.joinLeaveDay}}</td>
+                                                    <td class="text-right">
+                                                            <div class="btn-group flex-btn-group-container">
+                                                                <button type="submit"
+                                                                        [routerLink]="['../leave-application', leaveApplication.id ]"
+                                                                        class="btn btn-info btn-sm">
+                                                                    <span class="fa fa-eye"></span>
+                                                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                                                                </button>
+                                                                </div>
+                                                            </td>
+                                                </tr>
+                                               
+                                                </tbody>
+                                            </table>
+                                </div>
+                                    
+                </div>
+           </div>     
+</div> -->
+
 <div class="row" >
     <div class="col-md-3">
         <!-- <span class="hipster img-fluid rounded"></span> -->

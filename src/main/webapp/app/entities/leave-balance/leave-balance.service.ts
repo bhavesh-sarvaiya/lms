@@ -48,7 +48,7 @@ export class LeaveBalanceService {
             .map((res: HttpResponse<LeaveBalance[]>) => this.convertArrayResponse(res));
     }
 
-    findAllForLeaveApplicationHome(req?: any): Observable<HttpResponse<LeaveBalance[]>> {
+    findAllForLeaveBalanceHome(req?: any): Observable<HttpResponse<LeaveBalance[]>> {
         const options = createRequestOption(req);
         return this.http.get<LeaveBalance[]>(this.resourceUrl3, { params: options, observe: 'response' })
             .map((res: HttpResponse<LeaveBalance[]>) => this.convertArrayResponse(res));

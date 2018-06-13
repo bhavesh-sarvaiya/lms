@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
@@ -35,7 +34,6 @@ import com.lms.domain.LeaveApplicationHistory;
 import com.lms.domain.LeaveBalance;
 import com.lms.domain.LeaveRule;
 import com.lms.domain.LeaveRuleAndMaxMinLeave;
-import com.lms.domain.LeaveType;
 import com.lms.domain.enumeration.EmpType2;
 import com.lms.domain.enumeration.Post;
 import com.lms.repository.EmployeeRepository;
@@ -43,8 +41,6 @@ import com.lms.repository.LeaveApplicationHistoryRepository;
 import com.lms.repository.LeaveApplicationRepository;
 import com.lms.repository.LeaveBalanceRepository;
 import com.lms.repository.LeaveRuleAndMaxMinLeaveRepository;
-import com.lms.repository.LeaveRuleAndNoOfDayRepository;
-import com.lms.repository.LeaveRuleAndValidationTypeRepository;
 import com.lms.repository.LeaveRuleRepository;
 import com.lms.repository.LeaveTypeRepository;
 import com.lms.repository.UserRepository;
@@ -54,7 +50,6 @@ import com.lms.web.rest.errors.CustomParameterizedException;
 import com.lms.web.rest.util.HeaderUtil;
 
 import io.github.jhipster.web.util.ResponseUtil;
-import liquibase.exception.CustomChangeException;
 
 
 /**
@@ -176,12 +171,15 @@ public class LeaveApplicationResource {
         }
         leaveApplication.setStatus(APPLIED);
         leaveApplication.setFlowStatus("NEW");
-        leaveApplication.setNoofday(leaveApplication.getNoofday()-leaveApplication.getJoinLeaveDay());
+        if (leaveApplication.getJoinLeaveDay() == null)
+            leaveApplication.setNoofday(leaveApplication.getNoofday());
+        else
+            leaveApplication.setNoofday(leaveApplication.getNoofday()-leaveApplication.getJoinLeaveDay());
         result = leaveApplicationRepository.save(leaveApplication);
 
         saveLeaveAppHistory(result, "");
         return ResponseEntity.created(new URI("/api/leave-applications/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getLeaveType().getCode())).body(result);
     }
 
     private void checkLeaveGender(LeaveRule leaveRule,Employee employee){
@@ -500,7 +498,7 @@ public class LeaveApplicationResource {
         }
         LeaveApplication result = leaveApplicationRepository.save(leaveApplication);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveApplication.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveApplication.getLeaveType().getCode()))
             .body(result);
     }
 
@@ -515,13 +513,31 @@ public class LeaveApplicationResource {
         log.info("REST request to get all LeaveApplications: {}", "all LeaveApplications");
         List<LeaveApplication> list = new ArrayList<>();
         String user= SecurityUtils.getCurrentUserLogin().get();
+        Employee employee = getLoggedUser();
         System.out.println("\n\n####User: "+user);
         if(status.equalsIgnoreCase("all")) {
             list=leaveApplicationRepository.findAll();// all for admin
+        } else if(status.equals("AdminHome")){
+            list=leaveApplicationRepository.findAllByStatus(APPLIED);
+        } else if(status.equals("AdminApprej")){
+            List<String> statusList=new ArrayList<>();
+            statusList.add(APPROVED);
+            statusList.add(REJECTED);
+            list=leaveApplicationRepository.findAllByStatusInAndFromDateGreaterThan(statusList,LocalDate.now().minusMonths(6));
+            
+        }
+         else if(status.equals("apprej")){
+            List<String> statusList=new ArrayList<>();
+            statusList.add(APPROVED);
+            statusList.add(REJECTED);
+            list=leaveApplicationRepository.findAllByEmployeeAndStatusInAndFromDateGreaterThan(employee, statusList,LocalDate.now().minusMonths(6));
+            
+        } else if(status.equals("AppliedHome")) {
+            list = leaveApplicationRepository.findAllByEmployeeAndStatus(employee, APPLIED);
         }
         else 
         {
-            Employee employee = getLoggedUser();
+           
             String post = employee.getPost().toString();
             log.info(post , "{} Login");
             if(post.equalsIgnoreCase("FACULTY") || post.equalsIgnoreCase("UDC") || post.equalsIgnoreCase("LDC"))

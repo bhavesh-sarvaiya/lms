@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,6 +112,31 @@ public class LeaveApplicationHistoryResource {
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/leave-application-histories");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/leave-application-histories-home")
+    @Timed
+    public List<LeaveApplicationHistory> getAllLeaveApplicationHistoriesForHome() {
+        log.info("REST request to get a page of LeaveApplicationHistories");
+        String user = SecurityUtils.getCurrentUserLogin().get();
+       
+            Employee employee = employeeRepository.findOneByUser(userRepository.findOneByLogin(user).get());
+            if(employee.getUser().getLogin().equalsIgnoreCase("admin")){
+            //    List<LeaveApplicationHistory> list= leaveApplicationHistoryRepository.findAll();
+            //    List<LeaveApplicationHistory> top20List = new ArrayList<>();
+            //    int i = 1;
+
+            //     for (LeaveApplicationHistory item : list) {
+            //         top20List.add(item);
+            //         if(i==20)
+            //             break;
+            //         i++;
+            //     }
+
+                return leaveApplicationHistoryRepository.findTop20ByOrderByIdDesc();
+            }
+        	return leaveApplicationHistoryRepository.findTop20ByEmployee(employee);
+     
     }
 
     /**

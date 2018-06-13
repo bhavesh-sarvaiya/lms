@@ -86,7 +86,7 @@ public class LeaveAllocationResource {
 		result = leaveAllocationRepository.save(leaveAllocation);
 		
 		return ResponseEntity.created(new URI("/api/leave-allocations/" + result.getId()))
-				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+				.headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getLeaveType().getCode())).body(result);
 		}
 
 	private void saveLeaveBalance(String emp, LeaveAllocation leaveAllocation) {
@@ -132,12 +132,7 @@ public class LeaveAllocationResource {
 			else
 			 message+="\nPlease enter no of day";
 		}
-		if(!(leaveAllocation.getNoOfLeave().toString().matches("^\\d+$"))){
-			if(message.equals(""))
-			message = "Please enter only number in no of day";
-			else
-			 message+="\nPlease enter only number in no of day	";
-		}
+		
 		if(leaveAllocation.getNoOfLeave() != null && leaveAllocation.getNoOfLeave() < 1){
 			if(message.equals(""))
 			message = "Please enter no of day greater than 0";
@@ -214,7 +209,7 @@ public class LeaveAllocationResource {
 			result = leaveAllocationRepository.save(leaveAllocation);
 		}
 		return ResponseEntity.ok()
-				.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveAllocation.getId().toString()))
+				.headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveAllocation.getLeaveType().getCode()))
 				.body(result);
 	}
 

@@ -1,5 +1,7 @@
 package com.lms.repository;
 
+import java.util.List;
+
 import com.lms.domain.Employee;
 import com.lms.domain.LeaveApplicationHistory;
 import org.springframework.stereotype.Repository;
@@ -18,5 +20,10 @@ public interface LeaveApplicationHistoryRepository extends JpaRepository<LeaveAp
 	Page<LeaveApplicationHistory> findAllByEmployee(Employee employee, Pageable pageable);
 
 	Page<LeaveApplicationHistory> findAllByEmployeeOrActor(Employee employee, Employee employee2, Pageable pageable);
+	List<LeaveApplicationHistory> findTop20ByEmployee(Employee employee);
+	List<LeaveApplicationHistory> findTop20ByOrderByIdDesc();
+	//findTop2ByNameOrderByVersionDesc
+	
+	
 
 }

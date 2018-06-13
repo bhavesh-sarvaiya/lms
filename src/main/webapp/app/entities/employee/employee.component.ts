@@ -79,7 +79,7 @@ currentAccount: any;
         /* generate worksheet */
         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.employees);
 
-        /* generate workbook and add the worksheet */
+        /* generat  e workbook and add the worksheet */
         const today = new Date();
         const dd = today.getDate();
         const mm = today.getMonth() + 1; //January is 0!

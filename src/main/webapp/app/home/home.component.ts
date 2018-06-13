@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { LeaveBalance, LeaveBalanceService } from '../entities/leave-balance';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { LeaveApplication, LeaveApplicationService } from '../entities/leave-application';
+import { LeaveApplicationHistory, LeaveApplicationHistoryService } from '../entities/leave-application-history';
+import { NavbarComponent } from '../layouts';
 
 @Component({
     selector: 'jhi-home',
@@ -28,13 +30,20 @@ export class HomeComponent implements OnInit {
     credentials: any;
     leaveBalances: LeaveBalance[];
     leaveApplications: LeaveApplication[];
-
+    leaveApplications1: LeaveApplication[];
+    leaveApplicationHistories: LeaveApplicationHistory[];
+    lengthLeave: number;
+    lengthLeave1: number;
+    lengthBalance: number;
+    lengthHis: number;
+    @Input() navnar: NavbarComponent;
     constructor(
         private loginService: LoginService,
         private stateStorageService: StateStorageService,
         private principal: Principal,
         private loginModalService: LoginModalService,
         private jhiAlertService: JhiAlertService,
+        private leaveApplicationHistoryService: LeaveApplicationHistoryService,
         private router: Router,
         private leaveBalanceService: LeaveBalanceService,
         private leaveApplicationService: LeaveApplicationService,
@@ -45,23 +54,46 @@ export class HomeComponent implements OnInit {
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
+            if (this.account !== null) {
+                this.getLeaveApplication();
+                }
         });
         this.registerAuthenticationSuccess();
-
-        this.leaveBalanceService.findAllForLeaveApplicationHome().subscribe(
-                (res: HttpResponse<LeaveBalance[]>) => this.onSuccess(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.leaveApplicationService.query('APPLIED').subscribe(
+    }
+    getLeaveApplication() {
+        let status1 = 'AppliedHome';
+        let status2 = 'apprej';
+        if (this.account.login === 'admin') {
+            status1 = 'AdminHome';
+            status2 = 'AdminApprej';
+        }
+        this.leaveApplicationService.query(status1).subscribe(
             (res: HttpResponse<LeaveApplication[]>) => {
                 this.leaveApplications = res.body;
+                this.lengthLeave = this.leaveApplications.length;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
-       /* if (!this.principal.isAuthenticated() ) {
-        console.log(this.principal.isAuthenticated());
-        this.login();
-        }*/
+
+        this.leaveApplicationService.query(status2).subscribe(
+            (res: HttpResponse<LeaveApplication[]>) => {
+                this.leaveApplications1 = res.body;
+                this.lengthLeave1 = this.leaveApplications1.length;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+
+        this.leaveApplicationHistoryService.getFromHome().subscribe(
+            (res: HttpResponse<LeaveApplicationHistory[]>) => {
+                this.leaveApplicationHistories = res.body;
+                this.lengthHis = this.leaveApplicationHistories.length;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        this.leaveBalanceService.findAllForLeaveBalanceHome().subscribe(
+            (res: HttpResponse<LeaveBalance[]>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
+    );
     }
 
     login() {
@@ -97,8 +129,12 @@ export class HomeComponent implements OnInit {
         this.eventManager.subscribe('authenticationSuccess', (message) => {
             this.principal.identity().then((account) => {
                 this.account = account;
+                if (this.account !== null) {
+                this.getLeaveApplication();
+                }
             });
         });
+        this.navnar.isAuthenticated();
     }
 
     isAuthenticated() {
@@ -112,6 +148,7 @@ export class HomeComponent implements OnInit {
     private onSuccess(data, headers) {
         // this.page = pagingParams.page;
         this.leaveBalances = data;
+        this.lengthBalance = this.leaveBalances.length;
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);

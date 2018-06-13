@@ -33,6 +33,8 @@
 <div>
     <h2>
         <span jhiTranslate="lmsApp.leaveApplication.home.title">Leave Applications</span>
+
+        <button class="btn btn-primary" (click)="exportExcel()"> <span > Export to Excel </span>  </button>                    
         <button *ngIf="currentAccount && currentAccount.login != 'admin'" class="btn btn-primary float-right jh-create-entity create-leave-application" [routerLink]="['/', { outlets: { popup: ['leave-application-new'] } }]">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="lmsApp.leaveApplication.home.createLabel">
@@ -138,7 +140,7 @@
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
                             <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            <span class="d-none d-md-inline">Cancel</span>
                         </button>
                     </div>
                 </td>

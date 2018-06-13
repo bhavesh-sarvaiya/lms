@@ -98,7 +98,7 @@ public class LeaveRuleResource {
             }
         }
         return ResponseEntity.created(new URI("/api/leave-rules/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getLeave().getCode()))
             .body(result);
     }
 
@@ -141,7 +141,7 @@ public class LeaveRuleResource {
         }
 
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveRule.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, leaveRule.getLeave().getCode()))
             .body(result);
     }
 
@@ -355,8 +355,9 @@ public class LeaveRuleResource {
     @Timed
     public ResponseEntity<Void> deleteLeaveRule(@PathVariable Long id) {
         log.debug("REST request to delete LeaveRule : {}", id);
+        LeaveRule leaveRule;
         try{
-        LeaveRule leaveRule = leaveRuleRepository.findOne(id);
+        leaveRule = leaveRuleRepository.findOne(id);
 
         List<LeaveRuleAndNoOfDay> leaveRuleAndNoOfDays = leaveRuleAndNoOfDayRepository.findAllByLeaveRule(leaveRule);
        for (LeaveRuleAndNoOfDay entity : leaveRuleAndNoOfDays) {
@@ -378,6 +379,6 @@ public class LeaveRuleResource {
         throw new BadRequestAlertException("A new employee cannot already have an ID", ENTITY_NAME,
                 "constrainViolation");
     }
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, leaveRule.getLeave().getCode())).build();
     }
 }

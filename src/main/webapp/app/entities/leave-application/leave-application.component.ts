@@ -8,6 +8,7 @@ import { LeaveApplicationService } from './leave-application.service';
 import { Principal, User } from '../../shared';
 import { Employee, EmployeeService, Post } from '../employee';
 import * as $ from 'jquery';
+import * as XLSX from 'xlsx';
 
 @Component({
     selector: 'jhi-leave-application',
@@ -35,20 +36,32 @@ leaveApplications: LeaveApplication[];
             });
     }
     loadAll(status?) {
-    console.log('loadAll');
-    if (this.currentAccount.login === 'admin') {
-        status = 'all';
-    } else if (status === undefined) {
-        status = 'APPLIED';
-    }
-        console.log('status: ' + status);
+        if (this.currentAccount.login === 'admin') {
+            status = 'all';
+        } else if (status === undefined) {
+            status = 'APPLIED';
+        }
         this.leaveApplicationService.query(status).subscribe(
             (res: HttpResponse<LeaveApplication[]>) => {
                 this.leaveApplications = res.body;
-            console.log('application' + this.leaveApplications);
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
+    }
+    exportExcel() {
+        /* generate worksheet */
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.leaveApplications);
+
+        /* generat  e workbook and add the worksheet */
+        const today = new Date();
+        const dd = today.getDate();
+        const mm = today.getMonth() + 1; //January is 0!
+        const yyyy = today.getFullYear();
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'leaveApplication');
+        const name = 'leaveApplication_' + new Date().toString().slice(4, 24).replace(/ /g, '_')  + '.xlsx';
+        /* save to file */
+        XLSX.writeFile(wb, name);
     }
     ngOnInit(status?) {
         $(document).ready(function(){
